@@ -9,12 +9,14 @@ public class Player : MonoBehaviour {
 	Rigidbody2D body;
 	Animator anim;
 	double atkCool;
-	int heldWeapon;
+	int heldWeapon; //1 is sword, 2 is pistol, 3 shotgun, 4 Grenade Launcher
 
-	public Weapon weapon;
+    public Weapon weapon;
 	public Slash slash;
 	public Bullet1 bullet1;
 	public CameraRunner cam;
+    //public GameObject GrenadeLauncher;
+     
 
 	// Use this for initialization
 	void Start () {
@@ -66,7 +68,13 @@ public class Player : MonoBehaviour {
 
 		var tDir = body.velocity;
 
-		// Rotate to face if moving fast enough
+        //if (Input.GetMouseButton(0))
+       // {
+       //    GameObject grenade= (GameObject)Instantiate(GrenadeLauncher,gameObject.transform.position,transform.rotation);
+       //     grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(transform.rotation.z), Mathf.Sin(transform.rotation.z)) * 20;
+      //  }
+        
+        // Rotate to face if moving fast enough
 		if (tDir.magnitude > 1f) {
 
 			// Lerp between current facing and target facing
