@@ -11,12 +11,20 @@ public class Player : MonoBehaviour {
 	double atkCool;
 	int heldWeapon; //1 is sword, 2 is pistol, 3 shotgun, 4 Grenade Launcher
 
-    public Weapon weapon;
+	public Weapon weapon;
 	public Slash slash;
 	public Bullet1 bullet1;
 	public CameraRunner cam;
     //public GameObject GrenadeLauncher;
-     
+
+	// Keycodes
+	KeyCode M_MoveLeft = KeyCode.A;
+	KeyCode M_MoveRight = KeyCode.D;
+	KeyCode M_MoveUp = KeyCode.W;
+	KeyCode M_MoveDown = KeyCode.S;
+	KeyCode M_Swap = KeyCode.E;
+	KeyCode M_Shoot = KeyCode.Mouse0;
+	KeyCode M_Strafe = KeyCode.LeftShift;
 
 	// Use this for initialization
 	void Start () {
@@ -44,44 +52,35 @@ public class Player : MonoBehaviour {
 		 ************************/
 
 		// Move Up
-		if (Input.GetKey(KeyCode.UpArrow)) {
+		if (Input.GetKey( M_MoveUp )) {
 			body.AddForce (new Vector2 (0, 20));
 		}
 
 		// Move Down
-		if (Input.GetKey(KeyCode.DownArrow)) {
+		if (Input.GetKey( M_MoveDown )) {
 			body.AddForce (new Vector2 (0, -20));
 		}
 
 		// Move Left
-		if (Input.GetKey(KeyCode.LeftArrow)) {
+		if (Input.GetKey( M_MoveLeft )) {
 			body.AddForce (new Vector2 (-20, 0));
 		}
 
 		// Move Right
-		if (Input.GetKey(KeyCode.RightArrow)) {
+		if (Input.GetKey( M_MoveRight )) {
 			body.AddForce (new Vector2 (20, 0));
 		}
 
 		// Strafe Input
-		body.freezeRotation = (Input.GetKey(KeyCode.LeftShift));
+		body.freezeRotation = (Input.GetKey( M_Strafe ));
+
+		/***********************
+		 * ANIMATION
+		 ***********************/
 
 		var tDir = body.velocity;
 
-        //if (Input.GetMouseButton(0))
-       // {
-       //    GameObject grenade= (GameObject)Instantiate(GrenadeLauncher,gameObject.transform.position,transform.rotation);
-       //     grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(transform.rotation.z), Mathf.Sin(transform.rotation.z)) * 20;
-      //  }
-        
-        // Rotate to face if moving fast enough
-		if (tDir.magnitude > 1f) {
-
-			// Lerp between current facing and target facing
-			var currentAng = body.rotation;
-			var targetAng = 270.0f + Mathf.Atan2 (tDir.y, tDir.x) * Mathf.Rad2Deg;
-
-			body.MoveRotation (Mathf.MoveTowardsAngle (currentAng, targetAng, 20));
+		if (tDir.magnitude > 0.5f) {
 
 			// Set walking flag
 			anim.SetBool ("Walk", true);
@@ -93,10 +92,23 @@ public class Player : MonoBehaviour {
 
 		}
 
+		// Rotation
+
+		// Get your current facing
+		var currentAng = body.rotation;
+
+		// Get the direction to the mouse
+		var look = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position); // Vector representation
+		var targetAng = 270.0f + Mathf.Atan2 (look.y, look.x) * Mathf.Rad2Deg; // Angle of that vector
+
+
+		// Lerp between current facing and target facing
+		body.MoveRotation (Mathf.MoveTowardsAngle (currentAng, targetAng, 20));
+
 		/************************
 		 * WEAPON SWAP
 		 ************************/
-		if (Input.GetKeyDown (KeyCode.S)) {
+		if (Input.GetKeyDown ( M_Swap )) {
 
 			heldWeapon = 1 - heldWeapon;
 
@@ -118,9 +130,9 @@ public class Player : MonoBehaviour {
 			wep.GetComponent<Renderer> ().enabled = true;
 
 			// Attack Check
-			if (Input.GetKey (KeyCode.Z)) {
+			if (Input.GetKey ( M_Shoot )) {
 
-				var pressed = Input.GetKeyDown( KeyCode.Z);
+				var pressed = Input.GetKeyDown( M_Shoot );
 
 				PerformAttack (heldWeapon, pressed );
 
