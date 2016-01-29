@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Bullet1 : MonoBehaviour {
@@ -20,10 +20,15 @@ public class Bullet1 : MonoBehaviour {
 	void Update () {
 
 	}
+		
+	void OnTriggerEnter2D(Collider2D col) {
 
-	void OnCollisionEnter2D(Collision2D col) {
+		// Check for wall collision
+		if (col.gameObject.tag == "Block") {
+			
+			Destroy (gameObject);
 
-		Destroy ( gameObject );
+		}
 
 	}
 }
