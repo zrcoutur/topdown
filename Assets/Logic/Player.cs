@@ -5,7 +5,7 @@ enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
 
 public class Player : MonoBehaviour {
 
-	AudioSource audio;
+	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
 	Animator anim;
@@ -16,6 +16,15 @@ public class Player : MonoBehaviour {
 	public Slash slash;
 	public Bullet1 bullet1;
 	public CameraRunner cam;
+
+    private int maxHealth;
+    private int maxAmmo;
+    private int maxShield;
+    public int health;
+    public int ammo;
+    public int shield;
+    public int energyCores;
+    public int scrap;
 
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
@@ -36,7 +45,7 @@ public class Player : MonoBehaviour {
 
 		body = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
-		audio = GetComponent<AudioSource> ();
+		Paudio = GetComponent<AudioSource> ();
 
 		heldWeapon = 0;
 
@@ -118,7 +127,7 @@ public class Player : MonoBehaviour {
 			heldWeapon = 1 - heldWeapon;
 
 			// Play swap sound
-			audio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 
 			wep.GetComponent<Animator> ().SetInteger ("WeaponID", heldWeapon);
 
@@ -168,7 +177,7 @@ public class Player : MonoBehaviour {
 				break;
 
 			// Play Slash Sound
-			audio.PlayOneShot( X_Slash, 1.0f );
+			Paudio.PlayOneShot( X_Slash, 1.0f );
 
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
@@ -191,7 +200,7 @@ public class Player : MonoBehaviour {
 		case (int)weapons.PlasmaRifle:
 
 			// Play Shoot Sound
-			audio.PlayOneShot( X_Bullet_Shoot, 1.0f );
+			Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
 
 			// Calculate creation position of bullet (from gun)
 			var pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );

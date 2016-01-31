@@ -9,7 +9,10 @@ public class SpiderDrone : MonoBehaviour {
 
 	Transform nearest;
 	Rigidbody2D body;
-	SpriteRenderer renderer;
+	SpriteRenderer Srenderer;
+
+    public int health;
+    private int Maxhealth;
 
 	public Color[] colors;
 
@@ -20,7 +23,7 @@ public class SpiderDrone : MonoBehaviour {
 		nearest = null;
 
 		body = GetComponent<Rigidbody2D> ();
-		renderer = GetComponent<SpriteRenderer> ();
+		Srenderer = GetComponent<SpriteRenderer> ();
 
 	}
 	
@@ -31,9 +34,9 @@ public class SpiderDrone : MonoBehaviour {
 
 		if (flash >= 0) {
 			toggle = 1-toggle;
-			renderer.color = colors [toggle];
+			Srenderer.color = colors [toggle];
 		} else
-			renderer.color = colors [0];
+			Srenderer.color = colors [0];
 	
 		SearchDelay -= Time.deltaTime;
 
