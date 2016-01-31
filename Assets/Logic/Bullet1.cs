@@ -11,7 +11,7 @@ public class Bullet1 : MonoBehaviour {
 
 		body = GetComponent<Rigidbody2D> ();
 
-		float angle = 270.0f + Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg;
+		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
@@ -30,6 +30,12 @@ public class Bullet1 : MonoBehaviour {
 			Instantiate (poof, transform.position, transform.rotation);
 			Destroy (gameObject);
 
+		}
+
+		if (col.tag == "Enemy") {
+			col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
+			Instantiate (poof, transform.position, transform.rotation);
+			Destroy (gameObject);
 		}
 
 	}

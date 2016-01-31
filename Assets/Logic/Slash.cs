@@ -25,4 +25,14 @@ public class Slash : MonoBehaviour {
 
 
 	}
+
+	void OnTriggerEnter2D( Collider2D col ) {
+
+		if (col.tag == "Enemy") {
+
+			col.gameObject.SendMessage ("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f ));
+
+		}
+
+	}
 }

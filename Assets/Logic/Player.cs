@@ -105,8 +105,7 @@ public class Player : MonoBehaviour {
 
 		// Get the direction to the mouse
 		var look = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position); // Vector representation
-		var targetAng = 270.0f + Mathf.Atan2 (look.y, look.x) * Mathf.Rad2Deg; // Angle of that vector
-
+		var targetAng = 270.0f + Tools.Vector2ToAngle( look ); // Angle of that vector
 
 		// Lerp between current facing and target facing
 		body.MoveRotation (Mathf.MoveTowardsAngle (currentAng, targetAng, 20));
@@ -179,7 +178,7 @@ public class Player : MonoBehaviour {
 			cam.AddShake( 0.3f );
 
 			// Momentum from swing
-			body.AddForce ( AngleToVec2( (body.rotation * transform.forward).z + 90.0f, 120.0f ) );
+			body.AddForce ( Tools.AngleToVec2( (body.rotation * transform.forward).z + 90.0f, 120.0f ) );
 
 			// Hide weapon
 			wep.GetComponent<Renderer> ().enabled = false;
@@ -195,7 +194,7 @@ public class Player : MonoBehaviour {
 			audio.PlayOneShot( X_Bullet_Shoot, 1.0f );
 
 			// Calculate creation position of bullet (from gun)
-			var pos = body.position + AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
+			var pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
@@ -209,7 +208,7 @@ public class Player : MonoBehaviour {
 			var spread = Random.Range( -5.0f, 5.0f );
 
 			// Set final velocity based on travel angle
-			b1.GetComponent<Rigidbody2D> ().velocity = AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 				
 			// Cooldown
 			atkCool = 0.1;
@@ -217,17 +216,6 @@ public class Player : MonoBehaviour {
 			break;
 
 		}
-
-	}
-
-	/*******************************************************************************
-	 * 
-	 * Converts an angle to a Vector2 with a given magnitude.
-	 * 
-	 *******************************************************************************/
-	Vector2 AngleToVec2( float angle, float magn ) {
-
-		return new Vector2 (Mathf.Cos (angle * Mathf.Deg2Rad ) * magn, Mathf.Sin (angle * Mathf.Deg2Rad ) * magn);
 
 	}
 
