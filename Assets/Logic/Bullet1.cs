@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Bullet1 : MonoBehaviour {
 
+	//Poof effect
+	public GameObject poof;
+
 	// Use this for initialization
 	void Start () {
 
@@ -21,9 +24,13 @@ public class Bullet1 : MonoBehaviour {
 
 	}
 
-	void OnCollisionEnter2D(Collision2D col) {
+	void OnTriggerEnter2D(Collider2D col) {
+		
+		if (col.tag == "Block") {
+			Instantiate (poof, transform.position, transform.rotation);
+			Destroy (gameObject);
 
-		Destroy ( gameObject );
+		}
 
 	}
 }
