@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E744C1E9-A618-B8AF-2C4A-55191E3AB561}</ProjectGuid>
+    <ProjectGuid>{73BBACE8-A6FB-B986-F893-D3D80101B57E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -45,11 +45,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\DanTestCode\Scripts\Explosion.cs" />
+     <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
+     <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
+     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
      <Compile Include="Assets\Logic\Bullet1.cs" />
      <Compile Include="Assets\Logic\CameraRunner.cs" />
      <Compile Include="Assets\Logic\Player.cs" />
+     <Compile Include="Assets\Logic\Poof.cs" />
      <Compile Include="Assets\Logic\Slash.cs" />
+     <Compile Include="Assets\Logic\SpiderDrone.cs" />
+     <Compile Include="Assets\Logic\Tools.cs" />
      <Compile Include="Assets\Logic\Weapon.cs" />
+     <None Include="Assets\Shaders\TileBG.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

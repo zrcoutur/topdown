@@ -3,12 +3,15 @@ using System.Collections;
 
 public class Bullet1 : MonoBehaviour {
 
+	//Poof effect
+	public GameObject poof;
+
 	// Use this for initialization
 	void Start () {
 
 		body = GetComponent<Rigidbody2D> ();
 
-		float angle = 270.0f + Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg;
+		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
@@ -21,9 +24,19 @@ public class Bullet1 : MonoBehaviour {
 
 	}
 
-	void OnCollisionEnter2D(Collision2D col) {
+	void OnTriggerEnter2D(Collider2D col) {
+		
+		if (col.tag == "Block") {
+			Instantiate (poof, transform.position, transform.rotation);
+			Destroy (gameObject);
 
-		Destroy ( gameObject );
+		}
+
+		if (col.tag == "Enemy") {
+			col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
+			Instantiate (poof, transform.position, transform.rotation);
+			Destroy (gameObject);
+		}
 
 	}
 }
