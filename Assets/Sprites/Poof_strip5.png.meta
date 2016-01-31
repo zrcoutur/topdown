@@ -12,7 +12,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -66,15 +66,14 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -13, y: 6}
+      - - {x: -5, y: 14}
+        - {x: -9, y: 13}
+        - {x: -13, y: 8}
         - {x: -13, y: -7}
-        - {x: -10, y: -12}
-        - {x: 10, y: -12}
-        - {x: 12, y: -11}
-        - {x: 12, y: 12}
-        - {x: 9, y: 14}
-        - {x: 0, y: 14}
-        - {x: -6, y: 13}
+        - {x: -12, y: -12}
+        - {x: 12, y: -12}
+        - {x: 12, y: 11}
+        - {x: 11, y: 14}
     - name: Poof_strip5_1
       rect:
         serializedVersion: 2
