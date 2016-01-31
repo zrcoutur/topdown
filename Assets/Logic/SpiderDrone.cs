@@ -65,7 +65,6 @@ public class SpiderDrone : MonoBehaviour {
 	void OnHit ( Vector2 forceVector ) {
 
 		// Pushback
-		print(forceVector);
 		body.AddForce ( forceVector );
 
 		// Flash
