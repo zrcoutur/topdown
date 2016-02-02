@@ -5,10 +5,12 @@ public class Bullet1 : MonoBehaviour {
 
 	//Poof effect
 	public GameObject poof;
+	public GameObject bullet;
+	// duration of the bullet (not in seconds)
+	float duration = 1.0f; 
 
 	// Use this for initialization
 	void Start () {
-
 		body = GetComponent<Rigidbody2D> ();
 
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
@@ -21,7 +23,12 @@ public class Bullet1 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		// Remove the bullet after a certain period of time
+		if (duration >= 0.0f) {
+			duration -= Time.deltaTime;
+		} else {
+			Destroy( GameObject.Find("Bullet1(Clone)") );
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
