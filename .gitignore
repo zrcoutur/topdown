@@ -18,8 +18,9 @@ $PROJDIR
 
 obj
 Temp
-.suo
-.user
+*.suo
+*.user
+*.log
 
 $PROJDIR/Library
 
