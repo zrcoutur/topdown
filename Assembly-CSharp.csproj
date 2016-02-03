@@ -56,6 +56,7 @@
      <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
      <Compile Include="Assets\Logic\Bullet1.cs" />
      <Compile Include="Assets\Logic\CameraRunner.cs" />
+     <Compile Include="Assets\Logic\FlyingDrone.cs" />
      <Compile Include="Assets\Logic\GenerateFloor.cs" />
      <Compile Include="Assets\Logic\GenerateRoom.cs" />
      <Compile Include="Assets\Logic\Player.cs" />
