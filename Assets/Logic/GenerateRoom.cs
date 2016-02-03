@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 public class GenerateRoom : MonoBehaviour {
     static int roomWidth = 3;
@@ -40,6 +41,8 @@ public class GenerateRoom : MonoBehaviour {
 	}
 }
 =======
+=======
+>>>>>>> Fixed some github problems
 using System;
 
 public class GenerateRoom : MonoBehaviour
@@ -174,4 +177,9 @@ public class GenerateRoom : MonoBehaviour
 			}
 		}
 	}
+<<<<<<< HEAD
 >>>>>>> Tiled room Gen
+=======
+}
+
+>>>>>>> Fixed some github problems
