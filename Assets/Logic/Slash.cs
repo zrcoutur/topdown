@@ -4,11 +4,13 @@ using System.Collections;
 public class Slash : MonoBehaviour {
 
 	double slashTimer;
+    int damage;
 
 	// Use this for initialization
 	void Start () {
 	
 		slashTimer = 0.25;
+        damage = 5;
 
 	}
 	
@@ -31,6 +33,7 @@ public class Slash : MonoBehaviour {
 		if (col.tag == "Enemy") {
 
 			col.gameObject.SendMessage ("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f ));
+            col.GetComponent<Baseenemy>().health -= damage;
 
 		}
 

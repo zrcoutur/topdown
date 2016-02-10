@@ -5,6 +5,7 @@ public class Bullet1 : MonoBehaviour {
 
 	//Poof effect
 	public GameObject poof;
+    int damage;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +15,7 @@ public class Bullet1 : MonoBehaviour {
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        damage = 2;
 
 	}
 
@@ -35,6 +37,7 @@ public class Bullet1 : MonoBehaviour {
 		if (col.tag == "Enemy") {
 			col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
 			Instantiate (poof, transform.position, transform.rotation);
+            col.GetComponent<Baseenemy>().health -= damage;
 			Destroy (gameObject);
 		}
 
