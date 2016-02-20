@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4a9ffdd43e8ced644b9123579fb71536
-timeCreated: 1454374413
+timeCreated: 1455133301
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -56,34 +56,34 @@ TextureImporter:
     - name: FlyerDrone_strip_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 3
+        y: 1
         width: 33
-        height: 30
-      alignment: 9
-      pivot: {x: 0.495, y: 0.5}
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: FlyerDrone_strip_1
       rect:
         serializedVersion: 2
         x: 43
-        y: 0
+        y: 1
         width: 33
-        height: 30
-      alignment: 9
-      pivot: {x: 0.495, y: 0.5}
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: FlyerDrone_strip_2
       rect:
         serializedVersion: 2
         x: 83
-        y: 0
+        y: 1
         width: 33
-        height: 30
-      alignment: 9
-      pivot: {x: 0.495, y: 0.5}
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []
