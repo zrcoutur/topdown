@@ -1,4 +1,4 @@
-using System;
+/*using System;
 
 public class GenerateRoom : MonoBehaviour
 {
@@ -134,3 +134,4 @@ public class GenerateRoom : MonoBehaviour
 	}
 
 }
+*/
