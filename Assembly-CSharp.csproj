@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{E744C1E9-A618-B8AF-2C4A-55191E3AB561}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -45,25 +46,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\DanTestCode\Scripts\Explosion.cs" />
-     <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
-     <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
-     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
-     <Compile Include="Assets\Logic\Bullet1.cs" />
-     <Compile Include="Assets\Logic\CameraRunner.cs" />
-     <Compile Include="Assets\Logic\Player.cs" />
-     <Compile Include="Assets\Logic\Poof.cs" />
-     <Compile Include="Assets\Logic\Slash.cs" />
-     <Compile Include="Assets\Logic\SpiderDrone.cs" />
-     <Compile Include="Assets\Logic\Tools.cs" />
-     <Compile Include="Assets\Logic\Weapon.cs" />
-     <None Include="Assets\Shaders\TileBG.shader" />
- <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
+    <Compile Include="Assets\2DLightAsset\Examples\RigidBodyInterpolationSolution\FollowLight2d.cs" />
+    <Compile Include="Assets\2DLightAsset\Scripts\2DLight\DynamicLight.cs" />
+    <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch.cs" />
+    <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch2.cs" />
+    <Compile Include="Assets\2DLightAsset\Scripts\rotate.cs" />
+    <Compile Include="Assets\DanTestCode\Scripts\Explosion.cs" />
+    <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
+    <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
+    <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
+    <Compile Include="Assets\Logic\Bullet1.cs" />
+    <Compile Include="Assets\Logic\CameraRunner.cs" />
+    <Compile Include="Assets\Logic\FlyingDrone.cs" />
+    <Compile Include="Assets\Logic\GenerateRoom.cs" />
+    <Compile Include="Assets\Logic\Player.cs" />
+    <Compile Include="Assets\Logic\Poof.cs" />
+    <Compile Include="Assets\Logic\Slash.cs" />
+    <Compile Include="Assets\Logic\SpiderDrone.cs" />
+    <Compile Include="Assets\Logic\Tools.cs" />
+    <Compile Include="Assets\Logic\Weapon.cs" />
+    <None Include="Assets\2DLightAsset\Shaders\Gradient-NoTexture-Radial-SingleColor-ToTransparent-RegularUV-AlphaBlend.shader" />
+    <None Include="Assets\2DLightAsset\Shaders\NoTexture.shader" />
+    <None Include="Assets\Shaders\TileBG.shader" />
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="pseudoSinCos">
+      <HintPath>C:/Users/Zach/Documents/College/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -73,5 +86,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

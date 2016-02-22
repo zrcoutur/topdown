@@ -14,6 +14,18 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+$PROJDIR
+
+obj
+Temp
+*.suo
+*.user
+*.log
+
+$PROJDIR/Library
+
+cache
+metadata
 # Windows Installer files
 *.cab
 *.msi
