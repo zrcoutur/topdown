@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -83,13 +77,10 @@
     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
     <Compile Include="Assets\Logic\Bullet1.cs" />
     <Compile Include="Assets\Logic\CameraRunner.cs" />
-    <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
-    <Compile Include="Assets\Logic\Enemies\EnemySpawnHandler.cs" />
-    <Compile Include="Assets\Logic\Enemies\EnemySpawner.cs" />
-    <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
     <Compile Include="Assets\Logic\Player.cs" />
     <Compile Include="Assets\Logic\Poof.cs" />
     <Compile Include="Assets\Logic\Slash.cs" />
+    <Compile Include="Assets\Logic\SpiderDrone.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Weapon.cs" />
   </ItemGroup>
