@@ -12,6 +12,8 @@ public class SpiderDrone : Baseenemy
         base.Maxhealth = 5;
         base.health = 5;
         base.speed = 1.5f;
+        base.rate = 2.5f;
+        base.rate = 4f;
     }
         
 

@@ -15,6 +15,10 @@ public class Baseenemy : MonoBehaviour {
     protected float speed;
     public GameObject poof;
 
+    public float rate;
+    public float range;
+    private float timer;
+
     public Color[] colors;
     // Use this for initialization
     void Start () {
@@ -23,6 +27,7 @@ public class Baseenemy : MonoBehaviour {
 
         body = GetComponent<Rigidbody2D>();
         Srenderer = GetComponent<SpriteRenderer>();
+        timer = rate;
     }
 	
 	// Update is called once per frame
@@ -60,6 +65,16 @@ public class Baseenemy : MonoBehaviour {
             float currentAngle = Tools.QuaternionToAngle(transform.rotation);
             float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
 
+            if (Mathf.Sqrt(Mathf.Pow(dir.x, 2f) + Mathf.Pow(dir.y, 2f)) <= range)
+            {
+                if (timer <= 0)
+                {
+                    attack();
+                    timer += rate;
+                }
+                timer -= Time.deltaTime;
+            }
+
             // Rotate to face target
             transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f));
 
@@ -82,4 +97,5 @@ public class Baseenemy : MonoBehaviour {
     {
 
     }
+    void attack() { }
 }
