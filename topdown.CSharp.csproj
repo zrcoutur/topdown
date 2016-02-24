@@ -77,10 +77,15 @@
     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
     <Compile Include="Assets\Logic\Bullet1.cs" />
     <Compile Include="Assets\Logic\CameraRunner.cs" />
+    <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
+    <Compile Include="Assets\Logic\Enemies\EnemySpawner.cs" />
+    <Compile Include="Assets\Logic\Enemies\EnemySpawnerHandler.cs" />
+    <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
+    <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
+    <Compile Include="Assets\Logic\GenerateRoom.cs" />
     <Compile Include="Assets\Logic\Player.cs" />
     <Compile Include="Assets\Logic\Poof.cs" />
     <Compile Include="Assets\Logic\Slash.cs" />
-    <Compile Include="Assets\Logic\SpiderDrone.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Weapon.cs" />
   </ItemGroup>
