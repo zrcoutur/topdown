@@ -6,6 +6,7 @@ enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
 
 public class Player : MonoBehaviour {
 
+	public DynamicGUI upgradeWindow;
 	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
@@ -233,6 +234,7 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
+		if (upgradeWindow.isOpen()) { return; }
 
 		switch (weaponType) {
 
