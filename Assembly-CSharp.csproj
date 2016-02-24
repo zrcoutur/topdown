@@ -80,6 +80,8 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="pseudoSinCos">
+ <HintPath>C:/Users/Zach/Documents/College/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
+ <HintPath>C:/Users/Alex/Documents/GitHub/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
  <HintPath>C:/Users/Josh/Topdown/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
  </Reference>
   </ItemGroup>

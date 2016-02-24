@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawnHandler : MonoBehaviour
+public class EnemySpawnerHandler : MonoBehaviour
 {
     public float rate;
     private float timer;

@@ -22,6 +22,7 @@ public class GenerateRoom : MonoBehaviour
 		dungeonSize = 10;
 		tileWidth = 1.5f;
 		tileHeight = 1.5f;
+
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 
 	}
@@ -57,6 +58,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						if (i - 1 >= 0)
 						{
+
 							if (floor[i - 1, j] != 0)
 							{
 								doors += 4;
@@ -64,13 +66,17 @@ public class GenerateRoom : MonoBehaviour
 						}
 						if (i + 1 < dungeonSize)
 						{
+
 							if (floor[i + 1, j] != 0)
+
 							{
 								doors += 1;
 							}
 						}
 						int[,] room = makeRoomMatrix(5, 5, doors);
+
 						makeRoom(i * 10, j * 10, 5, 5, room);
+
 					}
 				}
 				Debug.Log(array);
@@ -132,7 +138,7 @@ public class GenerateRoom : MonoBehaviour
 
 			for (int j = x; j < roomHeight + x; j++)
 			{
-
+			
 				if (roomMatrix[j - x, i - y] != 0)
 				{
 
@@ -173,8 +179,8 @@ public class GenerateRoom : MonoBehaviour
 			}
 		}
 	}
+	int[,] makeFloorMatrix(int floorWidth, int floorHeight, int numberOfCircles , int numberOfSpecialRooms)
 
-	int[,] makeFloorMatrix(int floorWidth, int floorHeight, int numberOfCircles, int numberOfSpecialRooms)
 	{
 		//matrix codes
 		//nothing = 0
@@ -196,8 +202,9 @@ public class GenerateRoom : MonoBehaviour
 
 			//test code
 			if (returnMatrix[y, x] != 1)
-			{
+			{ 
 				returnMatrix[y, x] = 1;
+				
 
 				//Add the coordinates of special rooms to connect later
 				listOfSpecialRooms.Add(y);
@@ -216,9 +223,11 @@ public class GenerateRoom : MonoBehaviour
 		//insert circle centers
 		for (int i = 0; i < numberOfCircles; i++)
 		{
-			int x = UnityEngine.Random.Range(0, floorWidth - 1);
+
+			int x = UnityEngine.Random.Range(0, floorWidth - 1 );
 			int y = UnityEngine.Random.Range(0, floorHeight - 1);
-			if (returnMatrix[y, x] != 1 && returnMatrix[y, x] != 2)
+			if (returnMatrix[y, x] != 1 && returnMatrix[y, x] != 2 )
+
 			{
 				returnMatrix[y, x] = 2;
 			}
@@ -228,28 +237,28 @@ public class GenerateRoom : MonoBehaviour
 				y = UnityEngine.Random.Range(0, floorHeight - 1);
 				i--;
 			}
-
+			
 		}
-
+		
 		//expande circle centers into circles
 		for (int i = 0; i < floorWidth; i++)
 		{
-
+			
 			for (int j = 0; j < floorHeight; j++)
 			{
 
-				if (returnMatrix[j, i] == 2)
-				{
-
+				if (returnMatrix[j,i] == 2)
+				{ 
+					
 					//create rooms around center
-					for (int x = i - 1; x < i + 2; x++)
+					for (int x = i-1; x < i+2 ; x++)
 					{
-						for (int y = j - 1; y < j + 2; y++)
+						for (int y = j-1; y < j+2; y++)
 						{
-
+							
 
 							//check to make sure circle-edge room being added is in domain and range of floorMatrix
-							if ((x >= 0 && y >= 0) && (x < floorWidth && y < floorHeight))
+							if ( (x >= 0 && y >= 0) && (x < floorWidth  && y < floorHeight ))
 							{
 
 								//check if room is already made there
@@ -268,23 +277,26 @@ public class GenerateRoom : MonoBehaviour
 			}
 		}
 
+	
 		//start pathing for each of the special rooms
 		//defines position as index in numberOfSpecialRooms
-		for (int i = 0; i < numberOfSpecialRooms; i++)
+		for (int i = 0; i < numberOfSpecialRooms ; i++)
 		{
 			//pick a circle-edge to aim towards 
 			//defines position as index in listOfCircleEdgeRooms
 
-			int circleEdgeTarget = UnityEngine.Random.Range(0, listOfCircleEdgeRooms.Count / 2);
+
+			int circleEdgeTarget = UnityEngine.Random.Range(0, listOfCircleEdgeRooms.Count/2);
 			bool foundPath = false;
-			int x = (int)listOfSpecialRooms[2 * i + 1];
-			int y = (int)listOfSpecialRooms[2 * i];
+			int x = (int)listOfSpecialRooms[2*i + 1];
+			int y = (int)listOfSpecialRooms[2*i];
 
 			//start building x towards a circle
-			for (; x != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2];)
+			for (; x != (int)listOfCircleEdgeRooms[ circleEdgeTarget*2];)
 			{
+				
+				if ( x < (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 ])
 
-				if (x < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2])
 				{
 					x++;
 				}
@@ -292,26 +304,26 @@ public class GenerateRoom : MonoBehaviour
 				{
 					x--;
 				}
-
 				//if room hasnt been pathed to closer room 
-				if (returnMatrix[y, x] == 0)
+				if (returnMatrix[y, x] == 0 )
 				{
 					//adds new normal room into to create path
 					returnMatrix[y, x] = 4;
-				}
-				else
+				}else
+
 				{
 
 					foundPath = true;
 					break;
 				}
 			}
-
+						
 			if (!foundPath)
 			{
-				for (; y != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1];)
+				for (; y != (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 + 1] ;)
 				{
-					if (y < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1])
+					if (y < (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 + 1])
+
 					{
 						y++;
 					}
@@ -331,7 +343,6 @@ public class GenerateRoom : MonoBehaviour
 					}
 				}
 			}
-
 		}
 
 		return returnMatrix;
