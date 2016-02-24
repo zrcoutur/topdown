@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
 
 public class Player : MonoBehaviour {
 
+	public DynamicGUI upgradeWindow;
 	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour {
 	public Slash slash;
 	public Bullet1 bullet1;
 	public CameraRunner cam;
+	public Slider hpSlider;
+	public Slider energySlider;
 
     private int maxHealth;
     private int maxAmmo;
@@ -40,6 +44,10 @@ public class Player : MonoBehaviour {
 	KeyCode M_Shoot = KeyCode.Mouse0;
 	KeyCode M_Strafe = KeyCode.LeftShift;
 
+	int GetHealth() {
+		return health;
+	}
+
 	// Use this for initialization
 	void Start () {
 
@@ -48,6 +56,11 @@ public class Player : MonoBehaviour {
 		Paudio = GetComponent<AudioSource> ();
 
 		heldWeapon = 0;
+		maxHealth = 100;
+		maxAmmo = 100;
+		ammo = 100;
+
+		health = maxHealth;
 
 		// Create weapon object and make it follow you
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
@@ -84,6 +97,7 @@ public class Player : MonoBehaviour {
 		// Move Right
 		if (Input.GetKey( M_MoveRight )) {
 			body.AddForce (new Vector2 (20, 0));
+			GetHurt (1);
 		}
 
 		// Strafe Input
@@ -160,6 +174,59 @@ public class Player : MonoBehaviour {
 	}
 
 	/*******************************************************************************
+	 *
+	 * Called whenever the player is inflicted any damage. Updates UI info, too.
+	 *
+	 *******************************************************************************/
+	void GetHurt( int damageTaken ) {
+		health -= damageTaken;
+		hpSlider.value = health;
+	}
+
+	/*******************************************************************************
+	 * 
+	 * Called whenever the player is healed. Updates UI info, too.
+	 * 
+	 *******************************************************************************/
+	void GetHealed( int damageRecovered ) {
+
+		// Cap health at maximum
+		health = Mathf.Min( health + damageRecovered, maxHealth );
+		hpSlider.value = health;
+		// TODO: heal sfx/effect?
+	}
+
+	/*******************************************************************************
+	 *
+	 * Expends ammo (i.e. energy) if you have enough. If you don't have enough,
+	 * does nothing and returns false.
+	 *
+	 *******************************************************************************/
+	bool UseAmmo( int cost ) {
+		
+		// Check if you have enough ammo
+		if (ammo >= cost) {
+			ammo = Mathf.Max( 0, ammo - cost );
+			energySlider.value = ammo;
+			return true;
+		} 
+		// TODO: 'No ammo' fx
+		else {
+			return false;
+		}
+	}
+
+	/*******************************************************************************
+	 *
+	 * Called whenever you regain ammo. Updates UI info, too.
+	 *
+	 *******************************************************************************/
+	void GainAmmo( int ammoGained ) {
+		ammo = Mathf.Min( ammo + ammoGained, maxAmmo );
+		energySlider.value = ammo;
+	}
+
+	/*******************************************************************************
 	 * 
 	 * Performs an attack based on the weapon type provided and
 	 * a flag that checks whether or not the button was just
@@ -167,6 +234,7 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
+		if (upgradeWindow.isOpen()) { return; }
 
 		switch (weaponType) {
 
@@ -198,6 +266,14 @@ public class Player : MonoBehaviour {
 			break;
 
 		case (int)weapons.PlasmaRifle:
+			
+			// Cooldown
+			atkCool = 0.1;
+
+			// Ammo Check
+			if ( !UseAmmo( 1 ) ) {
+				break;
+			}
 
 			// Play Shoot Sound
 			Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
@@ -218,9 +294,6 @@ public class Player : MonoBehaviour {
 
 			// Set final velocity based on travel angle
 			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
-				
-			// Cooldown
-			atkCool = 0.1;
 
 			break;
 
