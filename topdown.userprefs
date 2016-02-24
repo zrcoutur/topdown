@@ -1,15 +1,12 @@
-﻿<Properties StartupItem="topdown.CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Logic\Enemies\EnemySpawnHandler.cs">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Logic\DynamicGUI.cs">
     <Files>
-      <File FileName="Assets\Logic\Enemies\EnemySpawnHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Player.cs" Line="267" Column="4" />
-      <File FileName="Assets\Logic\GenerateRoom.cs" Line="137" Column="3" />
-      <File FileName="Assets\Logic\SpiderDrone.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Bullet1.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Slash.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Weapon.cs" Line="1" Column="1" />
+      <File FileName="Assets\Logic\DynamicGUI.cs" Line="39" Column="46" />
+      <File FileName="Assets\Logic\WeaponStats.cs" Line="1" Column="1" />
+      <File FileName="Assets\Logic\Enumerations.cs" Line="1" Column="1" />
+      <File FileName="Assets\Logic\Player.cs" Line="237" Column="41" />
+      <File FileName="Assets\2DLightAsset\Scripts\2DLight\DynamicLight.cs" Line="4" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
