@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GenerateFloor : MonoBehaviour {
-    public GameObject[] GeneratedFloor; 
-
+public class EnemyBullet : Bullet1 {
 
 	// Use this for initialization
 	void Start () {
