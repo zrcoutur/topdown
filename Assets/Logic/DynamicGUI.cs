@@ -34,15 +34,20 @@ public class DynamicGUI : MonoBehaviour {
 	public void OnGUI() {
 		// set green-italic text style
 		if (lbl_grn_text == null) {
+			// center text in labels
+			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+			// center window title
+			GUI.skin.window.alignment = TextAnchor.UpperCenter;
+
 			lbl_grn_text = new GUIStyle(GUI.skin.label);
 			lbl_grn_text.normal.textColor = Color.green;
 			lbl_grn_text.fontStyle = FontStyle.Italic;
+
+
 		}
 
 		// Draws the window if show is true
 		if (show) {
-			// center text in labels
-			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 			var limbo = new Rect(window_dimensions.x, window_dimensions.y, window_dimensions.width, window_dimensions.height);
 			// resize the window based on screen size
 			window_dimensions = resizeWindow(window_dimensions);
@@ -107,10 +112,9 @@ public class DynamicGUI : MonoBehaviour {
 			display.stat.increment();
 		}
 		GUI.enabled = true;
-
-		bool no_value = display.stat.current() == -1;
+		
 		// show current value
-		GUI.Label(display.labels[1], (no_value) ? "--" : "" + display.stat.current());
+		GUI.Label(display.labels[1], "" + display.stat.current());
 		// display arrows
 		GUI.Label(display.labels[2], ">>");
 		// show next value (or '--' if no such element exists)

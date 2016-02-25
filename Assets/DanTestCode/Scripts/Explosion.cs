@@ -22,13 +22,13 @@ public class Explosion : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.tag == "Player")
-        {
-            triggerHit = true;
-            coll.GetComponent<player>().health -= damage;
-        }
+    void OnTriggerEnter2D(Collider2D coll) {
+		Player is_player = coll.GetComponent<Player>();
+        
+		if (is_player != null) {
+				triggerHit = true;
+				is_player.GetHurt(damage);
+		}
         //Add similar condition for enemy
     }
 }
