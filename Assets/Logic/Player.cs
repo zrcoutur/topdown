@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
 	public Slider hpSlider;
 	public Slider energySlider;
 
+	public DynamicGUI upgrade_window;
     private int maxAmmo;
     public int health;
     public int ammo;
@@ -240,7 +241,7 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
-//		if (upgradeWindow.isOpen()) { return; }
+		if (upgrade_window.isOpen()) { return; }
 
 		switch (weaponType) {
 
