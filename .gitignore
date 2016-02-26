@@ -18,9 +18,16 @@ $PROJDIR
 
 obj
 Temp
+*.csproj
+*.unityproj
+*.sln
 *.suo
+*.tmp
 *.user
-*.log
+*.userprefs
+*.pidb
+*.booproj
+*.svd
 
 $PROJDIR/Library
 
@@ -80,3 +87,4 @@ Temporary Items
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+/UpgradeLog.htm
