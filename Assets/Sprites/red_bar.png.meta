@@ -12,7 +12,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -31,15 +31,20 @@ TextureImporter:
   cubemapConvolutionSteps: 7
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+<<<<<<< HEAD
     filterMode: -1
 <<<<<<< HEAD
     aniso: 16
 =======
     aniso: -1
 >>>>>>> d0b2cd4e20899120f98e86a25611d6f77f5d1146
+=======
+    filterMode: 0
+    aniso: 16
+>>>>>>> master
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
