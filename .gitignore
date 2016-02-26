@@ -18,9 +18,16 @@ $PROJDIR
 
 obj
 Temp
+*.csproj
+*.unityproj
+*.sln
 *.suo
+*.tmp
 *.user
-*.log
+*.userprefs
+*.pidb
+*.booproj
+*.svd
 
 $PROJDIR/Library
 
