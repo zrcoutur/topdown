@@ -13,6 +13,9 @@ public class Player : MonoBehaviour {
 	Animator anim;
 	double atkCool;
 	int heldWeapon; //1 is sword, 2 is pistol, 3 shotgun, 4 Grenade Launcher
+	// Used to recover ammo
+	private float ammo_recovery_rate;
+	private float ammo_counter;
 
 	public Weapon weapon;
 	public Slash slash;
@@ -21,9 +24,7 @@ public class Player : MonoBehaviour {
 	public Slider hpSlider;
 	public Slider energySlider;
 
-    private int maxHealth;
     private int maxAmmo;
-    private int maxShield;
     public int health;
     public int ammo;
     public int shield;
@@ -56,11 +57,11 @@ public class Player : MonoBehaviour {
 		Paudio = GetComponent<AudioSource> ();
 
 		heldWeapon = 0;
-		maxHealth = 100;
 		maxAmmo = 100;
 		ammo = 100;
-
-		health = maxHealth;
+		ammo_recovery_rate = 1.2f;
+		ammo_counter = ammo_recovery_rate;
+		health = Storage.MAX_HEALTH.current();
 
 		// Create weapon object and make it follow you
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
@@ -97,7 +98,6 @@ public class Player : MonoBehaviour {
 		// Move Right
 		if (Input.GetKey( M_MoveRight )) {
 			body.AddForce (new Vector2 (20, 0));
-			GetHurt (1);
 		}
 
 		// Strafe Input
@@ -170,6 +170,13 @@ public class Player : MonoBehaviour {
 			}
 
 		}
+		// passively recover ammo overtime
+		if (ammo_counter >= ammo_recovery_rate) {
+			ammo_counter = 0.0f;
+			GainAmmo(1);
+		} else {
+			ammo_counter += Time.deltaTime;
+		}
 			
 	}
 
@@ -178,7 +185,7 @@ public class Player : MonoBehaviour {
 	 * Called whenever the player is inflicted any damage. Updates UI info, too.
 	 *
 	 *******************************************************************************/
-	void GetHurt( int damageTaken ) {
+	public void GetHurt( int damageTaken ) {
 		health -= damageTaken;
 		hpSlider.value = health;
 	}
@@ -188,10 +195,10 @@ public class Player : MonoBehaviour {
 	 * Called whenever the player is healed. Updates UI info, too.
 	 * 
 	 *******************************************************************************/
-	void GetHealed( int damageRecovered ) {
+	public void GetHealed( int damageRecovered ) {
 
 		// Cap health at maximum
-		health = Mathf.Min( health + damageRecovered, maxHealth );
+		health = Mathf.Min( health + damageRecovered, Storage.MAX_HEALTH.current() );
 		hpSlider.value = health;
 		// TODO: heal sfx/effect?
 	}
@@ -271,7 +278,7 @@ public class Player : MonoBehaviour {
 			atkCool = 0.1;
 
 			// Ammo Check
-			if ( !UseAmmo( 1 ) ) {
+			if ( !UseAmmo( Storage.weapon_by_type(WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
 
@@ -300,5 +307,4 @@ public class Player : MonoBehaviour {
 		}
 
 	}
-
 }
