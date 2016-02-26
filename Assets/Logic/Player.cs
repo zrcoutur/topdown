@@ -6,13 +6,13 @@ enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
 
 public class Player : MonoBehaviour {
 
-	public DynamicGUI upgradeWindow;
+	//public DynamicGUI upgradeWindow;
 	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
 	Animator anim;
 	double atkCool;
-	int heldWeapon; //1 is sword, 2 is pistol, 3 shotgun, 4 Grenade Launcher
+	int heldWeapon; //0 is sword, 1 is rifle, 2 shotgun, 3 Grenade Launcher
 	// Used to recover ammo
 	private float ammo_recovery_rate;
 	private float ammo_counter;
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
 		heldWeapon = 0;
 		maxAmmo = 100;
 		ammo = 100;
-		ammo_recovery_rate = 1.2f;
+		ammo_recovery_rate = 0.2f;
 		ammo_counter = ammo_recovery_rate;
 		health = Storage.MAX_HEALTH.current();
 
@@ -137,13 +137,12 @@ public class Player : MonoBehaviour {
 		 * WEAPON SWAP
 		 ************************/
 		if (Input.GetKeyDown ( M_Swap )) {
-
-			heldWeapon = 1 - heldWeapon;
+			heldWeapon = (heldWeapon + 1) % 3;
 
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
-
-			wep.GetComponent<Animator> ().SetInteger ("WeaponID", heldWeapon);
+			// shotgun has no unique arm style yet
+			wep.GetComponent<Animator>().SetInteger ("WeaponID", (heldWeapon == 2) ? 1 : heldWeapon);
 
 		}
 
@@ -173,7 +172,7 @@ public class Player : MonoBehaviour {
 		// passively recover ammo overtime
 		if (ammo_counter >= ammo_recovery_rate) {
 			ammo_counter = 0.0f;
-			GainAmmo(1);
+			GainAmmo(3);
 		} else {
 			ammo_counter += Time.deltaTime;
 		}
@@ -241,11 +240,11 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
-		if (upgradeWindow.isOpen()) { return; }
+//		if (upgradeWindow.isOpen()) { return; }
 
 		switch (weaponType) {
 
-		case (int)weapons.BeamSword:
+		case (int)WEAPON_TYPE.sword:
 
 			// Only slash on key-down
 			if (!pressed)
@@ -268,14 +267,14 @@ public class Player : MonoBehaviour {
 			wep.GetComponent<Renderer> ().enabled = false;
 
 			// Cooldown
-			atkCool = 0.45;
+			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			break;
 
-		case (int)weapons.PlasmaRifle:
+		case (int)WEAPON_TYPE.rifle:
 			
 			// Cooldown
-			atkCool = 0.1;
+			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
 			if ( !UseAmmo( Storage.weapon_by_type(WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
@@ -292,18 +291,51 @@ public class Player : MonoBehaviour {
 			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 
 			// Mildly shake camera
-			cam.AddShake( 0.2f );
+			cam.AddShake( 0.05f );
 
 			// Calculate bullet's velocity
 
 			// Shot spread range.
-			var spread = Random.Range( -5.0f, 5.0f );
+			var spread = Random.Range( -3.0f, 3.0f );
 
 			// Set final velocity based on travel angle
 			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 
 			break;
 
+		case (int)WEAPON_TYPE.shotgun:
+
+			// Cooldown
+			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+
+			// Ammo Check
+			if ( !UseAmmo( Storage.weapon_by_type(WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+				break;
+			}
+			// Fire five bullets in succession
+			for (int bullet = 0; bullet <= 4; ++bullet) {
+				// Play Shoot Sound
+				Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
+	
+				// Calculate creation position of bullet (from gun)
+				pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
+
+				// Create bullet
+				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+
+				// Mildly shake camera
+				cam.AddShake( 0.08f );
+
+				// Calculate bullet's velocity
+
+				// Shot spread range.
+				spread = Random.Range( -15.0f, 15.0f );
+
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+			}
+
+			break;
 		}
 
 	}

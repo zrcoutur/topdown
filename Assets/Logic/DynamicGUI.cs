@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 
@@ -110,6 +111,10 @@ public class DynamicGUI : MonoBehaviour {
 		// create button to increment the pointer
 		if ( GUI.Button(display.button, "+") && !is_last ) {
 			display.stat.increment();
+
+			if (display.stat.type == STAT_TYPE.health) {
+				Storage.HP_raised = true;
+			}
 		}
 		GUI.enabled = true;
 		

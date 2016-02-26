@@ -14,7 +14,7 @@ public class SpiderDrone : Baseenemy
         base.health = 5;
         base.speed = 1.5f;
         base.rate = 2.5f;
-        base.rate = 4f;
+        base.range = 40f;
     }
 
 
