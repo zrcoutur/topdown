@@ -70,6 +70,7 @@
      <Compile Include="Assets\Logic\Enumerations.cs" />
      <Compile Include="Assets\Logic\Explosion.cs" />
      <Compile Include="Assets\Logic\GenerateRoom.cs" />
+     <Compile Include="Assets\Logic\HP_Slider_Script.cs" />
      <Compile Include="Assets\Logic\Player.cs" />
      <Compile Include="Assets\Logic\Poof.cs" />
      <Compile Include="Assets\Logic\Slash.cs" />
