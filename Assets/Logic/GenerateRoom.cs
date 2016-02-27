@@ -34,7 +34,7 @@ public class GenerateRoom : MonoBehaviour
 		hallLength = 6; //preferably even
 		spawnerCap = 3;
 
-		floor = makeFloorMatrix(dungeonSize, dungeonSize, 1, 4);
+		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 
 	}
 
@@ -331,8 +331,8 @@ public class GenerateRoom : MonoBehaviour
 
 		}
 
-		//insert circle centers
-		for (int i = 0; i < numberOfCircles; i++)
+		//insert circle center for primary circle
+		for (int i = 0; i < 1; i++)
 		{
 
 			int x = UnityEngine.Random.Range(0, floorWidth - 1 );
@@ -341,6 +341,7 @@ public class GenerateRoom : MonoBehaviour
 
 			{
 				returnMatrix[y, x] = 2;
+
 			}
 			else //if the matrix indices were already filled , retry
 			{
@@ -455,6 +456,130 @@ public class GenerateRoom : MonoBehaviour
 				}
 			}
 		}
+
+		//insert circle centers for the rest of circles
+		for (int i = 0; i < numberOfCircles - 1; i++)
+		{
+
+			int x = UnityEngine.Random.Range(0, floorWidth - 1);
+			int y = UnityEngine.Random.Range(0, floorHeight - 1);
+			if (returnMatrix[y, x] == 1)
+			{
+				int targetx = UnityEngine.Random.Range(0, floorWidth - 1);
+				int targety = UnityEngine.Random.Range(0, floorHeight - 1);
+				//start pathing for each of the special rooms
+				//defines position as index in numberOfSpecialRooms
+				for (int j = 0; j < numberOfSpecialRooms; j++)
+				{
+					//pick a circle-edge to aim towards 
+					//defines position as index in listOfCircleEdgeRooms
+
+
+					int circleEdgeTarget = UnityEngine.Random.Range(0, listOfCircleEdgeRooms.Count / 2);
+					bool foundPath = false;
+
+					//start building x towards a circle
+					for (; x != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2];)
+					{
+
+						if (x < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2])
+
+						{
+							x++;
+						}
+						else
+						{
+							x--;
+						}
+						//if room hasnt been pathed to closer room 
+						if (returnMatrix[y, x] == 0)
+						{
+							//adds new normal room into to create path
+							returnMatrix[y, x] = 4;
+						}
+						else
+
+						{
+
+							foundPath = true;
+							for (int tempx = i - 1; tempx < i + 2; tempx++)
+							{
+								for (int tempy = j - 1; tempy < j + 2; tempy++)
+								{
+									//check to make sure circle-edge room being added is in domain and range of floorMatrix
+									if ((tempx >= 0 && tempy >= 0) && (tempx < floorWidth && tempy < floorHeight))
+									{
+
+										//check if room is already made there
+										if (returnMatrix[tempy, tempx] == 0)
+										{
+											returnMatrix[tempy, tempx] = 3;
+
+										}
+									}
+								}
+							}
+							break;
+						}
+					}
+
+					if (!foundPath)
+					{
+						for (; y != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1];)
+						{
+							if (y < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1])
+
+							{
+								y++;
+							}
+							else
+							{
+								y--;
+							}
+
+							if (returnMatrix[y, x] == 0)
+							{
+								//adds new normal room into to create path
+								returnMatrix[y, x] = 4;
+							}
+							else
+							{
+								foundPath = true;
+
+								//create rooms around center
+								for (int tempx = i - 1; tempx < i + 2; tempx++)
+								{
+									for (int tempy = j - 1; tempy < j + 2; tempy++)
+									{
+										//check to make sure circle-edge room being added is in domain and range of floorMatrix
+										if ((tempx >= 0 && tempy >= 0) && (tempx < floorWidth && tempy < floorHeight))
+										{
+
+											//check if room is already made there
+											if (returnMatrix[tempy, tempx] == 0)
+											{
+												returnMatrix[tempy, tempx] = 3;
+
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+
+			}
+			else //if the matrix indices were already filled , retry
+			{
+				x = UnityEngine.Random.Range(0, floorWidth - 1);
+				y = UnityEngine.Random.Range(0, floorHeight - 1);
+				i--;
+			}
+
+		}
+		
 
 		return returnMatrix;
 	}
