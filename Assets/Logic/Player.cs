@@ -60,7 +60,7 @@ public class Player : MonoBehaviour {
 		heldWeapon = 0;
 		maxAmmo = 100;
 		ammo = 100;
-		ammo_recovery_rate = 0.2f;
+		ammo_recovery_rate = 0.5f;
 		ammo_counter = ammo_recovery_rate;
 		health = Storage.MAX_HEALTH.current();
 
@@ -177,7 +177,15 @@ public class Player : MonoBehaviour {
 		} else {
 			ammo_counter += Time.deltaTime;
 		}
-			
+
+		// Press 'h' to restore HP
+		if ( Input.GetKeyDown(KeyCode.H) ) {
+			GetHealed(Storage.MAX_HEALTH.current());
+		}
+		// Hold 'r' to gain ammo
+		if ( Input.GetKey(KeyCode.R) ) {
+			GainAmmo(1);
+		}
 	}
 
 	/*******************************************************************************
@@ -325,7 +333,7 @@ public class Player : MonoBehaviour {
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 
 				// Mildly shake camera
-				cam.AddShake( 0.08f );
+				cam.AddShake( 0.07f );
 
 				// Calculate bullet's velocity
 
@@ -339,5 +347,19 @@ public class Player : MonoBehaviour {
 			break;
 		}
 
+	}
+
+	public void OnTriggerEnter2D(Collider2D trigger) {
+		GameObject obj = trigger.gameObject;
+
+		if (obj.tag == "core") {
+			energyCores += UnityEngine.Random.Range(0, 5);
+			Debug.Log("Cores: " + energyCores + "\n");
+			Destroy(obj);
+		} else if (obj.tag == "scrap") {
+			energyCores += UnityEngine.Random.Range(0, 5);
+			Debug.Log("Scrap: " + scrap + "\n");
+			Destroy(obj);
+		}
 	}
 }

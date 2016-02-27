@@ -13,6 +13,8 @@ using System.Collections.Generic;
 public class CrateManager : MonoBehaviour {
 
 	public GameObject crate;
+	// the range of the map where boxes will spawn: [x.min, x.max, y.min, y.max]
+	private int[] dimensions;
 	// the max number of crates that can be on the map at a time
 	private static readonly int MAX_CRATES = 20;
 	// set of crates in the game
@@ -24,11 +26,12 @@ public class CrateManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		dimensions = new int[] { -50, 50, -20, 20 };
 		// set spawn delay
 		spawn_delay = SPAWN_TIME;
 		// add a number of crates to the world map
 		for (int count = 0; count < 3; ++count) {
-			GameObject new_obj = createCrate (Random.Range (-20, 20), Random.Range (-15, 15));
+			GameObject new_obj = createCrate(Random.Range(dimensions[0], dimensions[1]), Random.Range(dimensions[2], dimensions[3]));
 
 			if (new_obj != null) {
 				crates.Add (new_obj);
@@ -46,10 +49,10 @@ public class CrateManager : MonoBehaviour {
 			removeCrates();
 			// add another crate somewhere within a set coordinate range
 			if (crates.Count < MAX_CRATES) {
-				GameObject new_obj = createCrate (Random.Range (-20, 20), Random.Range (-15, 15));
+				GameObject new_obj = createCrate(Random.Range(dimensions[0], dimensions[1]), Random.Range(dimensions[2], dimensions[3]));
 
 				if (new_obj != null) {
-					crates.Add (new_obj);
+					crates.Add(new_obj);
 				}
 			}
 		}
