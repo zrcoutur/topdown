@@ -5,25 +5,36 @@ using UnityEngine;
 public class GenerateRoom : MonoBehaviour
 {
 
+	public GameObject regularWall;
+	public GameObject cornerWall;
+	public GameObject spawner;
+
+	int[,] floor;
+
+	bool instantiate;
+
+	int dungeonSize;
+	int roomWidth;
+	int roomHeight;
+	int hallLength;
+	int spawnerCap;
+
 	float tileWidth;
 	float tileHeight;
-
-	GameObject regularWall;
-	GameObject cornerWall;
-
-	public bool instantiate;
-	public int dungeonSize;
-	int[,] floor;
 
 	// Use this for initializations
 	void Start()
 	{
-		instantiate = false;
+		instantiate = true;
 		dungeonSize = 10;
 		tileWidth = 1.5f;
 		tileHeight = 1.5f;
+		roomWidth = 9;	//preferably odd
+		roomHeight = 9;	//preferably odd
+		hallLength = 6; //preferably even
+		spawnerCap = 3;
 
-		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
+		floor = makeFloorMatrix(dungeonSize, dungeonSize, 1, 4);
 
 	}
 
@@ -44,14 +55,14 @@ public class GenerateRoom : MonoBehaviour
 						Byte doors = 0;
 						if (j - 1 >= 0)
 						{
-							if (floor[i, j - 1] != 0)
+							if (floor[i, j - 1] != 0 && floor[i, j - 1] != 2)
 							{
 								doors += 8;
 							}
 						}
 						if (j + 1 < dungeonSize)
 						{
-							if (floor[i, j + 1] != 0)
+							if (floor[i, j + 1] != 0 && floor[i, j + 1] != 2)
 							{
 								doors += 2;
 							}
@@ -59,7 +70,7 @@ public class GenerateRoom : MonoBehaviour
 						if (i - 1 >= 0)
 						{
 
-							if (floor[i - 1, j] != 0)
+							if (floor[i - 1, j] != 0 && floor[i - 1, j] != 2)
 							{
 								doors += 4;
 							}
@@ -67,15 +78,19 @@ public class GenerateRoom : MonoBehaviour
 						if (i + 1 < dungeonSize)
 						{
 
-							if (floor[i + 1, j] != 0)
+							if (floor[i + 1, j] != 0 && floor[i + 1, j] != 2)
 
 							{
 								doors += 1;
 							}
 						}
-						int[,] room = makeRoomMatrix(5, 5, doors);
+						int[,] room = makeRoomMatrix(roomHeight, roomWidth, doors);
 
-						makeRoom(i * 10, j * 10, 5, 5, room);
+						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room);
+						if (doors != 0)
+						{
+							makeHall(doors, i * (roomHeight + hallLength), j * (roomWidth + hallLength));
+						}
 
 					}
 				}
@@ -87,29 +102,92 @@ public class GenerateRoom : MonoBehaviour
 		}
 
 	}
+
+	void makeHall(byte doors, int y , int x)
+	{
+
+		if ( (doors & 1) == 1)
+		{
+			int tempx = x + (roomWidth / 2) - 2;
+			int tempy = y + roomHeight;
+			for (int j = tempy; j < tempy + hallLength/2 ; j++)
+			{
+				for (int i = tempx; i < tempx + 5 ; i+=4)
+				{
+					GameObject block = (GameObject)Instantiate(regularWall, new Vector3( i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.AddComponent<BoxCollider2D>();
+				}
+			}
+		}
+		if ((doors & 2) == 2)
+		{
+			int tempx = x + roomWidth;
+			int tempy = y  + (roomHeight / 2) - 2;
+			for (int j = tempy; j < tempy + 5; j += 4)
+			{
+				for (int i = tempx; i < tempx + hallLength/2; i ++)
+				{
+					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.AddComponent<BoxCollider2D>();
+				}
+			}
+		}
+		if ((doors & 4) == 4)
+		{
+			
+			int tempx = x + (roomWidth / 2) - 2;
+			int tempy = y - 1;
+			for (int j = tempy; j >= tempy - hallLength / 2; j--)
+			{
+				for (int i = tempx; i < tempx + 5; i += 4)
+				{
+					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.AddComponent<BoxCollider2D>();
+				}
+			}
+			
+		}
+		if ((doors & 8) == 8)
+		{
+			int tempx = x;
+			int tempy = y + (roomHeight / 2) - 2;
+			for (int j = tempy; j < tempy + 5; j += 4)
+			{
+				for (int i = tempx; i >= tempx - hallLength / 2; i--)
+				{
+					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.AddComponent<BoxCollider2D>();
+				}
+			}
+
+		}
+
+	}
+
 	//byte for determining doors; Byte is a boolean string for determining which walls have doors starting 
 	//0x0000 = no doors, 0x0001 means one door on the north (up) direction , 0x0010 means one door on the east (left) direction , and so forth clockwise
 	int[,] makeRoomMatrix(int height, int width, byte door)
 	{
 		int[,] returnMatrix = new int[width, height];
+		int spawnersPlaced =0;
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
 
-				if (y == height - 1 && x == width / 2 && (door & 1) == 1) //make north ( up ) direction door if it should exist
+				if (y == height - 1 && ( x == width / 2 || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 1) == 1) //make north ( up ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else if (y == 0 && x == width / 2 && (door & 4) == 4) //make south ( down ) direction door if it should exist
+				else if (y == 0 && (x == (width / 2) || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 4) == 4) //make south ( down ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else if (y == height / 2 && x == width - 1 && (door & 2) == 2) //make east ( left ) direction door if it should exist
+				else if ((y == height / 2 || y == (height / 2) + 1 || y == (height / 2) - 1) && x == width - 1 && (door & 2) == 2) //make east ( left ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else if (y == height / 2 && x == 0 && (door & 8) == 8) //make east ( left ) direction door if it should exist
+				else if ((y == height / 2 || y == (height / 2) + 1 || y == (height / 2) - 1) && x == 0 && (door & 8) == 8) //make east ( left ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
@@ -119,7 +197,16 @@ public class GenerateRoom : MonoBehaviour
 					{
 						returnMatrix[x, y] = 1;
 					}
-
+					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
+					{
+						int chance = UnityEngine.Random.Range(0, 10);
+						if (chance == 0 && spawnerCap > spawnersPlaced)
+						{
+							returnMatrix[x, y] = 2;
+							spawnersPlaced++;
+						}
+						
+					}
 				}
 			}
 		}
@@ -128,15 +215,13 @@ public class GenerateRoom : MonoBehaviour
 	//Places sprites into level to create a room
 	//y and x are the position of the bottom left corner of the room
 	// roomMatrix comes from the makeRoomMatrix method
-	private void makeRoom(int y, int x, int roomHeight, int roomWidth, int[,] roomMatrix)
+	private void makeRoom(int y, int x, int[,] roomMatrix)
 	{
-		regularWall = GameObject.Find("Block");
-		cornerWall = GameObject.Find("Block");
 
-		for (int i = y; i < roomWidth + y; i++)
+		for (int i = y; i < roomHeight + y; i++)
 		{
 
-			for (int j = x; j < roomHeight + x; j++)
+			for (int j = x; j < roomWidth + x; j++)
 			{
 			
 				if (roomMatrix[j - x, i - y] != 0)
@@ -166,13 +251,39 @@ public class GenerateRoom : MonoBehaviour
 					}
 					else // if sprite coordinates are not in corner
 					{
-						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-						block.AddComponent<BoxCollider2D>();
-						Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-						//rotate left and right walls for appearence
-						if (j - x == 0 || j - x == roomHeight - 1)
+						if (roomMatrix[j - x, i - y] == 1)
 						{
-							block.transform.Rotate(Vector3.forward * -90);
+							GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							block.AddComponent<BoxCollider2D>();
+							Rigidbody2D body = block.GetComponent<Rigidbody2D>();
+							//rotate left and right walls for appearence
+							if (j - x == 0 || j - x == roomHeight - 1)
+							{
+								block.transform.Rotate(Vector3.forward * -90);
+							}
+						}else if (roomMatrix[j - x, i - y] == 2)
+						{
+							
+							GameObject block = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							block.AddComponent<BoxCollider2D>();
+							
+							if (j - x == 0 )
+							{
+								block.GetComponent<EnemySpawner>().east = true;
+							}
+							else if (j - x == roomWidth + x - 1)
+							{
+								block.GetComponent<EnemySpawner>().west = true;
+							}
+							else if (i - y == 0)
+							{
+								block.GetComponent<EnemySpawner>().north = true;
+							}
+							else if (i - y == roomHeight + y - 1)
+							{
+								block.GetComponent<EnemySpawner>().south = true;
+							}
+
 						}
 					}
 				}
