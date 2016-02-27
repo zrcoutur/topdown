@@ -5,19 +5,22 @@ using UnityEngine;
 public class GenerateRoom : MonoBehaviour
 {
 
-	float tileWidth;
-	float tileHeight;
-
 	public GameObject regularWall;
 	public GameObject cornerWall;
+	public GameObject spawner;
 
-	public bool instantiate;
-	public int dungeonSize;
 	int[,] floor;
 
+	bool instantiate;
+
+	int dungeonSize;
 	int roomWidth;
 	int roomHeight;
 	int hallLength;
+	int spawnerCap;
+
+	float tileWidth;
+	float tileHeight;
 
 	// Use this for initializations
 	void Start()
@@ -29,6 +32,7 @@ public class GenerateRoom : MonoBehaviour
 		roomWidth = 9;	//preferably odd
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even
+		spawnerCap = 3;
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 1, 4);
 
@@ -158,17 +162,6 @@ public class GenerateRoom : MonoBehaviour
 
 		}
 
-		/*
-		GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-		block.AddComponent<BoxCollider2D>();
-		Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-		//rotate left and right walls for appearence
-		if (j - x == 0 || j - x == roomHeight - 1)
-		{
-			block.transform.Rotate(Vector3.forward * -90);
-		}
-		throw new NotImplementedException();
-		*/
 	}
 
 	//byte for determining doors; Byte is a boolean string for determining which walls have doors starting 
@@ -176,6 +169,7 @@ public class GenerateRoom : MonoBehaviour
 	int[,] makeRoomMatrix(int height, int width, byte door)
 	{
 		int[,] returnMatrix = new int[width, height];
+		int spawnersPlaced =0;
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
@@ -203,7 +197,16 @@ public class GenerateRoom : MonoBehaviour
 					{
 						returnMatrix[x, y] = 1;
 					}
-
+					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
+					{
+						int chance = UnityEngine.Random.Range(0, 10);
+						if (chance == 0 && spawnerCap > spawnersPlaced)
+						{
+							returnMatrix[x, y] = 2;
+							spawnersPlaced++;
+						}
+						
+					}
 				}
 			}
 		}
@@ -215,10 +218,10 @@ public class GenerateRoom : MonoBehaviour
 	private void makeRoom(int y, int x, int[,] roomMatrix)
 	{
 
-		for (int i = y; i < roomWidth + y; i++)
+		for (int i = y; i < roomHeight + y; i++)
 		{
 
-			for (int j = x; j < roomHeight + x; j++)
+			for (int j = x; j < roomWidth + x; j++)
 			{
 			
 				if (roomMatrix[j - x, i - y] != 0)
@@ -248,13 +251,39 @@ public class GenerateRoom : MonoBehaviour
 					}
 					else // if sprite coordinates are not in corner
 					{
-						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-						block.AddComponent<BoxCollider2D>();
-						Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-						//rotate left and right walls for appearence
-						if (j - x == 0 || j - x == roomHeight - 1)
+						if (roomMatrix[j - x, i - y] == 1)
 						{
-							block.transform.Rotate(Vector3.forward * -90);
+							GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							block.AddComponent<BoxCollider2D>();
+							Rigidbody2D body = block.GetComponent<Rigidbody2D>();
+							//rotate left and right walls for appearence
+							if (j - x == 0 || j - x == roomHeight - 1)
+							{
+								block.transform.Rotate(Vector3.forward * -90);
+							}
+						}else if (roomMatrix[j - x, i - y] == 2)
+						{
+							
+							GameObject block = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							block.AddComponent<BoxCollider2D>();
+							
+							if (j - x == 0 )
+							{
+								block.GetComponent<EnemySpawner>().east = true;
+							}
+							else if (j - x == roomWidth + x - 1)
+							{
+								block.GetComponent<EnemySpawner>().west = true;
+							}
+							else if (i - y == 0)
+							{
+								block.GetComponent<EnemySpawner>().north = true;
+							}
+							else if (i - y == roomHeight + y - 1)
+							{
+								block.GetComponent<EnemySpawner>().south = true;
+							}
+
 						}
 					}
 				}

@@ -44,7 +44,6 @@ public class EnemySpawner : MonoBehaviour
     {
 
 
-
     }
     public Baseenemy spawn(Baseenemy b)
     {
