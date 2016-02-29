@@ -265,6 +265,7 @@ public class Player : MonoBehaviour {
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 			sl.transform.parent = transform;
+			sl.set_damage(damage_for_weapon());
 
 			// Shake camera
 			cam.AddShake( 0.3f );
@@ -276,17 +277,17 @@ public class Player : MonoBehaviour {
 			wep.GetComponent<Renderer> ().enabled = false;
 
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			break;
 
 		case (int)WEAPON_TYPE.rifle:
 			
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if ( !UseAmmo( Storage.weapon_by_type(WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
 
@@ -298,6 +299,7 @@ public class Player : MonoBehaviour {
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+			b1.set_damage(damage_for_weapon());
 
 			// Mildly shake camera
 			cam.AddShake( 0.05f );
@@ -315,10 +317,10 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.shotgun:
 
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type((WEAPON_TYPE)heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if ( !UseAmmo( Storage.weapon_by_type(WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
 			// Fire five bullets in succession
@@ -331,6 +333,7 @@ public class Player : MonoBehaviour {
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				b1.set_damage(damage_for_weapon());
 
 				// Mildly shake camera
 				cam.AddShake( 0.07f );
@@ -347,6 +350,11 @@ public class Player : MonoBehaviour {
 			break;
 		}
 
+	}
+
+	/* Get current weapon damage */
+	private int damage_for_weapon() {
+		return Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.damage).current();
 	}
 
 	public void OnTriggerEnter2D(Collider2D trigger) {

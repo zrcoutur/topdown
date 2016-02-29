@@ -91,7 +91,7 @@ public class DynamicGUI : MonoBehaviour {
 		}
 
 		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, 0, 30, 48, 22);
-		GUI.Label(weapon_lbl, Storage.weapon_by_type(weapon).type.ToString());
+		GUI.Label(weapon_lbl, Storage.weapon_by_type((int)weapon).type.ToString());
 
 		// Button for switching between the stats of each weapon
 		if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
@@ -130,9 +130,9 @@ public class DynamicGUI : MonoBehaviour {
 	private void switchWeaponStats() {
 		weapon = (WEAPON_TYPE) ( ((byte)weapon + 1) % 4 );
 
-		displays[2] = new StatDisplay( "Damage", Storage.weapon_by_type(weapon).stat_by_type(STAT_TYPE.damage) );
-		displays[3] = new StatDisplay( "Rate of Fire", Storage.weapon_by_type(weapon).stat_by_type(STAT_TYPE.rate_of_fire) );
-		displays[4] = new StatDisplay( "Ammo Cost", Storage.weapon_by_type(weapon).stat_by_type(STAT_TYPE.ammo) );
+		displays[2] = new StatDisplay( "Damage", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.damage) );
+		displays[3] = new StatDisplay( "Rate of Fire", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.rate_of_fire) );
+		displays[4] = new StatDisplay( "Ammo Cost", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.ammo) );
 		updatePositions();
 	}
 

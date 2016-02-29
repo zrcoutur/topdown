@@ -23,8 +23,8 @@ public static class Storage {
 
 	/* Returns the stats of the weapon with the given type.
 	 * See Enumerations class for valid values for parameter t. */
-	public static WeaponStats weapon_by_type(WEAPON_TYPE t) {
-		switch (t) {
+	public static WeaponStats weapon_by_type(int t) {
+		switch ((WEAPON_TYPE)t) {
 			case WEAPON_TYPE.sword:		return WEAPONS[0];
 			case WEAPON_TYPE.rifle:		return WEAPONS[1];
 			case WEAPON_TYPE.shotgun:	return WEAPONS[2];
