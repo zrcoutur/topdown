@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Weapons enum
+public enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
+
 public class Tools : MonoBehaviour {
 
 	/*******************************************************************************
