@@ -374,7 +374,7 @@ public class Player : MonoBehaviour {
 				b1.set_damage(damage_for_weapon());
 
 				// Mildly shake camera
-				cam.AddShake( 0.07f );
+				cam.AddShake( 0.065f );
 
 				// Calculate bullet's velocity
 

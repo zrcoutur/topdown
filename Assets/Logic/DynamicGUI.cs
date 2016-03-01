@@ -111,9 +111,11 @@ public class DynamicGUI : MonoBehaviour {
 		// create button to increment the pointer
 		if ( GUI.Button(display.button, "+") && !is_last ) {
 			display.stat.increment();
-
+			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
 				Storage.HP_raised = true;
+			} else if (display.stat.type == STAT_TYPE.shield) {
+				Storage.Shield_raised = true;
 			}
 		}
 		GUI.enabled = true;
