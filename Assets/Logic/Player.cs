@@ -2,11 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
-enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
-
 public class Player : MonoBehaviour {
 
-	//public DynamicGUI upgradeWindow;
+	public DynamicGUI upgradeWindow;
 	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
@@ -23,12 +21,17 @@ public class Player : MonoBehaviour {
 	public CameraRunner cam;
 	public Slider hpSlider;
 	public Slider energySlider;
+	public Slider shieldSlider;
 
 	public DynamicGUI upgrade_window;
     private int maxAmmo;
     public int health;
     public int ammo;
     public int shield;
+	float shieldRegenTime;
+	public float shieldMaxRegenTime = 2.5f;
+	float shieldRecoverTime;
+	public float shieldMaxRecoverTime = 0.1f;
     public int energyCores;
     public int scrap;
 
@@ -63,6 +66,9 @@ public class Player : MonoBehaviour {
 		ammo_recovery_rate = 0.5f;
 		ammo_counter = ammo_recovery_rate;
 		health = Storage.MAX_HEALTH.current();
+		shield = Storage.MAX_SHIELD.current();
+		shieldRegenTime = shieldMaxRegenTime;
+		shieldRecoverTime = shieldMaxRecoverTime;
 
 		// Create weapon object and make it follow you
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
@@ -76,6 +82,26 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void Update () {
+
+		/************************
+		 * Shield Regen
+		 ************************/
+
+		shieldRegenTime -= Time.deltaTime;
+
+		if (shieldRegenTime < 0) {
+
+			shieldRecoverTime -= Time.deltaTime;
+
+			if ( shieldRecoverTime <= 0 && shield < Storage.MAX_SHIELD.current ()) {
+				shield += 1;
+				Storage.Shield_raised = true;
+				shieldRecoverTime += shieldMaxRecoverTime;
+			}
+
+			shieldSlider.value = shield;
+
+		}
 
 		/************************
 		 * MOVEMENT
@@ -142,8 +168,8 @@ public class Player : MonoBehaviour {
 
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
-			// shotgun has no unique arm style yet
-			wep.GetComponent<Animator>().SetInteger ("WeaponID", (heldWeapon == 2) ? 1 : heldWeapon);
+			// Change weapon sprite
+			wep.updateWeapon = heldWeapon;
 
 		}
 
@@ -194,8 +220,18 @@ public class Player : MonoBehaviour {
 	 *
 	 *******************************************************************************/
 	public void GetHurt( int damageTaken ) {
-		health -= damageTaken;
+
+		shield -= damageTaken;
+
+		if (shield < 0) {
+			health += shield;
+			shield = 0;
+		}
+
+		shieldRegenTime = shieldMaxRegenTime;
+
 		hpSlider.value = health;
+		shieldSlider.value = (shield / Storage.MAX_SHIELD.current ()) * 100;
 	}
 
 	/*******************************************************************************
@@ -249,7 +285,11 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
+<<<<<<< HEAD
 		if (upgrade_window.isOpen()) { return; }
+=======
+		if (upgradeWindow.isOpen()) { return; }
+>>>>>>> 1d8daf6167a14fc0c016e50f5ded9dacab997de2
 
 		switch (weaponType) {
 
