@@ -8,6 +8,7 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject regularWall;
 	public GameObject cornerWall;
 	public GameObject spawner;
+	public GameObject spawnerHandler;
 
 	int[,] floor;
 
@@ -94,7 +95,7 @@ public class GenerateRoom : MonoBehaviour
 
 					}
 				}
-				Debug.Log(array);
+				//Debug.Log(array);
 				array = "";
 			}
 
@@ -115,6 +116,7 @@ public class GenerateRoom : MonoBehaviour
 				for (int i = tempx; i < tempx + 5 ; i+=4)
 				{
 					GameObject block = (GameObject)Instantiate(regularWall, new Vector3( i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.transform.Rotate(Vector3.forward * -90);
 					block.AddComponent<BoxCollider2D>();
 				}
 			}
@@ -142,6 +144,7 @@ public class GenerateRoom : MonoBehaviour
 				for (int i = tempx; i < tempx + 5; i += 4)
 				{
 					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+					block.transform.Rotate(Vector3.forward * -90);
 					block.AddComponent<BoxCollider2D>();
 				}
 			}
