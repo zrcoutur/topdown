@@ -285,11 +285,9 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
-<<<<<<< HEAD
+		// You cannot fire when the upgrade window is open
 		if (upgrade_window.isOpen()) { return; }
-=======
-		if (upgradeWindow.isOpen()) { return; }
->>>>>>> 1d8daf6167a14fc0c016e50f5ded9dacab997de2
+
 
 		switch (weaponType) {
 
