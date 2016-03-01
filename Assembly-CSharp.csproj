@@ -54,6 +54,7 @@
      <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
+     <Compile Include="Assets\Door.cs" />
      <Compile Include="Assets\Logic\BreakableCrate.cs" />
      <Compile Include="Assets\Logic\Bullet1.cs" />
      <Compile Include="Assets\Logic\CameraRunner.cs" />
@@ -92,7 +93,11 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="pseudoSinCos">
+<<<<<<< HEAD
  <HintPath>C:/Users/Josh/Unity_Projects/Topdown/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
+=======
+ <HintPath>C:/Users/Alex/Documents/GitHub/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
+>>>>>>> e9adaf35599c99ca484f40bda2ce2b055b6299e7
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
