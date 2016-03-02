@@ -358,7 +358,7 @@ public class Player : MonoBehaviour {
 			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.shotgun).stat_by_type(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
 			// Fire five bullets in succession

@@ -37,8 +37,8 @@ public class WeaponStats {
 			amo = new int[] { 7, 6, 5, 4, 3, 2 };
 		} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
 			dmg = new int[] { 5, 8, 13, 21, 27, 36 };
-			rof = new int[] { 1, 2, 3, 5, 7, 10 };
-			amo = new int[] { 18, 15, 12, 9 };
+			rof = new int[] { 1, 2, 3, 5, 7, 10, 35 };
+			amo = new int[] { 18, 15, 12, 9, 0 };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
 			dmg = new int[] { 15, 25, 36, 42, 58, 70 };
 			rof = new int[] { 1, 3, 5 };
