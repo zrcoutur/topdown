@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FlyingDrone : Baseenemy
+public class FlyingDrone : MonoBehaviour
 {
 	// Use this for initialization
 

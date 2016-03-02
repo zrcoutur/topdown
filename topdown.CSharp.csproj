@@ -75,8 +75,11 @@
     <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
     <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
+    <Compile Include="Assets\Logic\BreakableCrate.cs" />
     <Compile Include="Assets\Logic\Bullet1.cs" />
     <Compile Include="Assets\Logic\CameraRunner.cs" />
+    <Compile Include="Assets\Logic\CrateManager.cs" />
+    <Compile Include="Assets\Logic\DynamicGUI.cs" />
     <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
     <Compile Include="Assets\Logic\Enemies\DVBoss.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemyBullet.cs" />
@@ -84,13 +87,19 @@
     <Compile Include="Assets\Logic\Enemies\EnemySpawner.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemySpawnerHandler.cs" />
     <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
+    <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
     <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
+    <Compile Include="Assets\Logic\Enumerations.cs" />
     <Compile Include="Assets\Logic\GenerateRoom.cs" />
     <Compile Include="Assets\Logic\Player.cs" />
     <Compile Include="Assets\Logic\Poof.cs" />
     <Compile Include="Assets\Logic\Slash.cs" />
+    <Compile Include="Assets\Logic\Stat.cs" />
+    <Compile Include="Assets\Logic\StatDisplay.cs" />
+    <Compile Include="Assets\Logic\Storage.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Weapon.cs" />
+    <Compile Include="Assets\Logic\WeaponStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\2DLightAsset\Shaders\Gradient-NoTexture-Radial-SingleColor-ToTransparent-RegularUV-AlphaBlend.shader" />

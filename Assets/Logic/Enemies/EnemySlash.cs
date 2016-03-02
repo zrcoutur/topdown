@@ -35,8 +35,8 @@ public class EnemySlash : MonoBehaviour {
 
         if (col.tag == "Player")
         {
-
-            //(col.gameObject.GetComponent<Player>())
+            col.gameObject.GetComponent<Player>().GetHurt(damage);
+            col.gameObject.SendMessage("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f));
         }
 
     }

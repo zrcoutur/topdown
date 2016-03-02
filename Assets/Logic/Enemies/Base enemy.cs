@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Baseenemy : MonoBehaviour
+public abstract class Baseenemy : MonoBehaviour
 {
-    float SearchDelay;
-    float flash;
-    int toggle = 1;
+    protected float SearchDelay;
+    protected float flash;
+    protected int toggle = 1;
 
-    Transform nearest;
-    Rigidbody2D body;
-    SpriteRenderer Srenderer;
+    protected Transform nearest;
+    protected Rigidbody2D body;
+    protected SpriteRenderer Srenderer;
 
     public int health;
     protected int Maxhealth;
@@ -18,7 +18,9 @@ public class Baseenemy : MonoBehaviour
 
     public float rate;
     public float range;
-    private float timer;
+    protected float timer;
+
+    public int damage;
 
     public Color[] colors;
     // Use this for initialization
@@ -96,9 +98,6 @@ public class Baseenemy : MonoBehaviour
         // Flash
         flash = 0.3f;
     }
-    public void TimeIncrease(float time)
-    {
-
-    }
-    void attack() { }
+    public abstract void TimeIncrease(float time);
+    public abstract void attack();
 }

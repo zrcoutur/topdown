@@ -7,7 +7,7 @@ enum weapons { BeamSword, PlasmaRifle, Shotgun, GrenadeLauncher };
 public class Player : MonoBehaviour {
 
 	//public DynamicGUI upgradeWindow;
-	AudioSource Paudio;
+	public AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
 	Animator anim;
