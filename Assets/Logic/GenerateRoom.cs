@@ -42,9 +42,11 @@ public class GenerateRoom : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		
 		if (instantiate) // create level when instatiate is true
 		{
-
+			GameObject block = (GameObject)Instantiate(spawnerHandler, new Vector3(0,0, 0), Quaternion.identity);
+			
 			String array = "";
 			for (int i = 0; i < dungeonSize; i++)
 			{
