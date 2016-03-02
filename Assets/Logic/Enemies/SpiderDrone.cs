@@ -31,7 +31,7 @@ public class SpiderDrone : Baseenemy
         Debug.Log("Attack Right");
         Player p = nearest.gameObject.GetComponent<Player>();
         // Play Slash Sound
-        p.Paudio.PlayOneShot(p.X_Slash, 1.0f);
+        //p.Paudio.PlayOneShot(p.X_Slash, 1.0f);
 
         // Make Slash Effect, Quaternions are dumb
         var sl = (GameObject)Instantiate(Slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
