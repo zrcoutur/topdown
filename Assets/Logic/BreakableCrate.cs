@@ -13,6 +13,9 @@ public class BreakableCrate : MonoBehaviour {
 	// Prefabs associated with a crate
 	public GameObject crate;
 	public GameObject hp_bar;
+	// droppabble items
+	public GameObject energy_core;
+	public GameObject scrap;
 	// used to determine overlap amongst other Blocks
 	public bool collision_tag;
 	// initial durability of a crate
@@ -36,11 +39,11 @@ public class BreakableCrate : MonoBehaviour {
 
 		/* remove the crate when its durability reaches zero */
 		if (durability <= 0) {
-			Destroy(crate);
+			remove_crate();
 		}
 	}
 		
-	void OnTriggerEnter2D(Collider2D trigger) {
+	public void OnTriggerEnter2D(Collider2D trigger) {
 		var collider = trigger.gameObject;
 		/* Reduce durability upon coming in contact with bullets and beam swords */
 		if (collider != null) {
@@ -50,14 +53,38 @@ public class BreakableCrate : MonoBehaviour {
 			} else if (collider.tag == "sword") {
 				durability -= 3;
 			}
-
-			// Debug.Log("Durability: " + durability + "\n");
 		}
 	}
 
-	void OnCollisionStay2D(Collision2D col) {
+	public void OnCollisionStay2D(Collision2D col) {
 		if (col.gameObject.tag == "Block") {
 			collision_tag = true;
 		}
+	}
+
+	private void remove_crate() {
+		UnityEngine.Random.seed = UnityEngine.Random.Range(0, int.MaxValue);
+		// possibly drop an item
+		if (UnityEngine.Random.value <= 0.2f) {
+			GameObject drop = null;
+
+			int item_drop = UnityEngine.Random.Range(0, 2);
+
+
+			switch (item_drop) {
+				case 0:
+					drop = energy_core;
+					break;
+				case 1:
+					drop = scrap;
+					break;
+				default:
+					break;
+			}
+
+			Instantiate(drop, transform.localPosition, Quaternion.identity);
+		}
+
+		Destroy(crate);
 	}
 }
