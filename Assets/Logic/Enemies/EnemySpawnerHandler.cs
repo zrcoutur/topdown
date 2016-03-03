@@ -6,7 +6,7 @@ public class EnemySpawnerHandler : MonoBehaviour
     public float rate;
     private float timer;
     private float totaltime;
-    public Baseenemy[] enemies;
+	public Baseenemy[] enemies;
     private int numToSpawnatOnce;
 
     private int maxnumberofenemes = 500;
