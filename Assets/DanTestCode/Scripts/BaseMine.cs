@@ -10,7 +10,7 @@ public class BaseMine : MonoBehaviour {
 
 		if (is_player != null) {
 
-			var ex = (Explosion) Instantiate (expl, transform.position, transform.rotation);
+			Instantiate (expl, transform.position, transform.rotation);
 			Destroy (this.gameObject);
 		}
 		//Add similar condition for enemy

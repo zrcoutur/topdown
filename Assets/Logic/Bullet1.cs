@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet1 : MonoBehaviour {
+public class Bullet1 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
@@ -9,16 +9,16 @@ public class Bullet1 : MonoBehaviour {
 	// duration of the bullet (not in seconds)
 	float duration = 1.0f;
 
-	private int damage;
-
 	// Use this for initialization
 	void Start () {
-		damage = 0;
+
 		body = GetComponent<Rigidbody2D> ();
 
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+		base.hitImpulse = body.velocity * 2.0f;
 
 	}
 
@@ -43,16 +43,13 @@ public class Bullet1 : MonoBehaviour {
 		}
 
 		if (col.tag == "Enemy") {
-			col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
+			
+			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
+
 			Instantiate (poof, transform.position, transform.rotation);
 			Destroy (gameObject);
 		}
 
 	}
 
-	/* Set the damage of the bullet */
-	public void set_damage(int dmg) { damage = dmg; }
-
-	/* Return the bullet's damage */
-	public int get_damage() { return damage; }
 }
