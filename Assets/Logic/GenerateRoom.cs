@@ -9,10 +9,12 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject cornerWall;
 	public GameObject spawner;
 	public GameObject spawnerHandler;
+	public GameObject Spaceman;
 
 	int[,] floor;
 
 	bool instantiate;
+	bool teleportedPlayer;
 
 	int dungeonSize;
 	int roomWidth;
@@ -27,6 +29,7 @@ public class GenerateRoom : MonoBehaviour
 	void Start()
 	{
 		instantiate = true;
+		teleportedPlayer = false;
 		dungeonSize = 10;
 		tileWidth = 1.5f;
 		tileHeight = 1.5f;
@@ -45,7 +48,7 @@ public class GenerateRoom : MonoBehaviour
 		
 		if (instantiate) // create level when instatiate is true
 		{
-			GameObject block = (GameObject)Instantiate(spawnerHandler, new Vector3(0,0, 0), Quaternion.identity);
+			
 			
 			String array = "";
 			for (int i = 0; i < dungeonSize; i++)
@@ -93,6 +96,12 @@ public class GenerateRoom : MonoBehaviour
 						if (doors != 0)
 						{
 							makeHall(doors, i * (roomHeight + hallLength), j * (roomWidth + hallLength));
+						}
+						if (!teleportedPlayer && floor[i,j] == 1)
+						{
+							Debug.Log(i + " " + j);
+							Spaceman.transform.position = new Vector3(((j * (roomWidth + hallLength)) + ((roomWidth/2) ))*tileWidth,  ((i * (roomHeight + hallLength)) + ((roomHeight / 2)))*tileHeight, 0);
+							teleportedPlayer = true;
 						}
 
 					}
