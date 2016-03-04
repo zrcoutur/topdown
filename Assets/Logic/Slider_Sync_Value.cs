@@ -16,7 +16,7 @@ public class Slider_Sync_Value : MonoBehaviour {
 	void Start() {
 		// Find sliders in children objects
 		Slider[] sliders = GetComponentsInChildren<Slider>();
-		Debug.Log(sliders.Length);
+		//Debug.Log(sliders.Length);
 
 		// Expecting two sliders to exist: one for shield and the other for health
 		if (sliders[0].name == "HealthSlider") {

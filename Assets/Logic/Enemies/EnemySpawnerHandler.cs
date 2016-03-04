@@ -9,7 +9,7 @@ public class EnemySpawnerHandler : MonoBehaviour
 	public Baseenemy[] enemies;
     private int numToSpawnatOnce;
 
-    private int maxnumberofenemes = 500;
+    private int maxnumberofenemies = 500;
     private EnemySpawner[] spawnPoints;
     // Use this for initialization
     void Start()
@@ -30,7 +30,7 @@ public class EnemySpawnerHandler : MonoBehaviour
         {
             for (int i = 0; i < numToSpawnatOnce; i++)
             {
-                if (enemiesonscreen.Length > maxnumberofenemes)
+                if (enemiesonscreen.Length > maxnumberofenemies)
                 {
                     break;
                 }
