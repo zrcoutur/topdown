@@ -101,8 +101,12 @@ public class Player : MonoBehaviour {
 			// Perform once
 			if (uponDeath) {
 
-				// Destroy your weapon
-				Destroy (wep.gameObject);
+				// Destroy your weapon if its not already destroyed
+				if (wep != null)
+				{
+					Destroy(wep.gameObject);
+				}
+				
 
 				// Stop turning
 				body.freezeRotation = true;
@@ -115,6 +119,8 @@ public class Player : MonoBehaviour {
 
 				// Slow down movement
 				body.drag = 100.0f;
+
+			
 			}
 
 			return;
