@@ -10,6 +10,7 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject spawner;
 	public GameObject spawnerHandler;
 	public GameObject Spaceman;
+	public GameObject breakableBox;
 
 	int[,] floor;
 
@@ -21,6 +22,7 @@ public class GenerateRoom : MonoBehaviour
 	int roomHeight;
 	int hallLength;
 	int spawnerCap;
+	int boxCap;
 
 	float tileWidth;
 	float tileHeight;
@@ -37,6 +39,7 @@ public class GenerateRoom : MonoBehaviour
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even
 		spawnerCap = 3;
+		boxCap = 3;
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 
@@ -183,12 +186,13 @@ public class GenerateRoom : MonoBehaviour
 	int[,] makeRoomMatrix(int height, int width, byte door)
 	{
 		int[,] returnMatrix = new int[width, height];
-		int spawnersPlaced =0;
+		int spawnersPlaced = 0;
+		int boxesPlaced = 0;
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
-
+				// create openings on edge of room where there are doors
 				if (y == height - 1 && ( x == width / 2 || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 1) == 1) //make north ( up ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
@@ -205,12 +209,22 @@ public class GenerateRoom : MonoBehaviour
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else // create walls on edge of room where there are no doors
-				{
+				else 
+				{	// create walls on edge of room where there are no doors
 					if ((x == 0 || x == width - 1) || (y == 0 || y == height - 1))
 					{
 						returnMatrix[x, y] = 1;
 					}
+					else // put stuff in the middle of the room
+					{
+						int chance = UnityEngine.Random.Range(0, 10);
+						if (chance == 0 && boxCap > boxesPlaced)
+						{
+							returnMatrix[x, y] = 3;
+							spawnersPlaced++;
+						}
+					}
+					//
 					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
 					{
 						int chance = UnityEngine.Random.Range(0, 10);
@@ -221,6 +235,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						
 					}
+					
 				}
 			}
 		}
@@ -265,7 +280,7 @@ public class GenerateRoom : MonoBehaviour
 					}
 					else // if sprite coordinates are not in corner
 					{
-						if (roomMatrix[j - x, i - y] == 1)
+						if (roomMatrix[j - x, i - y] == 1) //wall
 						{
 							GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
 							block.AddComponent<BoxCollider2D>();
@@ -275,29 +290,34 @@ public class GenerateRoom : MonoBehaviour
 							{
 								block.transform.Rotate(Vector3.forward * -90);
 							}
-						}else if (roomMatrix[j - x, i - y] == 2)
+						}
+						else if (roomMatrix[j - x, i - y] == 2) //spawner
 						{
-							
-							GameObject block = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-							block.AddComponent<BoxCollider2D>();
-							
-							if (j - x == 0 )
+
+							GameObject spawnerBlock = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							spawnerBlock.AddComponent<BoxCollider2D>();
+
+							if (j - x == 0)
 							{
-								block.GetComponent<EnemySpawner>().east = true;
+								spawnerBlock.GetComponent<EnemySpawner>().east = true;
 							}
 							else if (j - x == roomWidth + x - 1)
 							{
-								block.GetComponent<EnemySpawner>().west = true;
+								spawnerBlock.GetComponent<EnemySpawner>().west = true;
 							}
 							else if (i - y == 0)
 							{
-								block.GetComponent<EnemySpawner>().north = true;
+								spawnerBlock.GetComponent<EnemySpawner>().north = true;
 							}
 							else if (i - y == roomHeight + y - 1)
 							{
-								block.GetComponent<EnemySpawner>().south = true;
+								spawnerBlock.GetComponent<EnemySpawner>().south = true;
 							}
 
+						}
+						else if (roomMatrix[j - x, i - y] == 3) // breakable box
+						{
+							GameObject boxBlock = (GameObject)Instantiate(breakableBox, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
 						}
 					}
 				}
