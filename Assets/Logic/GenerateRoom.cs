@@ -300,7 +300,7 @@ public class GenerateRoom : MonoBehaviour
 							{
 								spawnerBlock.GetComponent<EnemySpawner>().east = true;
 							}
-							else if (j - x == roomWidth + x - 1)
+							else if (j - x == roomWidth - 1)
 							{
 								spawnerBlock.GetComponent<EnemySpawner>().west = true;
 							}
@@ -308,7 +308,7 @@ public class GenerateRoom : MonoBehaviour
 							{
 								spawnerBlock.GetComponent<EnemySpawner>().north = true;
 							}
-							else if (i - y == roomHeight + y - 1)
+							else if (i - y == roomHeight - 1)
 							{
 								spawnerBlock.GetComponent<EnemySpawner>().south = true;
 							}

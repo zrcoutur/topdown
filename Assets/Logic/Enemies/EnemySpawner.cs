@@ -18,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
         float yScale = transform.lossyScale.y / 2;
         float xScale = transform.lossyScale.x / 2;
         i = 0;
+		
         if (north)
         {
             location[i] = new Vector2(transform.position.x, transform.position.y + yScale);
@@ -51,7 +52,8 @@ public class EnemySpawner : MonoBehaviour
         Random.seed = System.DateTime.Now.Millisecond + 1;
         int rand = Random.Range(0, i);
 
-		//Debug.Log("enemy spawned at"+location[rand].x + " " + location[rand].y);
+		//Debug.Log("enemy spawned at"+location[rand].x + " " + location[rand].y + "i"  +i);
+
         return (Baseenemy)Instantiate(b, location[rand], Quaternion.Euler(0, 0, 0));
 
     }
