@@ -51,7 +51,7 @@ public class GenerateRoom : MonoBehaviour
 		
 		if (instantiate) // create level when instatiate is true
 		{
-
+			GameObject handler = (GameObject)Instantiate(spawnerHandler, new Vector3(0, 0, 0), Quaternion.identity);
 			String array = "";
 			for (int i = 0; i < dungeonSize; i++)
 			{
@@ -254,7 +254,7 @@ public class GenerateRoom : MonoBehaviour
 			
 				if (roomMatrix[j - x, i - y] != 0)
 				{
-
+					
 
 					//check if sprite is in corner
 					if ((j - x == 0 && i - y == 0) || (j - x == roomHeight - 1 && i - y == 0) || (j - x == 0 && i - y == roomWidth - 1) || (j - x == roomHeight - 1 && i - y == roomWidth - 1))
@@ -292,7 +292,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						else if (roomMatrix[j - x, i - y] == 2) //spawner
 						{
-							GameObject handler = (GameObject)Instantiate(spawnerHandler, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
+							
 							GameObject spawnerBlock = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
 							spawnerBlock.AddComponent<BoxCollider2D>();
 
