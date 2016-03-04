@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
     public bool east = false;
     public bool west = false;
     private Vector2[] location = new Vector2[4];
+
     private int i;
     // Use this for initialization
     void Start()
@@ -49,6 +50,9 @@ public class EnemySpawner : MonoBehaviour
     {
         Random.seed = System.DateTime.Now.Millisecond + 1;
         int rand = Random.Range(0, i);
+
+		//Debug.Log("enemy spawned at"+location[rand].x + " " + location[rand].y);
         return (Baseenemy)Instantiate(b, location[rand], Quaternion.Euler(0, 0, 0));
+
     }
 }

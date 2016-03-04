@@ -51,8 +51,7 @@ public class GenerateRoom : MonoBehaviour
 		
 		if (instantiate) // create level when instatiate is true
 		{
-			
-			
+
 			String array = "";
 			for (int i = 0; i < dungeonSize; i++)
 			{
@@ -102,7 +101,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						if (!teleportedPlayer && floor[i,j] == 1)
 						{
-							Debug.Log(i + " " + j);
+
 							Spaceman.transform.position = new Vector3(((j * (roomWidth + hallLength)) + ((roomWidth/2) ))*tileWidth,  ((i * (roomHeight + hallLength)) + ((roomHeight / 2)))*tileHeight, 0);
 							teleportedPlayer = true;
 						}
@@ -221,7 +220,7 @@ public class GenerateRoom : MonoBehaviour
 						if (chance == 0 && boxCap > boxesPlaced)
 						{
 							returnMatrix[x, y] = 3;
-							spawnersPlaced++;
+							boxesPlaced++;
 						}
 					}
 					//
@@ -293,7 +292,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						else if (roomMatrix[j - x, i - y] == 2) //spawner
 						{
-
+							GameObject handler = (GameObject)Instantiate(spawnerHandler, new Vector3(i * tileWidth, j * tileHeight, 0), Quaternion.identity);
 							GameObject spawnerBlock = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
 							spawnerBlock.AddComponent<BoxCollider2D>();
 

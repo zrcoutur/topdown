@@ -29,7 +29,7 @@ public class StatDisplay {
 
 	/* Changes the positions of all the rectangles based on the rectangle given. */
 	public void updateRects(Rect origin) {
-		Debug.Log(origin + "\n");
+		//Debug.Log(origin + "\n");
 		labels[0] = relativeRect(origin, 2, -75, 15, 80, 22);
 
 		button = relativeRect(labels[0], 0, 10, 2, 18, 18);
