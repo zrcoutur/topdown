@@ -94,7 +94,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						int[,] room = makeRoomMatrix(roomHeight, roomWidth, doors);
 
-						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room);
+						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room, doors);
 						if (doors != 0)
 						{
 							makeHall(doors, i * (roomHeight + hallLength), j * (roomWidth + hallLength));
@@ -243,7 +243,7 @@ public class GenerateRoom : MonoBehaviour
 	//Places sprites into level to create a room
 	//y and x are the position of the bottom left corner of the room
 	// roomMatrix comes from the makeRoomMatrix method
-	private void makeRoom(int y, int x, int[,] roomMatrix)
+	private void makeRoom(int y, int x, int[,] roomMatrix, byte door)
 	{
 
 		for (int i = y; i < roomHeight + y; i++)
@@ -281,14 +281,82 @@ public class GenerateRoom : MonoBehaviour
 					{
 						if (roomMatrix[j - x, i - y] == 1) //wall
 						{
-							GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-							block.AddComponent<BoxCollider2D>();
-							Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-							//rotate left and right walls for appearence
-							if (j - x == 0 || j - x == roomHeight - 1)
+
+							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1) // corner for top halls
 							{
-								block.transform.Rotate(Vector3.forward * -90);
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == roomWidth / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 90);
+								}
+								else
+								{
+
+								}
+
+
 							}
+							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0) // corner for bottom halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == roomWidth / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 180);
+								}
+								else
+								{
+									corner.transform.Rotate(Vector3.forward * -90);
+								}
+							}
+							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j -x  == roomWidth -1) // corner for left/east halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (i - y == roomHeight / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * -90);
+								}
+								else
+								{
+									
+								}
+							}
+							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0) // corner for left/east halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (i - y == roomHeight / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 180);
+								}
+								else
+								{
+									corner.transform.Rotate(Vector3.forward * 90);
+								}
+							}
+							else
+							{
+								GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								block.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = block.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == 0 || j - x == roomHeight - 1)
+								{
+									block.transform.Rotate(Vector3.forward * -90);
+								}
+							}
+
+						
 						}
 						else if (roomMatrix[j - x, i - y] == 2) //spawner
 						{
