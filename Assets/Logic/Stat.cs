@@ -45,5 +45,5 @@ public class Stat {
 	}
 
 	/* Returns the number of values for this stat. */
-	public int num_of_values() { return values.Length; }
+	public int values_length() { return values.Length; }
 }

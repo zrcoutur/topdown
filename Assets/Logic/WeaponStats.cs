@@ -55,7 +55,7 @@ public class WeaponStats {
 
 	/* Returns the weapon stat corresponding to the given type.
 	 * See Enumerations class for valid values for parameter t. */
-	public Stat stat_by_type(STAT_TYPE t) {
+	public Stat weapon_stat(STAT_TYPE t) {
 		switch (t) {
 			case STAT_TYPE.damage:			return stats[0];
 			case STAT_TYPE.rate_of_fire:	return stats[1];

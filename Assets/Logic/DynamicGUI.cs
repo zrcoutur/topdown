@@ -6,30 +6,36 @@ using System.Collections;
 public class DynamicGUI : MonoBehaviour {
 	// Determines if the window is shown
 	private bool show;
+
+	private bool initialized;
+
 	private Rect window_dimensions;
 	private StatDisplay[] displays;
-	// Determines which weapon stats to show
-	private WEAPON_TYPE weapon;
-
+	
 	private static GUIStyle lbl_grn_text;
 
 	public void Start() {
 		show = false;
 
 		window_dimensions = new Rect(100, 100, 100, 100);
-		displays = new StatDisplay[5];
-		// Initialize stat displays
-		displays[0] = new StatDisplay("Health", Storage.MAX_HEALTH);
-		displays[1] = new StatDisplay("Shield", Storage.MAX_SHIELD);
-		weapon = WEAPON_TYPE.grenade;
-		switchWeaponStats();
-
 		lbl_grn_text = null;
 	}
 
 	public void Update() {
 		// Toggle the display on and off
-		if (Input.GetKeyDown (KeyCode.Tab)) { show = !show; }
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			if (!initialized) {
+				displays = new StatDisplay[5];
+				// Initialize stat displays
+				displays[0] = new StatDisplay("Health", Player.stats.MAX_HEALTH);
+				displays[1] = new StatDisplay("Shield", Player.stats.MAX_SHIELD);
+				switchWeaponStats();
+
+				initialized = true;
+			}
+
+			show = !show;
+		}
 	}
 		
 	public void OnGUI() {
@@ -91,12 +97,12 @@ public class DynamicGUI : MonoBehaviour {
 		}
 
 		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, 0, 30, 48, 22);
-		GUI.Label(weapon_lbl, Storage.weapon_by_type((int)weapon).type.ToString());
+		GUI.Label(weapon_lbl, Player.stats.weapon_by_type( Player.stats.current_weapon() ).type.ToString());
 
 		// Button for switching between the stats of each weapon
-		if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
+		/*if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
 			switchWeaponStats();
-		}
+		}*/
 	}
 
 	/* Draws the fields of the given stat display */
@@ -113,9 +119,9 @@ public class DynamicGUI : MonoBehaviour {
 			display.stat.increment();
 			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
-				Storage.HP_raised = true;
+				Player.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
-				Storage.Shield_raised = true;
+				Player.stats.Shield_raised = true;
 			}
 		}
 		GUI.enabled = true;
@@ -129,12 +135,13 @@ public class DynamicGUI : MonoBehaviour {
 	}
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */
-	private void switchWeaponStats() {
-		weapon = (WEAPON_TYPE) ( ((byte)weapon + 1) % 4 );
+	public void switchWeaponStats() {
+		WeaponStats current = Player.stats.weapon_by_type( Player.stats.current_weapon() );
 
-		displays[2] = new StatDisplay( "Damage", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.damage) );
-		displays[3] = new StatDisplay( "Rate of Fire", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.rate_of_fire) );
-		displays[4] = new StatDisplay( "Ammo Cost", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.ammo) );
+		displays[2] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
+		displays[3] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
+		displays[4] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
+
 		updatePositions();
 	}
 
