@@ -23,20 +23,26 @@ public class StatDisplay {
 		name = n;
 		stat = s;
 		// initialize the dimensions of the label fields and button field
-		labels = new Rect[4];
+		labels = new Rect[5];
 		button = new Rect(0, 0, 0, 0);
 	}
 
 	/* Changes the positions of all the rectangles based on the rectangle given. */
 	public void updateRects(Rect origin) {
 		//Debug.Log(origin + "\n");
-		labels[0] = relativeRect(origin, 2, -75, 15, 80, 22);
 
+		// Stat name
+		labels[0] = relativeRect(origin, 2, -75, 5, 80, 22);
+		// Increment button
 		button = relativeRect(labels[0], 0, 10, 2, 18, 18);
-
-		labels[1] = relativeRect(button, 2, -70, 5, 36, 22);
-		labels[2] = relativeRect(labels[1], 0, 5, 0, 16, 22);
-		labels[3] = relativeRect(labels[2], 0, 5, 0, 36, 22);
+		// next stat cost
+		labels[1] = relativeRect(button, 2, -86, 10, 200, 22);
+		// current stat value
+		labels[2] = relativeRect(labels[1], 2, 38, 3, 36, 22);
+		// transition symbol
+		labels[3] = relativeRect(labels[2], 0, 5, 0, 16, 22);
+		// next stat value
+		labels[4] = relativeRect(labels[3], 0, 5, 0, 36, 22);
 	}
 
 	/* Returns a new rectangle with x, y, width, and height values relative to the given rectangle.

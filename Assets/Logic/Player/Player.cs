@@ -277,7 +277,7 @@ public class Player : MonoBehaviour {
 	public void GetHurt( int damageTaken ) {
 
 		// Lose shield first
-		var underflow = stats.change_shield(damageTaken);
+		var underflow = stats.change_shield(-damageTaken);
 
 		// If you take damage in excess of shield,
 		// lose health then

@@ -16,8 +16,8 @@ public class Player_Stats {
 	private WEAPON_TYPE held_weapon;
 
 	// Counters for consumable materials
-	public int energyCores;
-	public int scrap;
+	private int energyCores;
+	private int scrap;
 
 	public Player_Stats() {
 		MAX_HEALTH = new Stat(STAT_TYPE.health, new int[] { 25, 46, 67, 98, 121, 167, 225 });
@@ -90,7 +90,7 @@ public class Player_Stats {
 	/* Cycles to the next weapon base on the integer value associated with a weapon type. */
 	public void cycle_weapons() {
 		// the grenade is currently not implemented, so it is skipped.
-		held_weapon = (WEAPON_TYPE)( ( (int)held_weapon ) % ((int)WEAPON_TYPE.shotgun) + 1 );
+		held_weapon = (WEAPON_TYPE)( ( (byte)held_weapon + 1 ) % (byte)WEAPON_TYPE.grenade );
 	}
 
 	/* Returns the integer representation of the Player's current weapon */

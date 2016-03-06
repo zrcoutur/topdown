@@ -19,7 +19,7 @@ public class BreakableCrate : MonoBehaviour {
 	// used to determine overlap amongst other Blocks
 	public bool collision_tag;
 	// initial durability of a crate
-	private static readonly float MAX_DURABILITY = 8.0f;
+	private static readonly int MAX_DURABILITY = 9;
 	// The amount of damage a crate can sustain until it breaks
 	private float durability;
 
@@ -49,9 +49,9 @@ public class BreakableCrate : MonoBehaviour {
 		if (collider != null) {
 			/* bullets and swords deal differing damage */
 			if (collider.tag == "bullet_1") {
-				durability -= 1;
+				durability -= 2;
 			} else if (collider.tag == "sword") {
-				durability -= 3;
+				durability -= 5;
 			}
 		}
 	}
