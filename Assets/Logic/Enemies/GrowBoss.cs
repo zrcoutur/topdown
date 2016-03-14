@@ -6,9 +6,12 @@ public class GrowBoss : SpiderDrone
     Vector3 size;
     void Awake()
     {
-        health = 1000;
+        Maxhealth = 100;
+        health = 100;
         size = transform.lossyScale;
-    }
+        speed = .5f;
+   }
+
     // Update is called once per frame
     void Update()
     {
@@ -65,6 +68,6 @@ public class GrowBoss : SpiderDrone
 
             }
         }
-        transform.localScale = new Vector3(size.x * health / Maxhealth, size.y * health / Maxhealth);
+        transform.localScale = new Vector3(size.x * (Maxhealth / health), size.y * (Maxhealth / health));
     }
 }

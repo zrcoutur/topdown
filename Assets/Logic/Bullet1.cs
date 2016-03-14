@@ -5,7 +5,7 @@ public class Bullet1 : MonoBehaviour {
 
 	//Poof effect
 	public GameObject poof;
-	public GameObject bullet;
+	//public GameObject bullet;
 	// duration of the bullet (not in seconds)
 	float duration = 1.0f;
 
@@ -43,7 +43,8 @@ public class Bullet1 : MonoBehaviour {
 		}
 
 		if (col.tag == "Enemy") {
-			col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
+            col.GetComponentInParent<Baseenemy>().health -= damage;
+            col.gameObject.SendMessage ("OnHit", body.velocity * 2.0f);
 			Instantiate (poof, transform.position, transform.rotation);
 			Destroy (gameObject);
 		}

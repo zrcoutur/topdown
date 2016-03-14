@@ -31,7 +31,8 @@ public class Slash : MonoBehaviour {
 
 		if (col.tag == "Enemy") {
 
-			col.gameObject.SendMessage ("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f ));
+            col.GetComponentInParent<Baseenemy>().health -= damage;
+            col.gameObject.SendMessage ("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f ));
 
 		}
 
