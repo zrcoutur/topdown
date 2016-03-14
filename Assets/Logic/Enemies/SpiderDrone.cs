@@ -23,7 +23,7 @@ public class SpiderDrone : Baseenemy
     public override void TimeIncrease(float time)
     {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 45f;
+		var timeScale = 10f;
 		health = (int)(health * (time + timeScale) / timeScale);
 		Maxhealth = health;
 		speed = (float)(speed * (time + timeScale) / timeScale);
