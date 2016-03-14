@@ -64,7 +64,7 @@ public abstract class Baseenemy : MonoBehaviour
 				// Number of items to give
 				for (int i = 0; i < numYielded [j]; i++) {
 					// Percentage chance to give this item
-					if (Random.Range (0, 1) < chanceYield [j]) {
+					if (Random.value <= chanceYield[j]) {
 						// Create item
 						var s = (GameObject) Instantiate (yields [j], transform.position, Quaternion.Euler (0, 0, 0));
 						// Fly out randomly
