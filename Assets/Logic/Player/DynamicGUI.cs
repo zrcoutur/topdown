@@ -6,45 +6,49 @@ using System.Collections;
 public class DynamicGUI : MonoBehaviour {
 	// Determines if the window is shown
 	private bool show;
+
+	private bool initialized;
+
 	private Rect window_dimensions;
 	private StatDisplay[] displays;
-	// Determines which weapon stats to show
-	private WEAPON_TYPE weapon;
-
+	
 	private static GUIStyle lbl_grn_text;
 
 	public void Start() {
 		show = false;
 
 		window_dimensions = new Rect(100, 100, 100, 100);
-		displays = new StatDisplay[5];
-		// Initialize stat displays
-		displays[0] = new StatDisplay("Health", Storage.MAX_HEALTH);
-		displays[1] = new StatDisplay("Shield", Storage.MAX_SHIELD);
-		weapon = WEAPON_TYPE.grenade;
-		switchWeaponStats();
-
 		lbl_grn_text = null;
 	}
 
 	public void Update() {
+		if (!initialized) {
+			displays = new StatDisplay[5];
+			// Initialize stat displays
+			displays[0] = new StatDisplay("Health", Player.stats.MAX_HEALTH);
+			displays[1] = new StatDisplay("Shield", Player.stats.MAX_SHIELD);
+			switchWeaponStats();
+
+			initialized = true;
+		}
+
 		// Toggle the display on and off
-		if (Input.GetKeyDown (KeyCode.Tab)) { show = !show; }
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			show = !show;
+		}
 	}
 		
 	public void OnGUI() {
-		// set green-italic text style
+		
 		if (lbl_grn_text == null) {
 			// center text in labels
 			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 			// center window title
 			GUI.skin.window.alignment = TextAnchor.UpperCenter;
-
+			// set green-italic text style
 			lbl_grn_text = new GUIStyle(GUI.skin.label);
 			lbl_grn_text.normal.textColor = Color.green;
 			lbl_grn_text.fontStyle = FontStyle.Italic;
-
-
 		}
 
 		// Draws the window if show is true
@@ -74,7 +78,7 @@ public class DynamicGUI : MonoBehaviour {
 			if (idx == 0) { // position based on the window display
 				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, 0);
 			} else 	if (idx == 2) {
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 37);
+				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
 			} else { // position a stat display based on the previous stat display
 				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
 			}
@@ -90,13 +94,13 @@ public class DynamicGUI : MonoBehaviour {
 			drawStatDisplay(sd);
 		}
 
-		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, 0, 30, 48, 22);
-		GUI.Label(weapon_lbl, Storage.weapon_by_type((int)weapon).type.ToString());
+		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, -8, 35, 48, 22);
+		GUI.Label(weapon_lbl, Player.stats.weapon_by_type( Player.stats.current_weapon() ).type.ToString());
 
 		// Button for switching between the stats of each weapon
-		if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
+		/*if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
 			switchWeaponStats();
-		}
+		}*/
 	}
 
 	/* Draws the fields of the given stat display */
@@ -104,37 +108,49 @@ public class DynamicGUI : MonoBehaviour {
 		// display title
 		GUI.Label(display.labels[0], display.name);
 
-		// disable the button once pointer reaches the last stat value
+		// Determins if the stat value is capped
 		bool is_last = display.stat.next() == -1;
+		// Determines if the player can afford the next upgrade
+		Stat_Cost for_next = display.stat.next_cost();
+		bool can_buy = for_next == null || ( for_next.scrap_cost <= Player.stats.get_scrap() && for_next.ecore_cost <= Player.stats.get_ecores() );
 
-		GUI.enabled = !is_last;
-		// create button to increment the pointer
-		if ( GUI.Button(display.button, "+") && !is_last ) {
+		GUI.enabled = !is_last && can_buy;
+		// Create button to increment the pointer
+		if ( GUI.Button(display.button, "+") && GUI.enabled ) {
 			display.stat.increment();
+
+			// Subtract cost from player stats
+			if (for_next != null) {
+				Player.stats.change_scarp(-for_next.scrap_cost);
+				Player.stats.change_ecores(-for_next.ecore_cost);
+			}
+
 			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
-				Storage.HP_raised = true;
+				Player.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
-				Storage.Shield_raised = true;
+				Player.stats.Shield_raised = true;
 			}
 		}
 		GUI.enabled = true;
-		
+		// show cost for next upgrade
+		GUI.Label(display.labels[1], "cost (scrap | e. cores): " + ( (for_next == null) ? "-- | --" : (for_next.scrap_cost + " | " + for_next.ecore_cost) ) );
 		// show current value
-		GUI.Label(display.labels[1], "" + display.stat.current());
+		GUI.Label(display.labels[2], "" + display.stat.current());
 		// display arrows
-		GUI.Label(display.labels[2], ">>");
+		GUI.Label(display.labels[3], ">>");
 		// show next value (or '--' if no such element exists)
-		GUI.Label(display.labels[3], (is_last) ? "--" : "" + display.stat.next(), lbl_grn_text);
+		GUI.Label(display.labels[4], (is_last) ? "--" : "" + display.stat.next(), lbl_grn_text);
 	}
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */
-	private void switchWeaponStats() {
-		weapon = (WEAPON_TYPE) ( ((byte)weapon + 1) % 4 );
+	public void switchWeaponStats() {
+		WeaponStats current = Player.stats.weapon_by_type( Player.stats.current_weapon() );
 
-		displays[2] = new StatDisplay( "Damage", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.damage) );
-		displays[3] = new StatDisplay( "Rate of Fire", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.rate_of_fire) );
-		displays[4] = new StatDisplay( "Ammo Cost", Storage.weapon_by_type((int)weapon).stat_by_type(STAT_TYPE.ammo) );
+		displays[2] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
+		displays[3] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
+		displays[4] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
+
 		updatePositions();
 	}
 

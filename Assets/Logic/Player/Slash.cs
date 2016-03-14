@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Slash : MonoBehaviour {
+public class Slash : PlayerAttack {
 
 	double slashTimer;
 	private int damage;
@@ -10,6 +10,7 @@ public class Slash : MonoBehaviour {
 	void Start () {
 	
 		slashTimer = 0.25;
+		base.hitImpulse = Tools.AngleToVec2 (Tools.QuaternionToAngle (transform.rotation) + 90.0f, 300.0f);
 
 	}
 	

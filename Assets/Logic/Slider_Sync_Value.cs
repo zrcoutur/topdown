@@ -16,7 +16,7 @@ public class Slider_Sync_Value : MonoBehaviour {
 	void Start() {
 		// Find sliders in children objects
 		Slider[] sliders = GetComponentsInChildren<Slider>();
-		Debug.Log(sliders.Length);
+		//Debug.Log(sliders.Length);
 
 		// Expecting two sliders to exist: one for shield and the other for health
 		if (sliders[0].name == "HealthSlider") {
@@ -37,14 +37,14 @@ public class Slider_Sync_Value : MonoBehaviour {
 	/* Update the player's max health or max shield to the current maximum value */
 	private void update_max_values() {
 		// Sync health slider's max value to the Player's current max health
-		if (Storage.HP_raised) {
-			health.maxValue = Storage.MAX_HEALTH.current();
-			Storage.HP_raised = false;
+		if (Player.stats.HP_raised) {
+			health.maxValue = Player.stats.MAX_HEALTH.current();
+			Player.stats.HP_raised = false;
 		}
 		// Sync shield slider's max value to Player's current max shield
-		if (Storage.Shield_raised) {
-			shield.maxValue = Storage.MAX_SHIELD.current();
-			Storage.Shield_raised = false;
+		if (Player.stats.Shield_raised) {
+			shield.maxValue = Player.stats.MAX_SHIELD.current();
+			Player.stats.Shield_raised = false;
 		}
 	}
 }

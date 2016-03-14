@@ -4,41 +4,45 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	public DynamicGUI upgradeWindow;
+	// Object components
 	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
+	SpriteRenderer Srenderer;
 	Animator anim;
-	double atkCool;
-	int heldWeapon; //0 is sword, 1 is rifle, 2 shotgun, 3 Grenade Launcher
-	// Used to recover ammo
-	private float ammo_recovery_rate;
-	private float ammo_counter;
 
+	// Outside elements
+	public static Player_Stats stats;
+	public readonly DynamicGUI upgradeWindow;
 	public Weapon weapon;
 	public Slash slash;
+	public Shine shine;
 	public Bullet1 bullet1;
 	public CameraRunner cam;
 	public Slider hpSlider;
 	public Slider energySlider;
 	public Slider shieldSlider;
-
+	public Color[] colors;
 	public DynamicGUI upgrade_window;
-    private int maxAmmo;
-    public int health;
-    public int ammo;
-    public int shield;
-	float shieldRegenTime;
-	public float shieldMaxRegenTime = 2.5f;
-	float shieldRecoverTime;
-	public float shieldMaxRecoverTime = 0.1f;
-    public int energyCores;
-    public int scrap;
-
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
-    //public GameObject GrenadeLauncher;
+
+	// Parameters
+	double atkCool;
+	float ammo_recovery_rate;
+	float ammo_counter;
+    int maxAmmo;
+	float shieldRegenTime;
+	float shieldRecoverTime;
+	public int ammo;
+	public float shieldMaxRegenTime = 2.5f;
+	public float shieldMaxRecoverTime = 0.1f;
+
+	// Timers, etc.
+	float flash = 0;
+	int toggle = 0;
+	bool uponDeath = true;
 
 	// Keycodes
 	KeyCode M_MoveLeft = KeyCode.A;
@@ -49,24 +53,26 @@ public class Player : MonoBehaviour {
 	KeyCode M_Shoot = KeyCode.Mouse0;
 	KeyCode M_Strafe = KeyCode.LeftShift;
 
+	// Returns the player's current health
 	int GetHealth() {
-		return health;
+		return stats.get_health();
 	}
 
 	// Use this for initialization
 	void Start () {
 
-		body = GetComponent<Rigidbody2D> ();
-		anim = GetComponent<Animator> ();
-		Paudio = GetComponent<AudioSource> ();
+		// Get components
+		body = GetComponent<Rigidbody2D>();
+		anim = GetComponent<Animator>();
+		Paudio = GetComponent<AudioSource>();
+		Srenderer = GetComponent<SpriteRenderer>();
 
-		heldWeapon = 0;
+		// Set base params
+		stats = new Player_Stats();
 		maxAmmo = 100;
 		ammo = 100;
 		ammo_recovery_rate = 0.5f;
 		ammo_counter = ammo_recovery_rate;
-		health = Storage.MAX_HEALTH.current();
-		shield = Storage.MAX_SHIELD.current();
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
 
@@ -83,23 +89,71 @@ public class Player : MonoBehaviour {
 	 *******************************************************************************/
 	void Update () {
 
+		// Dead! Do nothing.
+		if (stats.get_health() <= 0) {
+
+			// Perform once
+			if (uponDeath) {
+
+				// Destroy your weapon if its not already destroyed
+				if (wep != null)
+				{
+					Destroy(wep.gameObject);
+				}
+				
+
+				// Stop turning
+				body.freezeRotation = true;
+
+				// Set dead animation
+				anim.SetBool ("Dead", true);
+
+				// Stop color
+				Srenderer.color = colors [0];
+
+				// Slow down movement
+				body.drag = 100.0f;
+
+			
+			}
+
+			return;
+		}
+
+		// Flashing when hurt
+		flash -= Time.deltaTime;
+
+		if (flash >= 0)
+		{
+			toggle = 1 - toggle;
+			Srenderer.color = colors[toggle];
+		}
+		else
+			Srenderer.color = colors[0];
+
 		/************************
 		 * Shield Regen
 		 ************************/
 
 		shieldRegenTime -= Time.deltaTime;
 
+		// Start regenning shield
 		if (shieldRegenTime < 0) {
 
+			// Time between 'ticks' of shield recovery
 			shieldRecoverTime -= Time.deltaTime;
 
-			if ( shieldRecoverTime <= 0 && shield < Storage.MAX_SHIELD.current ()) {
-				shield += 1;
-				Storage.Shield_raised = true;
+			// Regen a tick of shield if delay is over
+			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current ()) {
+				
+				stats.change_shield(1);
+				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
+			
 			}
 
-			shieldSlider.value = shield;
+			// Update slider
+			shieldSlider.value = stats.get_shield();
 
 		}
 
@@ -164,12 +218,13 @@ public class Player : MonoBehaviour {
 		 * WEAPON SWAP
 		 ************************/
 		if (Input.GetKeyDown ( M_Swap )) {
-			heldWeapon = (heldWeapon + 1) % 3;
+			stats.cycle_weapons();
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
-			wep.updateWeapon = heldWeapon;
+			wep.updateWeapon = (int)stats.current_weapon();
 
 		}
 
@@ -180,18 +235,18 @@ public class Player : MonoBehaviour {
 
 		atkCool -= Time.deltaTime;
 
-		// Attack check
+		// Attack delay
 		if (atkCool <= 0) {
 
 			// Make weapon visible
 			wep.GetComponent<Renderer> ().enabled = true;
 
-			// Attack Check
+			// Attack Input
 			if (Input.GetKey ( M_Shoot )) {
 
 				var pressed = Input.GetKeyDown( M_Shoot );
 
-				PerformAttack (heldWeapon, pressed );
+				PerformAttack ((int)stats.current_weapon(), pressed );
 
 			}
 
@@ -206,7 +261,7 @@ public class Player : MonoBehaviour {
 			
 		// Press 'h' to restore HP
 		if ( Input.GetKeyDown(KeyCode.H) ) {
-			GetHealed(Storage.MAX_HEALTH.current());
+			GetHealed(stats.MAX_HEALTH.current());
 		}
 		// Hold 'r' to gain ammo
 		if ( Input.GetKey(KeyCode.R) ) {
@@ -221,17 +276,25 @@ public class Player : MonoBehaviour {
 	 *******************************************************************************/
 	public void GetHurt( int damageTaken ) {
 
-		shield -= damageTaken;
+		// Lose shield first
+		var underflow = stats.change_shield(-damageTaken);
 
-		if (shield < 0) {
-			health += shield;
-			shield = 0;
+		// If you take damage in excess of shield,
+		// lose health then
+		if (underflow < 0) {
+			stats.change_health(underflow);
+			hpSlider.value = stats.get_health();
 		}
 
+		// Flash when hurt
+		flash = 0.4f;
+
+		// Reset shield regen window
 		shieldRegenTime = shieldMaxRegenTime;
 
-		hpSlider.value = health;
-		shieldSlider.value = (shield / Storage.MAX_SHIELD.current ()) * 100;
+		// Update sliders
+		hpSlider.value = stats.get_health();
+		shieldSlider.value = stats.get_shield();
 	}
 
 	/*******************************************************************************
@@ -242,8 +305,8 @@ public class Player : MonoBehaviour {
 	public void GetHealed( int damageRecovered ) {
 
 		// Cap health at maximum
-		health = Mathf.Min( health + damageRecovered, Storage.MAX_HEALTH.current() );
-		hpSlider.value = health;
+		stats.change_health(damageRecovered);
+		hpSlider.value = stats.get_health();
 		// TODO: heal sfx/effect?
 	}
 
@@ -257,8 +320,12 @@ public class Player : MonoBehaviour {
 		
 		// Check if you have enough ammo
 		if (ammo >= cost) {
+			// Expend ammo
 			ammo = Mathf.Max( 0, ammo - cost );
+
+			// Update slider
 			energySlider.value = ammo;
+
 			return true;
 		} 
 		// TODO: 'No ammo' fx
@@ -273,7 +340,11 @@ public class Player : MonoBehaviour {
 	 *
 	 *******************************************************************************/
 	void GainAmmo( int ammoGained ) {
+		
+		// Gain ammo up to maximum
 		ammo = Mathf.Min( ammo + ammoGained, maxAmmo );
+
+		// Update slider
 		energySlider.value = ammo;
 	}
 
@@ -285,6 +356,7 @@ public class Player : MonoBehaviour {
 	 * 
 	 *******************************************************************************/
 	void PerformAttack ( int weaponType, bool pressed ) {
+		
 		// You cannot fire when the upgrade window is open
 		if (upgrade_window.isOpen()) { return; }
 
@@ -298,12 +370,12 @@ public class Player : MonoBehaviour {
 				break;
 
 			// Play Slash Sound
-			Paudio.PlayOneShot( X_Slash, 1.0f );
+			Paudio.PlayOneShot (X_Slash, 1.0f);
 
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 			sl.transform.parent = transform;
-			sl.set_damage(damage_for_weapon());
+			sl.damage = damage_for_weapon ();
 
 			// Shake camera
 			cam.AddShake( 0.3f );
@@ -315,29 +387,29 @@ public class Player : MonoBehaviour {
 			wep.GetComponent<Renderer> ().enabled = false;
 
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 			break;
 
 		case (int)WEAPON_TYPE.rifle:
 			
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.rifle).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+			if (!UseAmmo (stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 				break;
 			}
 
 			// Play Shoot Sound
-			Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
+			Paudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
 
 			// Calculate creation position of bullet (from gun)
-			var pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
+			var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
-			b1.set_damage(damage_for_weapon());
+			b1.damage = damage_for_weapon ();
 
 			// Mildly shake camera
 			cam.AddShake( 0.05f );
@@ -355,10 +427,10 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.shotgun:
 
 			// Cooldown
-			atkCool = 2.0f / Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if ( !UseAmmo( Storage.weapon_by_type((int)WEAPON_TYPE.shotgun).stat_by_type(STAT_TYPE.ammo).current() ) ) {
+			if ( !UseAmmo( stats.weapon_by_type(WEAPON_TYPE.shotgun).weapon_stat(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
 			// Fire five bullets in succession
@@ -371,7 +443,7 @@ public class Player : MonoBehaviour {
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-				b1.set_damage(damage_for_weapon());
+				b1.damage = damage_for_weapon();
 
 				// Mildly shake camera
 				cam.AddShake( 0.065f );
@@ -392,19 +464,29 @@ public class Player : MonoBehaviour {
 
 	/* Get current weapon damage */
 	private int damage_for_weapon() {
-		return Storage.weapon_by_type(heldWeapon).stat_by_type(STAT_TYPE.damage).current();
+		return stats.weapon_by_type( stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current();
 	}
 
+	// Run into items
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		GameObject obj = trigger.gameObject;
 
+		// Energy Core
 		if (obj.tag == "core") {
-			energyCores += UnityEngine.Random.Range(0, 5);
-			Debug.Log("Cores: " + energyCores + "\n");
+			// Shine effect
+			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+
+			stats.change_ecores(1);
+			Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
+
+		// Scrap
 		} else if (obj.tag == "scrap") {
-			energyCores += UnityEngine.Random.Range(0, 5);
-			Debug.Log("Scrap: " + scrap + "\n");
+			// Shien effect
+			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+
+			stats.change_scarp(1);
+			Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}
 	}

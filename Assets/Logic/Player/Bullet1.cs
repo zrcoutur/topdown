@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet1 : MonoBehaviour {
+public class Bullet1 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
@@ -19,6 +19,8 @@ public class Bullet1 : MonoBehaviour {
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+		base.hitImpulse = body.velocity * 2.0f;
 
 	}
 

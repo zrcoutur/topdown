@@ -9,16 +9,20 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject cornerWall;
 	public GameObject spawner;
 	public GameObject spawnerHandler;
+	public GameObject Spaceman;
+	public GameObject breakableBox;
 
 	int[,] floor;
 
 	bool instantiate;
+	bool teleportedPlayer;
 
 	int dungeonSize;
 	int roomWidth;
 	int roomHeight;
 	int hallLength;
 	int spawnerCap;
+	int boxCap;
 
 	float tileWidth;
 	float tileHeight;
@@ -27,6 +31,7 @@ public class GenerateRoom : MonoBehaviour
 	void Start()
 	{
 		instantiate = true;
+		teleportedPlayer = false;
 		dungeonSize = 10;
 		tileWidth = 1.5f;
 		tileHeight = 1.5f;
@@ -34,6 +39,7 @@ public class GenerateRoom : MonoBehaviour
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even
 		spawnerCap = 3;
+		boxCap = 3;
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 
@@ -42,9 +48,10 @@ public class GenerateRoom : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		
 		if (instantiate) // create level when instatiate is true
 		{
-
+			GameObject handler = (GameObject)Instantiate(spawnerHandler, new Vector3(0, 0, 0), Quaternion.identity);
 			String array = "";
 			for (int i = 0; i < dungeonSize; i++)
 			{
@@ -87,10 +94,16 @@ public class GenerateRoom : MonoBehaviour
 						}
 						int[,] room = makeRoomMatrix(roomHeight, roomWidth, doors);
 
-						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room);
+						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room, doors);
 						if (doors != 0)
 						{
 							makeHall(doors, i * (roomHeight + hallLength), j * (roomWidth + hallLength));
+						}
+						if (!teleportedPlayer && floor[i,j] == 1)
+						{
+
+							Spaceman.transform.position = new Vector3(((j * (roomWidth + hallLength)) + ((roomWidth/2) ))*tileWidth,  ((i * (roomHeight + hallLength)) + ((roomHeight / 2)))*tileHeight, 0);
+							teleportedPlayer = true;
 						}
 
 					}
@@ -172,12 +185,13 @@ public class GenerateRoom : MonoBehaviour
 	int[,] makeRoomMatrix(int height, int width, byte door)
 	{
 		int[,] returnMatrix = new int[width, height];
-		int spawnersPlaced =0;
+		int spawnersPlaced = 0;
+		int boxesPlaced = 0;
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
-
+				// create openings on edge of room where there are doors
 				if (y == height - 1 && ( x == width / 2 || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 1) == 1) //make north ( up ) direction door if it should exist
 				{
 					returnMatrix[x, y] = 0;
@@ -194,12 +208,22 @@ public class GenerateRoom : MonoBehaviour
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else // create walls on edge of room where there are no doors
-				{
+				else 
+				{	// create walls on edge of room where there are no doors
 					if ((x == 0 || x == width - 1) || (y == 0 || y == height - 1))
 					{
 						returnMatrix[x, y] = 1;
 					}
+					else // put stuff in the middle of the room
+					{
+						int chance = UnityEngine.Random.Range(0, 10);
+						if (chance == 0 && boxCap > boxesPlaced)
+						{
+							returnMatrix[x, y] = 3;
+							boxesPlaced++;
+						}
+					}
+					//
 					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
 					{
 						int chance = UnityEngine.Random.Range(0, 10);
@@ -210,6 +234,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 						
 					}
+					
 				}
 			}
 		}
@@ -218,7 +243,7 @@ public class GenerateRoom : MonoBehaviour
 	//Places sprites into level to create a room
 	//y and x are the position of the bottom left corner of the room
 	// roomMatrix comes from the makeRoomMatrix method
-	private void makeRoom(int y, int x, int[,] roomMatrix)
+	private void makeRoom(int y, int x, int[,] roomMatrix, byte door)
 	{
 
 		for (int i = y; i < roomHeight + y; i++)
@@ -229,7 +254,7 @@ public class GenerateRoom : MonoBehaviour
 			
 				if (roomMatrix[j - x, i - y] != 0)
 				{
-
+					
 
 					//check if sprite is in corner
 					if ((j - x == 0 && i - y == 0) || (j - x == roomHeight - 1 && i - y == 0) || (j - x == 0 && i - y == roomWidth - 1) || (j - x == roomHeight - 1 && i - y == roomWidth - 1))
@@ -254,39 +279,112 @@ public class GenerateRoom : MonoBehaviour
 					}
 					else // if sprite coordinates are not in corner
 					{
-						if (roomMatrix[j - x, i - y] == 1)
+						if (roomMatrix[j - x, i - y] == 1) //wall
 						{
-							GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-							block.AddComponent<BoxCollider2D>();
-							Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-							//rotate left and right walls for appearence
-							if (j - x == 0 || j - x == roomHeight - 1)
+
+							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1) // corner for top halls
 							{
-								block.transform.Rotate(Vector3.forward * -90);
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == roomWidth / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 90);
+								}
+								else
+								{
+
+								}
+
+
 							}
-						}else if (roomMatrix[j - x, i - y] == 2)
+							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0) // corner for bottom halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == roomWidth / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 180);
+								}
+								else
+								{
+									corner.transform.Rotate(Vector3.forward * -90);
+								}
+							}
+							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j -x  == roomWidth -1) // corner for left/east halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (i - y == roomHeight / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * -90);
+								}
+								else
+								{
+									
+								}
+							}
+							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0) // corner for left/east halls
+							{
+								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								corner.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (i - y == roomHeight / 2 - 2)
+								{
+									corner.transform.Rotate(Vector3.forward * 180);
+								}
+								else
+								{
+									corner.transform.Rotate(Vector3.forward * 90);
+								}
+							}
+							else
+							{
+								GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+								block.AddComponent<BoxCollider2D>();
+								Rigidbody2D body = block.GetComponent<Rigidbody2D>();
+								//rotate left and right walls for appearence
+								if (j - x == 0 || j - x == roomHeight - 1)
+								{
+									block.transform.Rotate(Vector3.forward * -90);
+								}
+							}
+
+						
+						}
+						else if (roomMatrix[j - x, i - y] == 2) //spawner
 						{
 							
-							GameObject block = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
-							block.AddComponent<BoxCollider2D>();
-							
-							if (j - x == 0 )
+							GameObject spawnerBlock = (GameObject)Instantiate(spawner, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
+							spawnerBlock.AddComponent<BoxCollider2D>();
+
+							if (j - x == 0)
 							{
-								block.GetComponent<EnemySpawner>().east = true;
+								spawnerBlock.GetComponent<EnemySpawner>().east = true;
 							}
-							else if (j - x == roomWidth + x - 1)
+							else if (j - x == roomWidth - 1)
 							{
-								block.GetComponent<EnemySpawner>().west = true;
+								spawnerBlock.GetComponent<EnemySpawner>().west = true;
 							}
 							else if (i - y == 0)
 							{
-								block.GetComponent<EnemySpawner>().north = true;
+								spawnerBlock.GetComponent<EnemySpawner>().north = true;
 							}
-							else if (i - y == roomHeight + y - 1)
+							else if (i - y == roomHeight - 1)
 							{
-								block.GetComponent<EnemySpawner>().south = true;
+								spawnerBlock.GetComponent<EnemySpawner>().south = true;
 							}
 
+						}
+						else if (roomMatrix[j - x, i - y] == 3) // breakable box
+						{
+							GameObject boxBlock = (GameObject)Instantiate(breakableBox, new Vector3(j * tileHeight, i * tileWidth, 0), Quaternion.identity);
 						}
 					}
 				}

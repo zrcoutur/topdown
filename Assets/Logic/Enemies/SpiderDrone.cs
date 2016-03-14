@@ -10,25 +10,28 @@ public class SpiderDrone : Baseenemy
     void Awake()
     {
 
-        base.Maxhealth = 5;
-        base.health = 5;
+		base.Maxhealth = 8;
+		base.health = base.Maxhealth;
         base.speed = 1.5f;
-        base.rate = 2.5f;
-        base.range = 40f;
-        base.damage = 10;
+        base.rate = -1f;
+		base.rateVariance = 0f;
+        base.range = 0f;
+        base.damage = 5;
     }
 
 
     public override void TimeIncrease(float time)
     {
-        Maxhealth *= (int)(time / 45);
-        speed *= (int)(time / 45);
-        damage *= (int)(time / 45);
+		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
+		var timeScale = 600;
+		health = (int)(health * (time + timeScale) / timeScale);
+		Maxhealth = health;
+		speed = (int)(speed * (time + timeScale) / timeScale);
+		damage = (int)(damage * (time + timeScale) / timeScale);
     }
 
     public override void attack()
     {
-        Debug.Log("Attack Right");
         Player p = nearest.gameObject.GetComponent<Player>();
         // Play Slash Sound
         //p.Paudio.PlayOneShot(p.X_Slash, 1.0f);
@@ -39,9 +42,9 @@ public class SpiderDrone : Baseenemy
         sl.transform.parent = transform;
         //sl.transform.localScale = gameObject.transform.localScale;
         // Shake camera
-        p.cam.AddShake(0.3f);
+        p.cam.AddShake(0.1f);
 
         // Momentum from swing
-        gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 90.0f, 120.0f));
+        gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 270.0f, 60.0f));
     }
 }
