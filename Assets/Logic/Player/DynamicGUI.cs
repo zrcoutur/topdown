@@ -121,8 +121,8 @@ public class DynamicGUI : MonoBehaviour {
 
 			// Subtract cost from player stats
 			if (for_next != null) {
-				Player.stats.change_scarp(for_next.scrap_cost);
-				Player.stats.change_ecores(for_next.ecore_cost);
+				Player.stats.change_scarp(-for_next.scrap_cost);
+				Player.stats.change_ecores(-for_next.ecore_cost);
 			}
 
 			// Indicate that the max values of either health or shield changed, so that sliders will update
