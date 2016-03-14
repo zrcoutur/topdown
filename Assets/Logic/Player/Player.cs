@@ -378,7 +378,7 @@ public class Player : MonoBehaviour {
 			sl.damage = damage_for_weapon ();
 
 			// Shake camera
-			cam.AddShake( 0.3f );
+			cam.AddShake( 0.08f );
 
 			// Momentum from swing
 			body.AddForce ( Tools.AngleToVec2( (body.rotation * transform.forward).z + 90.0f, 120.0f ) );
@@ -412,7 +412,7 @@ public class Player : MonoBehaviour {
 			b1.damage = damage_for_weapon ();
 
 			// Mildly shake camera
-			cam.AddShake( 0.05f );
+			cam.AddShake( 0.06f );
 
 			// Calculate bullet's velocity
 
@@ -445,8 +445,7 @@ public class Player : MonoBehaviour {
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.damage = damage_for_weapon();
 
-				// Mildly shake camera
-				cam.AddShake( 0.065f );
+
 
 			// Calculate bullet's velocity
 
@@ -456,6 +455,9 @@ public class Player : MonoBehaviour {
 			// Set final velocity based on travel angle
 			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 			}
+
+			// Mildly shake camera
+			cam.AddShake( 0.135f );
 
 			break;
 		}

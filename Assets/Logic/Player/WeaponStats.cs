@@ -28,17 +28,17 @@ public class WeaponStats {
 		int[] dmg = null, rof = null, amo = null;
 
 		if (type.CompareTo(WEAPON_TYPE.sword) == 0) {
-			dmg = new int[] { 5, 10, 16, 22, 30, 40, 52, 64, };
+			dmg = new int[] { 5, 10, 16, 22, 30, 40, 52, 64, 89, 125 };
 			rof = new int[] { 4 };
 			amo = new int[] { 0 };
 		} else if (type.CompareTo(WEAPON_TYPE.rifle) == 0) {
-			dmg = new int[] { 2, 5, 10, 16, 24, 32 };
-			rof = new int[] { 6, 9, 12, 16, 20, 25 };
+			dmg = new int[] { 2, 5, 10, 16, 24, 32, 48, 64, 78 };
+			rof = new int[] { 6, 9, 12, 16, 20, 25, 36 };
 			amo = new int[] { 7, 6, 5, 4, 3, 2 };
 		} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
-			dmg = new int[] { 5, 8, 13, 21, 27, 36 };
-			rof = new int[] { 1, 2, 3, 5, 7, 10, 35 };
-			amo = new int[] { 18, 15, 12, 9, 0 };
+			dmg = new int[] { 3, 5, 7, 11, 16, 21, 36 };
+			rof = new int[] { 1, 2, 3, 5, 7, 10, 16, 23 };
+			amo = new int[] { 18, 15, 12, 9, 7 };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
 			dmg = new int[] { 15, 25, 36, 42, 58, 70 };
 			rof = new int[] { 1, 3, 5 };

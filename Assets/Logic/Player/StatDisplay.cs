@@ -32,13 +32,13 @@ public class StatDisplay {
 		//Debug.Log(origin + "\n");
 
 		// Stat name
-		labels[0] = relativeRect(origin, 2, -75, 5, 80, 22);
+		labels[0] = relativeRect(origin, 2, 15, 25, 80, 22);
 		// Increment button
 		button = relativeRect(labels[0], 0, 10, 2, 18, 18);
 		// next stat cost
-		labels[1] = relativeRect(button, 2, -86, 10, 200, 22);
+		labels[1] = relativeRect(labels[0], 2, 0, 0, 200, 22);
 		// current stat value
-		labels[2] = relativeRect(labels[1], 2, 38, 3, 36, 22);
+		labels[2] = relativeRect(labels[1], 2, 38, 0, 36, 22);
 		// transition symbol
 		labels[3] = relativeRect(labels[2], 0, 5, 0, 16, 22);
 		// next stat value
