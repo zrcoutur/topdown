@@ -24,9 +24,9 @@ public class SpiderDrone : Baseenemy
     {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = 600;
-		health = (int)(damage * (time + timeScale) / timeScale);
+		health = (int)(health * (time + timeScale) / timeScale);
 		Maxhealth = health;
-		speed = (int)(damage * (time + timeScale) / timeScale);
+		speed = (int)(speed * (time + timeScale) / timeScale);
 		damage = (int)(damage * (time + timeScale) / timeScale);
     }
 
