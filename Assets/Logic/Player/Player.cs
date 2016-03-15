@@ -445,7 +445,7 @@ public class Player : MonoBehaviour {
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.damage = damage_for_weapon();
-				b1.set_duration(0.35f);
+				b1.set_duration(0.45f);
 
 				// Calculate bullet's velocity
 
@@ -479,7 +479,7 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_ecores(1);
-			Debug.Log("Cores: " + stats.get_ecores() + "\n");
+			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 
 		// Scrap
@@ -488,7 +488,7 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_scarp(1);
-			Debug.Log("Scrap: " + stats.get_scrap() + "\n");
+			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}
 	}

@@ -1,0 +1,61 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+/**
+ * A class designed to maintain the player's health, shield, and item counter displays.
+ * 
+ * @author Joshua Hooker
+ * 15 March 2016
+ */
+public class Maintain_UI : MonoBehaviour {
+
+	private Slider health;
+	private Slider shield;
+
+	private Text[] item_counters;
+
+	// Use this for initialization
+	void Start () {
+		// Find sliders in children objects
+		Slider[] sliders = GetComponentsInChildren<Slider>();
+
+		// Expecting two sliders to exist: one for shield and the other for health
+		if (sliders[0].name == "HealthSlider") {
+			health = sliders[0];
+			shield = sliders[1];
+		} else {
+			health = sliders[1];
+			shield = sliders[0];
+		}
+
+		item_counters = gameObject.GetComponentsInChildren<Text>();
+
+		update_ui();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		update_ui();
+	}
+
+	/* Update the player's max health or max shield to the current maximum value */
+	private void update_ui() {
+		if (Player.stats != null) {
+			// Sync health slider's max value to the Player's current max health
+			if (Player.stats.HP_raised) {
+				health.maxValue = Player.stats.MAX_HEALTH.current();
+				Player.stats.HP_raised = false;
+			}
+			// Sync shield slider's max value to Player's current max shield
+			if (Player.stats.Shield_raised) {
+				shield.maxValue = Player.stats.MAX_SHIELD.current();
+				Player.stats.Shield_raised = false;
+			}
+
+			// Update scrap and e. core displays
+			item_counters [0].text = "" + Player.stats.get_scrap();
+			item_counters [1].text = "" + Player.stats.get_ecores();
+		}
+	}
+}
