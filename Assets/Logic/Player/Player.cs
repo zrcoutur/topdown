@@ -394,22 +394,23 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.rifle:
 			
 			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if (!UseAmmo (stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
+			if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 				break;
 			}
 
 			// Play Shoot Sound
-			Paudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
+			Paudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 			// Calculate creation position of bullet (from gun)
-			var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+			var pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
 
 			// Create bullet
-			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
-			b1.damage = damage_for_weapon ();
+			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+			b1.damage = damage_for_weapon();
+			b1.set_duration(0.85f);
 
 			// Mildly shake camera
 			cam.AddShake( 0.06f );
@@ -444,16 +445,15 @@ public class Player : MonoBehaviour {
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.damage = damage_for_weapon();
+				b1.set_duration(0.35f);
 
+				// Calculate bullet's velocity
 
-
-			// Calculate bullet's velocity
-
-			// Shot spread range.
+				// Shot spread range.
 				spread = Random.Range( -15.0f, 15.0f );
 
-			// Set final velocity based on travel angle
-			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 			}
 
 			// Mildly shake camera

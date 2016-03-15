@@ -52,4 +52,7 @@ public class Bullet1 : PlayerAttack {
 
 	}
 
+	/* Sets the duration of the bullet. */
+	public void set_duration(float d) { duration = d; }
+
 }
