@@ -45,16 +45,14 @@ public class Bullet1 : PlayerAttack {
 		}
 
 		if (col.tag == "Enemy") {
-            col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
+			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
 			Instantiate (poof, transform.position, transform.rotation);
 			Destroy (gameObject);
 		}
 
 	}
 
-	/* Set the damage of the bullet */
-	public void set_damage(int dmg) { damage = dmg; }
+	/* Sets the duration of the bullet. */
+	public void set_duration(float d) { duration = d; }
 
-	/* Return the bullet's damage */
-	public int get_damage() { return damage; }
 }

@@ -38,7 +38,7 @@ public class GenerateRoom : MonoBehaviour
 		roomWidth = 9;	//preferably odd
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even
-		spawnerCap = 3;
+		spawnerCap = 2;
 		boxCap = 3;
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
@@ -226,7 +226,7 @@ public class GenerateRoom : MonoBehaviour
 					//
 					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
 					{
-						int chance = UnityEngine.Random.Range(0, 10);
+						int chance = UnityEngine.Random.Range(0, 0);
 						if (chance == 0 && spawnerCap > spawnersPlaced)
 						{
 							returnMatrix[x, y] = 2;

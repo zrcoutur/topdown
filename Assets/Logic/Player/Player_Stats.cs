@@ -20,13 +20,13 @@ public class Player_Stats {
 	private int scrap;
 
 	public Player_Stats() {
-		MAX_HEALTH = new Stat(STAT_TYPE.health, new int[] { 25, 46, 67, 98, 121, 167, 225 },
-												new Stat_Cost[] { new Stat_Cost(5, 1), new Stat_Cost(8, 1), new Stat_Cost(11, 1), new Stat_Cost(14, 2), new Stat_Cost(17, 2), new Stat_Cost(20, 3) } );
+		MAX_HEALTH = new Stat(STAT_TYPE.health, new int[] { 5, 8, 13, 21, 34, 55, 89, 144, 233 },
+			new Stat_Cost[] { new Stat_Cost(2, 5), new Stat_Cost(3, 11), new Stat_Cost(4, 20), new Stat_Cost(6, 33), new Stat_Cost(9, 51), new Stat_Cost(13, 75), new Stat_Cost(18, 106), new Stat_Cost(24, 145) } );
 		health = MAX_HEALTH.current();
 		HP_raised = true;
 
-		MAX_SHIELD = new Stat(STAT_TYPE.shield, new int[] { 10, 15, 21, 28, 36, 45, 55, 66, 78, 93, 107, 112, 128 },
-			new Stat_Cost[] { new Stat_Cost(3, 1), new Stat_Cost(8, 1), new Stat_Cost(12, 1), new Stat_Cost(17, 2), new Stat_Cost(22, 2), new Stat_Cost(27, 2), new Stat_Cost(32, 3), new Stat_Cost(37, 3), new Stat_Cost(42, 3), new Stat_Cost(47, 4), new Stat_Cost(52, 4), new Stat_Cost(57, 4) });
+		MAX_SHIELD = new Stat(STAT_TYPE.shield, new int[] { 10, 13, 19, 28, 40, 55, 73, 94, 118 },
+			new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(1, 8), new Stat_Cost(2, 15), new Stat_Cost(3, 24), new Stat_Cost(5, 35), new Stat_Cost(8, 48), new Stat_Cost(12, 63), new Stat_Cost(17, 80), new Stat_Cost(23, 99) } );
 		shield = MAX_SHIELD.current();
 		Shield_raised = true;
 

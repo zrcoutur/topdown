@@ -58,6 +58,7 @@ public class DynamicGUI : MonoBehaviour {
 			window_dimensions = resizeWindow(window_dimensions);
 			// reposition the stat displays if need be
 			if (!Rect.Equals(limbo, window_dimensions)) {
+				//Debug.Log(window_dimensions);
 				updatePositions();
 			}
 
@@ -67,7 +68,7 @@ public class DynamicGUI : MonoBehaviour {
 
 	/* Resizes the window based on the size of the screen */
 	private Rect resizeWindow(Rect original) {
-		return new Rect(Screen.width / 10, Screen.height / 20, Screen.width / 5, 18 * Screen.height / 20);
+		return new Rect(13 * Screen.width / 20, Screen.height / 30, 3 * Screen.width / 10, 28 * Screen.height / 30);
 	}
 
 	/* Updates the positions of all the stat displays in the window */
@@ -76,11 +77,11 @@ public class DynamicGUI : MonoBehaviour {
 			Rect previous;
 
 			if (idx == 0) { // position based on the window display
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, 0);
+				previous = new Rect(0, 0, 0, 0);
 			} else 	if (idx == 2) {
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
+				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
 			} else { // position a stat display based on the previous stat display
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
+				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
 			}
 
 			displays[idx].updateRects(previous);

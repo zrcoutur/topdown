@@ -30,8 +30,7 @@ public class Player : MonoBehaviour {
 
 	// Parameters
 	double atkCool;
-	float ammo_recovery_rate;
-	float ammo_counter;
+	Regen_Counter ammo_regen;
     int maxAmmo;
 	float shieldRegenTime;
 	float shieldRecoverTime;
@@ -71,8 +70,7 @@ public class Player : MonoBehaviour {
 		stats = new Player_Stats();
 		maxAmmo = 100;
 		ammo = 100;
-		ammo_recovery_rate = 0.5f;
-		ammo_counter = ammo_recovery_rate;
+		ammo_regen = new Regen_Counter(0.45f, 0.25f);
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
 
@@ -247,24 +245,21 @@ public class Player : MonoBehaviour {
 				var pressed = Input.GetKeyDown( M_Shoot );
 
 				PerformAttack ((int)stats.current_weapon(), pressed );
-
+				ammo_regen.delay_regen();
 			}
 
 		}
+
 		// passively recover ammo overtime
-		if (ammo_counter >= ammo_recovery_rate) {
-			ammo_counter = 0.0f;
-			GainAmmo(3);
-		} else {
-			ammo_counter += Time.deltaTime;
-		}
+		int ammo = ammo_regen.increment();
+		GainAmmo(ammo);
 			
 		// Press 'h' to restore HP
 		if ( Input.GetKeyDown(KeyCode.H) ) {
 			GetHealed(stats.MAX_HEALTH.current());
 		}
 		// Hold 'r' to gain ammo
-		if ( Input.GetKey(KeyCode.R) ) {
+		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
 	}
 	}
@@ -378,7 +373,7 @@ public class Player : MonoBehaviour {
 			sl.damage = damage_for_weapon ();
 
 			// Shake camera
-			cam.AddShake( 0.3f );
+			cam.AddShake( 0.08f );
 
 			// Momentum from swing
 			body.AddForce ( Tools.AngleToVec2( (body.rotation * transform.forward).z + 90.0f, 120.0f ) );
@@ -394,25 +389,26 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.rifle:
 			
 			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 			// Ammo Check
-			if (!UseAmmo (stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
+			if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 				break;
 			}
 
 			// Play Shoot Sound
-			Paudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
+			Paudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 			// Calculate creation position of bullet (from gun)
-			var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+			var pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
 
 			// Create bullet
-			var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
-			b1.damage = damage_for_weapon ();
+			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+			b1.damage = damage_for_weapon();
+			b1.set_duration(0.85f);
 
 			// Mildly shake camera
-			cam.AddShake( 0.05f );
+			cam.AddShake( 0.06f );
 
 			// Calculate bullet's velocity
 
@@ -444,18 +440,19 @@ public class Player : MonoBehaviour {
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.damage = damage_for_weapon();
+				b1.set_duration(0.45f);
 
-				// Mildly shake camera
-				cam.AddShake( 0.065f );
+				// Calculate bullet's velocity
 
-			// Calculate bullet's velocity
-
-			// Shot spread range.
+				// Shot spread range.
 				spread = Random.Range( -15.0f, 15.0f );
 
-			// Set final velocity based on travel angle
-			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 			}
+
+			// Mildly shake camera
+			cam.AddShake( 0.135f );
 
 			break;
 		}
@@ -477,7 +474,7 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_ecores(1);
-			Debug.Log("Cores: " + stats.get_ecores() + "\n");
+			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 
 		// Scrap
@@ -486,8 +483,51 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_scarp(1);
-			Debug.Log("Scrap: " + stats.get_scrap() + "\n");
+			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}
+	}
+
+	/* A simple class used to simulate the Player's ammo regenation. */
+	private class Regen_Counter {
+		// Time between each ammo gain (not necessarily in seconds!)
+		private readonly float rate;
+		// The percent increase of the rate counter overtime
+		private readonly float rate_delta;
+		// The percent increase (above 100%) of the change in time added to the counter
+		private float rate_counter;
+		// current point in time between ammo gains
+		private float counter;
+		// delays ammo gain when the Player is firing a gun
+		private bool delayed;
+
+		/* Creates a regen counter with the given rate and chance in rate. */
+		public Regen_Counter(float r, float delta) {
+			rate = r;
+			rate_delta = delta;
+			rate_counter = 1f;
+			counter = 0f;
+			delayed = false;
+		}
+
+		/* Incements the counter and rate counter. If the counter reaches
+		 * the rate value, then 2 is returned, otherwise 0 is returned. */
+		public int increment() {
+			if (delayed) { // regen is delayed
+				delayed = false;
+				rate_counter = 1f;
+			} else if (counter >= rate) { // return ammo gain
+				counter = 0f;
+				return 3;
+			} else { // increment counter and rate counter
+				counter += Time.deltaTime * rate_counter;
+				rate_counter *= (1f + rate_delta);
+			}
+
+			return 0;
+		}
+
+		/* Set regen delay flag. */
+		public void delay_regen() { delayed = true; }
 	}
 }
