@@ -258,10 +258,10 @@ public class Player : MonoBehaviour {
 		if ( Input.GetKeyDown(KeyCode.H) ) {
 			GetHealed(stats.MAX_HEALTH.current());
 		}
-		// Hold 'r' to gain ammo
+		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
-	}
+		}
 	}
 
 	/*******************************************************************************
