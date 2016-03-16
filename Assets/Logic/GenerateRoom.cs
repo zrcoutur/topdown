@@ -33,8 +33,8 @@ public class GenerateRoom : MonoBehaviour
 		instantiate = true;
 		teleportedPlayer = false;
 		dungeonSize = 10;
-		tileWidth = 1.5f;
-		tileHeight = 1.5f;
+		tileWidth = 1.6f;
+		tileHeight = 1.6f;
 		roomWidth = 9;	//preferably odd
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even

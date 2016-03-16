@@ -49,7 +49,7 @@ public class WeaponStats {
 			rof = new int[] { 1, 2, 3, 5, 7, 10, 16, 23 };
 			amo = new int[] { 18, 15, 12, 9, 7 };
 
-			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(5, 19), new Stat_Cost(13, 41), new Stat_Cost(23, 90), new Stat_Cost(54, 17), new Stat_Cost(83, 206) };
+			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(5, 19), new Stat_Cost(13, 41), new Stat_Cost(23, 90), new Stat_Cost(54, 172), new Stat_Cost(83, 206) };
 			rof_c = new Stat_Cost[] { new Stat_Cost(2, 6), new Stat_Cost(5, 14), new Stat_Cost(9, 27), new Stat_Cost(16, 43), new Stat_Cost(29, 71), new Stat_Cost(46, 124), new Stat_Cost(67, 237) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(3, 15), new Stat_Cost(9, 32), new Stat_Cost(23, 98), new Stat_Cost(75, 180) };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
