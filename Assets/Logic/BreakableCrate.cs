@@ -63,26 +63,19 @@ public class BreakableCrate : MonoBehaviour {
 	}
 
 	private void remove_crate() {
-		UnityEngine.Random.seed = UnityEngine.Random.Range(0, int.MaxValue);
-		// possibly drop an item
-		if (UnityEngine.Random.value <= 0.2f) {
-			GameObject drop = null;
-
-			int item_drop = UnityEngine.Random.Range(0, 2);
-
-
-			switch (item_drop) {
-				case 0:
-					drop = energy_core;
-					break;
-				case 1:
-					drop = scrap;
-					break;
-				default:
-					break;
+		// Drop between 0 and 2 e. cores
+		for (int i = 0; i < 2; ++i) {
+			if (UnityEngine.Random.value <= 0.5f) {
+				var d = (GameObject)Instantiate(energy_core, transform.localPosition, Quaternion.identity);
+				d.GetComponent<Rigidbody2D>().AddForce(new Vector2 (Random.Range (-250f, 250f), Random.Range (-250f, 250f)));
 			}
-
-			Instantiate(drop, transform.localPosition, Quaternion.identity);
+		}
+		// Drop between 0 and 5 scrap pieces
+		for (int i = 0; i < 5; ++i) {
+			if (UnityEngine.Random.value <= 0.45f) {
+				var d = (GameObject)Instantiate(scrap, transform.localPosition, Quaternion.identity);
+				d.GetComponent<Rigidbody2D>().AddForce(new Vector2 (Random.Range (-250f, 250f), Random.Range (-250f, 250f)));
+			}
 		}
 
 		Destroy(crate);

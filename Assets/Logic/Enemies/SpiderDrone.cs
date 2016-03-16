@@ -10,13 +10,13 @@ public class SpiderDrone : Baseenemy
     void Awake()
     {
 
-		base.Maxhealth = 8;
+		base.Maxhealth = 89;
 		base.health = base.Maxhealth;
         base.speed = 1.5f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
-        base.damage = 5;
+        base.damage = 10;
     }
 
 
