@@ -36,8 +36,11 @@ public class EnemySpawnerHandler : MonoBehaviour
                 }
                 Random.seed = System.DateTime.Now.Millisecond;
                 int rand1 = Random.Range(0, enemies.Length);
+                
+          
                 Random.seed = System.DateTime.Now.Millisecond + 1;
                 int rand2 = Random.Range(0, spawnPoints.Length);
+                
                 Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
                 enemy.TimeIncrease(totaltime);
             }
