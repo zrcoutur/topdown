@@ -14,6 +14,8 @@ public class DynamicGUI : MonoBehaviour {
 	
 	private static GUIStyle lbl_grn_text;
 
+	public Player p;
+
 	public void Start() {
 		show = false;
 
@@ -25,8 +27,8 @@ public class DynamicGUI : MonoBehaviour {
 		if (!initialized) {
 			displays = new StatDisplay[5];
 			// Initialize stat displays
-			displays[0] = new StatDisplay("Health", Player.stats.MAX_HEALTH);
-			displays[1] = new StatDisplay("Shield", Player.stats.MAX_SHIELD);
+			displays[0] = new StatDisplay("Health", p.stats.MAX_HEALTH);
+			displays[1] = new StatDisplay("Shield", p.stats.MAX_SHIELD);
 			switchWeaponStats();
 
 			initialized = true;
@@ -96,7 +98,7 @@ public class DynamicGUI : MonoBehaviour {
 		}
 
 		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, -8, 35, 48, 22);
-		GUI.Label(weapon_lbl, Player.stats.weapon_by_type( Player.stats.current_weapon() ).type.ToString());
+		GUI.Label(weapon_lbl, p.stats.weapon_by_type( p.stats.current_weapon() ).type.ToString());
 
 		// Button for switching between the stats of each weapon
 		/*if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
@@ -113,7 +115,7 @@ public class DynamicGUI : MonoBehaviour {
 		bool is_last = display.stat.next() == -1;
 		// Determines if the player can afford the next upgrade
 		Stat_Cost for_next = display.stat.next_cost();
-		bool can_buy = for_next == null || ( for_next.scrap_cost <= Player.stats.get_scrap() && for_next.ecore_cost <= Player.stats.get_ecores() );
+		bool can_buy = for_next == null || ( for_next.scrap_cost <= p.stats.get_scrap() && for_next.ecore_cost <= p.stats.get_ecores() );
 
 		GUI.enabled = !is_last && can_buy;
 		// Create button to increment the pointer
@@ -122,15 +124,15 @@ public class DynamicGUI : MonoBehaviour {
 
 			// Subtract cost from player stats
 			if (for_next != null) {
-				Player.stats.change_scarp(-for_next.scrap_cost);
-				Player.stats.change_ecores(-for_next.ecore_cost);
+				p.stats.change_scarp(-for_next.scrap_cost);
+				p.stats.change_ecores(-for_next.ecore_cost);
 			}
 
 			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
-				Player.stats.HP_raised = true;
+				p.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
-				Player.stats.Shield_raised = true;
+				p.stats.Shield_raised = true;
 			}
 		}
 		GUI.enabled = true;
@@ -146,7 +148,7 @@ public class DynamicGUI : MonoBehaviour {
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */
 	public void switchWeaponStats() {
-		WeaponStats current = Player.stats.weapon_by_type( Player.stats.current_weapon() );
+		WeaponStats current = p.stats.weapon_by_type( p.stats.current_weapon() );
 
 		displays[2] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
 		displays[3] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );

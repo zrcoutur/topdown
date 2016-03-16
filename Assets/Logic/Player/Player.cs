@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 	Animator anim;
 
 	// Outside elements
-	public static Player_Stats stats;
+	public Player_Stats stats;
 	public readonly DynamicGUI upgradeWindow;
 	public Weapon weapon;
 	public Slash slash;
