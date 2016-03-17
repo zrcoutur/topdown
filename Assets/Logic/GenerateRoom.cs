@@ -7,6 +7,7 @@ public class GenerateRoom : MonoBehaviour
 
 	public GameObject regularWall;
 	public GameObject cornerWall;
+	public GameObject outerCornerWall;
 	public GameObject spawner;
 	public GameObject spawnerHandler;
 	public GameObject Spaceman;
@@ -140,7 +141,7 @@ public class GenerateRoom : MonoBehaviour
 
 	void makeHall(byte doors, int y , int x)
 	{
-
+		//make hallway up
 		if ( (doors & 1) == 1)
 		{
 			int tempx = x + (roomWidth / 2) - 2;
@@ -149,12 +150,23 @@ public class GenerateRoom : MonoBehaviour
 			{
 				for (int i = tempx; i < tempx + 5 ; i+=4)
 				{
-					GameObject block = (GameObject)Instantiate(regularWall, new Vector3( i * tileSize, j * tileSize, 0), Quaternion.identity);
-					block.transform.Rotate(Vector3.forward * -90);
-					block.AddComponent<BoxCollider2D>();
+					if (i == tempx)
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * -90);
+						block.AddComponent<BoxCollider2D>();
+					}
+					else
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * 90);
+						block.AddComponent<BoxCollider2D>();
+					}
+					
 				}
 			}
 		}
+		//make hallway right
 		if ((doors & 2) == 2)
 		{
 			int tempx = x + roomWidth;
@@ -163,11 +175,22 @@ public class GenerateRoom : MonoBehaviour
 			{
 				for (int i = tempx; i < tempx + hallLength/2; i ++)
 				{
-					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
-					block.AddComponent<BoxCollider2D>();
+					if (j == tempy)
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.AddComponent<BoxCollider2D>();
+					}
+					else
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * 180);
+						block.AddComponent<BoxCollider2D>();
+					}
+				
 				}
 			}
 		}
+		//make hallway down
 		if ((doors & 4) == 4)
 		{
 			
@@ -177,23 +200,42 @@ public class GenerateRoom : MonoBehaviour
 			{
 				for (int i = tempx; i < tempx + 5; i += 4)
 				{
-					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
-					block.transform.Rotate(Vector3.forward * -90);
-					block.AddComponent<BoxCollider2D>();
+					if (i == tempx)
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * -90);
+						block.AddComponent<BoxCollider2D>();
+					}
+					else
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * 90);
+						block.AddComponent<BoxCollider2D>();
+					}
 				}
 			}
 			
 		}
+		//make hallway left
 		if ((doors & 8) == 8)
 		{
 			int tempx = x;
 			int tempy = y + (roomHeight / 2) - 2;
 			for (int j = tempy; j < tempy + 5; j += 4)
 			{
-				for (int i = tempx; i >= tempx - hallLength / 2; i--)
+				for (int i = tempx; i >= tempx - hallLength / 2 ; i--)
 				{
-					GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
-					block.AddComponent<BoxCollider2D>();
+					if (j == tempy)
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.AddComponent<BoxCollider2D>();
+					}
+					else
+					{
+						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
+						block.transform.Rotate(Vector3.forward * 180 );
+						block.AddComponent<BoxCollider2D>();
+					}
 				}
 			}
 
@@ -323,7 +365,7 @@ public class GenerateRoom : MonoBehaviour
 					//check if sprite is in corner
 					if ((j - x == 0 && i - y == 0) || (j - x == roomHeight - 1 && i - y == 0) || (j - x == 0 && i - y == roomWidth - 1) || (j - x == roomHeight - 1 && i - y == roomWidth - 1))
 					{
-						GameObject block = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
+						GameObject block = (GameObject)Instantiate(outerCornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 						block.AddComponent<BoxCollider2D>();
 						Rigidbody2D body = block.GetComponent<Rigidbody2D>();
 
@@ -345,13 +387,13 @@ public class GenerateRoom : MonoBehaviour
 					{
 						if (roomMatrix[j - x, i - y] == 1) //wall
 						{
-
-							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1) // corner for top halls
+							// corner for top halls
+							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1) 
 							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
-								//rotate left and right walls for appearence
+
 								if (j - x == roomWidth / 2 - 2)
 								{
 									corner.transform.Rotate(Vector3.forward * 90);
@@ -362,8 +404,8 @@ public class GenerateRoom : MonoBehaviour
 								}
 
 
-							}
-							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0) // corner for bottom halls
+							}// corner for bottom halls
+							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0) 
 							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
@@ -377,8 +419,8 @@ public class GenerateRoom : MonoBehaviour
 								{
 									corner.transform.Rotate(Vector3.forward * -90);
 								}
-							}
-							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j -x  == roomWidth -1) // corner for left/east halls
+							}// corner for left/east halls
+							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j -x  == roomWidth -1) 
 							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
@@ -392,8 +434,8 @@ public class GenerateRoom : MonoBehaviour
 								{
 									
 								}
-							}
-							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0) // corner for left/east halls
+							}// corner for left/east halls
+							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0) 
 							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
@@ -413,10 +455,19 @@ public class GenerateRoom : MonoBehaviour
 								GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								block.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = block.GetComponent<Rigidbody2D>();
-								//rotate left and right walls for appearence
-								if (j - x == 0 || j - x == roomHeight - 1)
+								//rotate left walls for appearence
+								if (j - x == 0 )
 								{
 									block.transform.Rotate(Vector3.forward * -90);
+
+								}//rotate right walls for appearence
+								else if ( j - x == roomHeight - 1)
+								{
+									block.transform.Rotate(Vector3.forward * 90);
+								}
+								else if (i - y == roomWidth - 1)
+								{
+									block.transform.Rotate(Vector3.forward * 180);
 								}
 							}
 
