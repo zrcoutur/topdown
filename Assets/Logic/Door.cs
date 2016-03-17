@@ -25,34 +25,9 @@ public class Door : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		time += Time.deltaTime;
-		if (time > actionTime)
-		{
-			time = 0;
 
-			if (delay)
-			{
-				if (count > max)
-				{
-					delay = false;
-					count = 0;
-				}
-				else if (!open) 
-				{
-					count++;
-				}
-				
-			}else if (count > max)
-			{
-				open = true;
-			}
-			else if (open == false)
-			{
-				count++;
-				openDoor();
-			}
 			
-		}
+		
 		
 
 		

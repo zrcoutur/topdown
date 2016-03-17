@@ -33,7 +33,7 @@ public class GenerateRoom : MonoBehaviour
 	{
 		instantiate = true;
 		teleportedPlayer = false;
-		dungeonSize = 10;
+		dungeonSize = 5;
 		tileSize = 1.6f;
 		roomWidth = 9;	//preferably odd
 		roomHeight = 9;	//preferably odd
@@ -271,20 +271,16 @@ public class GenerateRoom : MonoBehaviour
 			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.GetComponent<Door>().hinge = 8;
 			door.GetComponent<Door>().delay = true;
-			door.AddComponent<BoxCollider2D>();
 			door = (GameObject)Instantiate(innerDoor, new Vector3((x + 0.7f) * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.GetComponent<Door>().hinge = 8;
-			door.AddComponent<BoxCollider2D>();
 
 			door = (GameObject)Instantiate(outerDoor, new Vector3((x + 2) * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * 180);
 			door.GetComponent<Door>().hinge = 2;
 			door.GetComponent<Door>().delay = true;
-			door.AddComponent<BoxCollider2D>();
 			door = (GameObject)Instantiate(innerDoor, new Vector3((x + 1.3f) * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * 180);
 			door.GetComponent<Door>().hinge = 2;
-			door.AddComponent<BoxCollider2D>();
 		}
 		else
 		{
@@ -292,21 +288,17 @@ public class GenerateRoom : MonoBehaviour
 			door.transform.Rotate(Vector3.forward * -90);
 			door.GetComponent<Door>().hinge = 4;
 			door.GetComponent<Door>().delay = true;
-			door.AddComponent<BoxCollider2D>();
 			door = (GameObject)Instantiate(innerDoor, new Vector3(x * tileSize, (y + 0.7f) * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * 90);
 			door.GetComponent<Door>().hinge = 4;
-			door.AddComponent<BoxCollider2D>();
 
 			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * 90);
 			door.GetComponent<Door>().hinge = 1;
 			door.GetComponent<Door>().delay = true;
-			door.AddComponent<BoxCollider2D>();
 			door = (GameObject)Instantiate(innerDoor, new Vector3(x * tileSize , (y + 1.30f) * tileSize , 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * -90);
 			door.GetComponent<Door>().hinge = 1;
-			door.AddComponent<BoxCollider2D>();
 
 
 		}
