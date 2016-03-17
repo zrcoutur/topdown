@@ -14,6 +14,7 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject breakableBox;
 	public GameObject innerDoor;
 	public GameObject outerDoor;
+	public GameObject doorHandler;
 
 	int[,] floor;
 
@@ -110,20 +111,26 @@ public class GenerateRoom : MonoBehaviour
 							}
 							else
 							{
-								if ( (doors&1) == 1)
+								if ((doors & 1) == 1)
 								{
-									makeDoor((j * (roomWidth + hallLength) + (roomWidth/2) - 1), ( i * (roomHeight + hallLength) + roomHeight - 1), true);
-								}else if ((doors & 2) == 2)
+									makeDoor((j * (roomWidth + hallLength) + (roomWidth / 2) - 1), (i * (roomHeight + hallLength) + roomHeight - 1), true);
+								}
+								if ((doors & 2) == 2)
 								{
 									makeDoor((j * (roomWidth + hallLength) + roomWidth - 1), (i * (roomHeight + hallLength) + (roomHeight/2) - 1), false);
 								}
-								else if ((doors & 4) == 4)
+								if ((doors & 4) == 4)
 								{
 									makeDoor((j * (roomWidth + hallLength) + (roomWidth / 2) - 1), (i * (roomHeight + hallLength) ), true);
 								}
-								else if ((doors & 8) == 8)
+								if ((doors & 8) == 8)
 								{
 									makeDoor((j * (roomWidth + hallLength) ), (i * (roomHeight + hallLength) + (roomHeight / 2) - 1), false);
+								}
+								if (doors != 0)
+								{
+									GameObject block = (GameObject)Instantiate(doorHandler, new Vector3(tileSize * (j * (roomWidth + hallLength) + (roomWidth / 2)), tileSize * (i * (roomHeight + hallLength) + (roomHeight / 2) ), 0), Quaternion.identity);
+
 								}
 							}
 						}
@@ -328,20 +335,19 @@ public class GenerateRoom : MonoBehaviour
 		{
 			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, (y + 2) * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * -90);
+			door.GetComponent<Door>().hinge = 1;
+			door.GetComponent<Door>().delay = true;
+			door = (GameObject)Instantiate(innerDoor, new Vector3(x * tileSize, (y + 1.30f) * tileSize, 0), Quaternion.identity);
+			door.transform.Rotate(Vector3.forward * -90);
+			door.GetComponent<Door>().hinge = 1;
+
+			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, y * tileSize, 0), Quaternion.identity);
+			door.transform.Rotate(Vector3.forward * 90);
 			door.GetComponent<Door>().hinge = 4;
 			door.GetComponent<Door>().delay = true;
 			door = (GameObject)Instantiate(innerDoor, new Vector3(x * tileSize, (y + 0.7f) * tileSize, 0), Quaternion.identity);
 			door.transform.Rotate(Vector3.forward * 90);
 			door.GetComponent<Door>().hinge = 4;
-
-			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, y * tileSize, 0), Quaternion.identity);
-			door.transform.Rotate(Vector3.forward * 90);
-			door.GetComponent<Door>().hinge = 1;
-			door.GetComponent<Door>().delay = true;
-			door = (GameObject)Instantiate(innerDoor, new Vector3(x * tileSize , (y + 1.30f) * tileSize , 0), Quaternion.identity);
-			door.transform.Rotate(Vector3.forward * -90);
-			door.GetComponent<Door>().hinge = 1;
-
 
 		}
 	}
