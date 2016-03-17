@@ -45,21 +45,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\2DLightAsset\Examples\RigidBodyInterpolationSolution\FollowLight2d.cs" />
-     <Compile Include="Assets\2DLightAsset\Scripts\2DLight\DynamicLight.cs" />
-     <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch.cs" />
-     <Compile Include="Assets\2DLightAsset\Scripts\Helpers\interface_touch2.cs" />
-     <Compile Include="Assets\2DLightAsset\Scripts\rotate.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\BaseMine.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
-     <Compile Include="Assets\DanTestCode\Scripts\player.cs" />
-     <Compile Include="Assets\Door.cs" />
      <Compile Include="Assets\Logic\Animatable.cs" />
      <Compile Include="Assets\Logic\BreakableCrate.cs" />
-     <Compile Include="Assets\Logic\Bullet1.cs" />
      <Compile Include="Assets\Logic\CameraRunner.cs" />
-     <Compile Include="Assets\Logic\DynamicGUI.cs" />
+     <Compile Include="Assets\Logic\Door.cs" />
      <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
      <Compile Include="Assets\Logic\Enemies\DVBoss.cs" />
      <Compile Include="Assets\Logic\Enemies\EnemyBullet.cs" />
@@ -69,35 +61,34 @@
      <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
      <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
      <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
-     <Compile Include="Assets\Logic\Enumerations.cs" />
      <Compile Include="Assets\Logic\Explosion.cs" />
      <Compile Include="Assets\Logic\GenerateRoom.cs" />
      <Compile Include="Assets\Logic\HitSpark.cs" />
-     <Compile Include="Assets\Logic\Player.cs" />
-     <Compile Include="Assets\Logic\PlayerAttack.cs" />
+     <Compile Include="Assets\Logic\Item_Drop.cs" />
+     <Compile Include="Assets\Logic\Maintain_UI.cs" />
+     <Compile Include="Assets\Logic\Player\Bullet1.cs" />
+     <Compile Include="Assets\Logic\Player\DynamicGUI.cs" />
+     <Compile Include="Assets\Logic\Player\Enumerations.cs" />
+     <Compile Include="Assets\Logic\Player\Player.cs" />
+     <Compile Include="Assets\Logic\Player\PlayerAttack.cs" />
+     <Compile Include="Assets\Logic\Player\Player_Stats.cs" />
+     <Compile Include="Assets\Logic\Player\Slash.cs" />
+     <Compile Include="Assets\Logic\Player\Stat.cs" />
+     <Compile Include="Assets\Logic\Player\StatDisplay.cs" />
+     <Compile Include="Assets\Logic\Player\Stat_Cost.cs" />
+     <Compile Include="Assets\Logic\Player\WeaponStats.cs" />
      <Compile Include="Assets\Logic\Poof.cs" />
-     <Compile Include="Assets\Logic\Slash.cs" />
-     <Compile Include="Assets\Logic\Slider_Sync_Value.cs" />
      <Compile Include="Assets\Logic\SparkPoof.cs" />
-     <Compile Include="Assets\Logic\Stat.cs" />
-     <Compile Include="Assets\Logic\StatDisplay.cs" />
-     <Compile Include="Assets\Logic\Storage.cs" />
      <Compile Include="Assets\Logic\Tools.cs" />
      <Compile Include="Assets\Logic\Weapon.cs" />
-     <Compile Include="Assets\Logic\WeaponStats.cs" />
      <Compile Include="Assets\Logic\energy_core_script.cs" />
      <Compile Include="Assets\Shine.cs" />
-     <None Include="Assets\2DLightAsset\Shaders\Gradient-NoTexture-Radial-SingleColor-ToTransparent-RegularUV-AlphaBlend.shader" />
-     <None Include="Assets\2DLightAsset\Shaders\NoTexture.shader" />
      <None Include="Assets\Shaders\TileBG.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="pseudoSinCos">
- <HintPath>C:/Users/Alex/Documents/GitHub/topdown/Assets/2DLightAsset/Scripts/Helpers/pseudoSinCos.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

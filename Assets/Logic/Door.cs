@@ -16,12 +16,10 @@ public class Door : MonoBehaviour
 	void Start()
 	{
 		open = true;
-		hinge = 8;
 		time = 0;
 		actionTime = .01f;
 		count = 0;
-		delay = false;
-		max = 100;
+		max = 300;
 	}
 
 	// Update is called once per frame
