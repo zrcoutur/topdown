@@ -10,8 +10,7 @@ using System.Collections;
  * 1 February 2016
  */
 public class BreakableCrate : MonoBehaviour {
-	// Prefabs associated with a crate
-	public GameObject crate;
+	// Box's HP bar
 	public GameObject hp_bar;
 	// droppabble items
 	public GameObject energy_core;
@@ -70,13 +69,14 @@ public class BreakableCrate : MonoBehaviour {
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250f, 250f), Random.Range(-250f, 250f)));
 		} else if (chance > 0.45f) {
 			// Drop between 0 and 10 scrap pieces
-			int drops = UnityEngine.Random.Range(0, 30) / 5;
+			int drops = UnityEngine.Random.Range(2, 6);
 
 			for (int i = 0; i < drops; ++i) {
 					var d = (GameObject)Instantiate(scrap, transform.localPosition, Quaternion.identity);
 					d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250f, 250f), Random.Range(-250f, 250f)));
 			}
 		}
-		Destroy(crate);
+
+		Destroy(this.gameObject);
 	}
 }
