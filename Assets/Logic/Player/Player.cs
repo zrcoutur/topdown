@@ -31,10 +31,10 @@ public class Player : MonoBehaviour {
 	// Parameters
 	double atkCool;
 	Regen_Counter ammo_regen;
-    int maxAmmo;
+	private static readonly float maxAmmo = 100f;
 	float shieldRegenTime;
 	float shieldRecoverTime;
-	public int ammo;
+	public float ammo;
 	public float shieldMaxRegenTime = 2.5f;
 	public float shieldMaxRecoverTime = 0.1f;
 
@@ -68,8 +68,7 @@ public class Player : MonoBehaviour {
 
 		// Set base params
 		stats = new Player_Stats();
-		maxAmmo = 100;
-		ammo = 100;
+		ammo = 100f;
 		ammo_regen = new Regen_Counter(0.45f, 0.25f);
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
@@ -256,7 +255,7 @@ public class Player : MonoBehaviour {
 			
 		// Press 'h' to restore HP
 		if ( Input.GetKeyDown(KeyCode.H) ) {
-			GetHealed(stats.MAX_HEALTH.current());
+			GetHealed((int)stats.MAX_HEALTH.current());
 		}
 		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
@@ -311,7 +310,7 @@ public class Player : MonoBehaviour {
 	 * does nothing and returns false.
 	 *
 	 *******************************************************************************/
-	bool UseAmmo( int cost ) {
+	bool UseAmmo( float cost ) {
 		
 		// Check if you have enough ammo
 		if (ammo >= cost) {
@@ -334,7 +333,7 @@ public class Player : MonoBehaviour {
 	 * Called whenever you regain ammo. Updates UI info, too.
 	 *
 	 *******************************************************************************/
-	void GainAmmo( int ammoGained ) {
+	void GainAmmo( float ammoGained ) {
 		
 		// Gain ammo up to maximum
 		ammo = Mathf.Min( ammo + ammoGained, maxAmmo );
@@ -461,7 +460,7 @@ public class Player : MonoBehaviour {
 
 	/* Get current weapon damage */
 	private int damage_for_weapon() {
-		return stats.weapon_by_type( stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current();
+		return (int)( stats.weapon_by_type(stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current() );
 	}
 
 	// Run into items

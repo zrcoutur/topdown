@@ -33,7 +33,7 @@ public class Player_Stats {
 		}
 
 		MAX_HEALTH = new Stat(STAT_TYPE.health, val_temp, cost_temp);
-		health = MAX_HEALTH.current();
+		health = (int)MAX_HEALTH.current();
 		HP_raised = true;
 
 		val_temp = new int[11];
@@ -49,7 +49,7 @@ public class Player_Stats {
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
-		shield = MAX_SHIELD.current();
+		shield = (int)MAX_SHIELD.current();
 		Shield_raised = true;
 
 		WEAPONS = new WeaponStats[4];
@@ -69,7 +69,7 @@ public class Player_Stats {
 		health += value;
 
 		if (health > MAX_HEALTH.current()) {
-			health = MAX_HEALTH.current();
+			health = (int)MAX_HEALTH.current();
 		} else if (health < 0) {
 			health = 0;
 		}
@@ -86,7 +86,7 @@ public class Player_Stats {
 		var excess = 0;
 
 		if (shield > MAX_SHIELD.current()) {
-			shield = MAX_SHIELD.current();
+			shield = (int)MAX_SHIELD.current();
 		} else if (shield < 0) {
 			// returns any overflow damage after the shield is exhausted
 			excess = shield;

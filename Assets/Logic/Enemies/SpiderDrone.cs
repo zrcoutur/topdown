@@ -27,7 +27,7 @@ public class SpiderDrone : Baseenemy
 		health = health + (int)(0.5f * health * time / timeScale);
 		Maxhealth = health;
 		speed = speed + (0.1f * speed * time / timeScale);
-		damage = damage + (int)(0.2f * damage * time / timeScale);
+		damage = damage + (int)(0.35f * damage * time / timeScale);
     }
 
     public override void attack()
