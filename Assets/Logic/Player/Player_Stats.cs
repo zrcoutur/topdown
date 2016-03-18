@@ -28,15 +28,7 @@ public class Player_Stats {
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			// determine core cost
-			int c_cost = 1;
-			if (idx > 2) { c_cost = 2; }
-			if (idx > 4) { c_cost = 3; }
-			if (idx > 6) { c_cost = 5; }
-			if (idx == 8) { c_cost = 8; }
-			if (idx == 9) { c_cost = 13; }
-
-			cost_temp[idx] = new Stat_Cost(c_cost, (int)(0.2f * idx * idx) + 3 * idx + 6);
+			cost_temp[idx] = new Stat_Cost(2 * idx + 1, (int)(0.45f * idx * idx) + 5 * idx + 6);
 
 		}
 
@@ -53,7 +45,7 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.13f * idx * idx) + idx + 2, 4 * idx + 3);
+			cost_temp[idx] = new Stat_Cost((int)(0.13f * idx * idx) + idx + 2, (int)(0.35f * idx * idx) + 3 * idx + 3);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
