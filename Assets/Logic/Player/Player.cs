@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 	Animator anim;
 
 	// Outside elements
-	public static Player_Stats stats;
+	public Player_Stats stats;
 	public readonly DynamicGUI upgradeWindow;
 	public Weapon weapon;
 	public Slash slash;
@@ -258,10 +258,10 @@ public class Player : MonoBehaviour {
 		if ( Input.GetKeyDown(KeyCode.H) ) {
 			GetHealed(stats.MAX_HEALTH.current());
 		}
-		// Hold 'r' to gain ammo
+		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
-	}
+		}
 	}
 
 	/*******************************************************************************
@@ -482,7 +482,7 @@ public class Player : MonoBehaviour {
 			// Shien effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
-			stats.change_scarp(1);
+			stats.change_scrap(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}

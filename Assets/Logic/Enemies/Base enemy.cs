@@ -68,7 +68,7 @@ public abstract class Baseenemy : MonoBehaviour
 						// Create item
 						var s = (GameObject) Instantiate (yields [j], transform.position, Quaternion.Euler (0, 0, 0));
 						// Fly out randomly
-						s.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.Range (-400f, 400f), Random.Range (-400f, 400f)));
+						s.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.Range (-250f, 250f), Random.Range (-250f, 250f)));
 					}
 				}
 			}

@@ -15,8 +15,12 @@ public class Maintain_UI : MonoBehaviour {
 
 	private Text[] item_counters;
 
+	public Player p;
+
 	// Use this for initialization
 	void Start () {
+		p = FindObjectOfType<Player>();
+
 		// Find sliders in children objects
 		Slider[] sliders = GetComponentsInChildren<Slider>();
 
@@ -41,21 +45,21 @@ public class Maintain_UI : MonoBehaviour {
 
 	/* Update the player's max health or max shield to the current maximum value */
 	private void update_ui() {
-		if (Player.stats != null) {
+		if (p.stats != null) {
 			// Sync health slider's max value to the Player's current max health
-			if (Player.stats.HP_raised) {
-				health.maxValue = Player.stats.MAX_HEALTH.current();
-				Player.stats.HP_raised = false;
+			if (p.stats.HP_raised) {
+				health.maxValue = p.stats.MAX_HEALTH.current();
+				p.stats.HP_raised = false;
 			}
 			// Sync shield slider's max value to Player's current max shield
-			if (Player.stats.Shield_raised) {
-				shield.maxValue = Player.stats.MAX_SHIELD.current();
-				Player.stats.Shield_raised = false;
+			if (p.stats.Shield_raised) {
+				shield.maxValue = p.stats.MAX_SHIELD.current();
+				p.stats.Shield_raised = false;
 			}
 
 			// Update scrap and e. core displays
-			item_counters [0].text = "" + Player.stats.get_scrap();
-			item_counters [1].text = "" + Player.stats.get_ecores();
+			item_counters [0].text = "" + p.stats.get_scrap();
+			item_counters [1].text = "" + p.stats.get_ecores();
 		}
 	}
 }

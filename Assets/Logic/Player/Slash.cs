@@ -4,7 +4,6 @@ using System.Collections;
 public class Slash : PlayerAttack {
 
 	double slashTimer;
-	private int damage;
 
 	// Use this for initialization
 	void Start () {
@@ -32,15 +31,11 @@ public class Slash : PlayerAttack {
 
 		if (col.tag == "Enemy") {
 
-            col.gameObject.SendMessage("OnHit", (PlayerAttack)this);
+			//print (col.gameObject);
+			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
 
-        }
+		}
 
 	}
 
-	/* Set the damage of the bullet */
-	public void set_damage(int dmg) { damage = dmg; }
-
-	/* Return the bullet's damage */
-	public int get_damage() { return damage; }
 }

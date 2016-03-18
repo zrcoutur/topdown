@@ -20,13 +20,35 @@ public class Player_Stats {
 	private int scrap;
 
 	public Player_Stats() {
-		MAX_HEALTH = new Stat(STAT_TYPE.health, new int[] { 5, 8, 13, 21, 34, 55, 89, 144, 233 },
-			new Stat_Cost[] { new Stat_Cost(2, 5), new Stat_Cost(3, 11), new Stat_Cost(4, 20), new Stat_Cost(6, 33), new Stat_Cost(9, 51), new Stat_Cost(13, 75), new Stat_Cost(18, 106), new Stat_Cost(24, 145) } );
+		int[] val_temp = new int[11];
+		Stat_Cost[] cost_temp = new Stat_Cost[10];
+		// initialize health values
+		for (int idx = 0; idx < val_temp.Length; ++idx) {
+			val_temp[idx] = (2 * idx * idx) + 5;
+		}
+		// initialize stat costs
+		for (int idx = 0; idx < cost_temp.Length; ++idx) {
+			cost_temp[idx] = new Stat_Cost(2 * idx + 1, (int)(0.45f * idx * idx) + 5 * idx + 6);
+
+		}
+
+		MAX_HEALTH = new Stat(STAT_TYPE.health, val_temp, cost_temp);
 		health = MAX_HEALTH.current();
 		HP_raised = true;
 
-		MAX_SHIELD = new Stat(STAT_TYPE.shield, new int[] { 10, 13, 19, 28, 40, 55, 73, 94, 118 },
-			new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(1, 8), new Stat_Cost(2, 15), new Stat_Cost(3, 24), new Stat_Cost(5, 35), new Stat_Cost(8, 48), new Stat_Cost(12, 63), new Stat_Cost(17, 80), new Stat_Cost(23, 99) } );
+		val_temp = new int[11];
+		cost_temp = new Stat_Cost[10];
+		// initialize shield values
+		for (int idx = 0; idx < val_temp.Length; ++idx) {
+			val_temp[idx] = (int)(0.6f * idx * idx) + 3 * idx + 8;
+		}
+
+		// initialize stat costs
+		for (int idx = 0; idx < cost_temp.Length; ++idx) {
+			cost_temp[idx] = new Stat_Cost((int)(0.13f * idx * idx) + idx + 2, (int)(0.35f * idx * idx) + 3 * idx + 3);
+		}
+
+		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
 		shield = MAX_SHIELD.current();
 		Shield_raised = true;
 
@@ -100,7 +122,7 @@ public class Player_Stats {
 
 	/* Adds the given value to the current scrap count. Any addition that would
 	 * result in a negative number will change the count value to zero, instead. */
-	public void change_scarp(int value) {
+	public void change_scrap(int value) {
 		scrap = Mathf.Max( (scrap + value), 0 );
 	}
 

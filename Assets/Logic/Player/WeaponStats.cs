@@ -33,7 +33,7 @@ public class WeaponStats {
 			rof = new int[] { 4 };
 			amo = new int[] { 0 };
 
-			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(2, 11), new Stat_Cost(3, 28), new Stat_Cost(5, 55), new Stat_Cost(8, 93), new Stat_Cost(12, 143), new Stat_Cost(18, 206), new Stat_Cost(24, 293), new Stat_Cost(56, 431) };
+			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 5), new Stat_Cost(1, 11), new Stat_Cost(2, 19), new Stat_Cost(3, 30), new Stat_Cost(5, 43), new Stat_Cost(7, 59), new Stat_Cost(9, 79), new Stat_Cost(13, 103), new Stat_Cost(21, 167) };
 			rof_c = new Stat_Cost[0];
 			amo_c = new Stat_Cost[0];
 		} else if (type.CompareTo(WEAPON_TYPE.rifle) == 0) {
@@ -41,17 +41,17 @@ public class WeaponStats {
 			rof = new int[] { 6, 9, 12, 16, 20, 25, 36 };
 			amo = new int[] { 7, 6, 5, 4, 3, 2 };
 
-			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 5), new Stat_Cost(3, 18), new Stat_Cost(8, 39), new Stat_Cost(13, 74), new Stat_Cost(24, 136), new Stat_Cost(37, 213), new Stat_Cost(59, 356), new Stat_Cost(103, 613) };
-			rof_c = new Stat_Cost[] { new Stat_Cost(2, 6), new Stat_Cost(3, 18), new Stat_Cost(5, 33), new Stat_Cost(8, 72), new Stat_Cost(12, 121), new Stat_Cost(26, 296) };
-			amo_c = new Stat_Cost[] { new Stat_Cost(3, 11), new Stat_Cost(7, 25), new Stat_Cost(13, 72), new Stat_Cost(25, 167), new Stat_Cost(48, 289) };
+			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(2, 11), new Stat_Cost(3, 23), new Stat_Cost(5, 39), new Stat_Cost(8, 60), new Stat_Cost(12, 89), new Stat_Cost(16, 122), new Stat_Cost(26, 189) };
+			rof_c = new Stat_Cost[] { new Stat_Cost(1, 6), new Stat_Cost(2, 18), new Stat_Cost(4, 43), new Stat_Cost(9, 81), new Stat_Cost(15, 127), new Stat_Cost(29, 206) };
+			amo_c = new Stat_Cost[] { new Stat_Cost(1, 9), new Stat_Cost(3, 23), new Stat_Cost(6, 44), new Stat_Cost(11, 97), new Stat_Cost(17, 173) };
 		} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
 			dmg = new int[] { 5, 8, 13, 22, 34, 52, 73 };
 			rof = new int[] { 1, 2, 3, 5, 7, 10, 16, 23 };
 			amo = new int[] { 18, 15, 12, 9, 7 };
 
-			dmg_c = new Stat_Cost[] { new Stat_Cost(1, 3), new Stat_Cost(5, 19), new Stat_Cost(13, 41), new Stat_Cost(23, 90), new Stat_Cost(54, 17), new Stat_Cost(83, 206) };
-			rof_c = new Stat_Cost[] { new Stat_Cost(2, 6), new Stat_Cost(5, 14), new Stat_Cost(9, 27), new Stat_Cost(16, 43), new Stat_Cost(29, 71), new Stat_Cost(46, 124), new Stat_Cost(67, 237) };
-			amo_c = new Stat_Cost[] { new Stat_Cost(3, 15), new Stat_Cost(9, 32), new Stat_Cost(23, 98), new Stat_Cost(75, 180) };
+			dmg_c = new Stat_Cost[] { new Stat_Cost(2, 9), new Stat_Cost(5, 17), new Stat_Cost(9, 35), new Stat_Cost(13, 56), new Stat_Cost(19, 93), new Stat_Cost(24, 170) };
+			rof_c = new Stat_Cost[] { new Stat_Cost(1, 7), new Stat_Cost(2, 18), new Stat_Cost(4, 39), new Stat_Cost(6, 57), new Stat_Cost(9, 78), new Stat_Cost(13, 123), new Stat_Cost(21, 216) };
+			amo_c = new Stat_Cost[] { new Stat_Cost(3, 13), new Stat_Cost(7, 29), new Stat_Cost(11, 56), new Stat_Cost(16, 104) };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
 			dmg = new int[] { 15, 25, 36, 42, 58, 70 };
 			rof = new int[] { 1, 3, 5 };

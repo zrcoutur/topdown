@@ -9,7 +9,7 @@ public class Item_Drop : MonoBehaviour {
 
 	public void Start() {
 		// Initialize timer
-		duration = 8f * (UnityEngine.Random.Range(65, 135) / 100f);
+		duration = 8f * (UnityEngine.Random.Range(100, 185) / 100f);
 	}
 
 	public void Update() {
