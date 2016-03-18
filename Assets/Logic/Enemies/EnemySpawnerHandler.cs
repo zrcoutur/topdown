@@ -38,27 +38,28 @@ public class EnemySpawnerHandler : MonoBehaviour
                 Random.seed = System.DateTime.Now.Millisecond;
                 int rand1 = Random.Range(0, enemies.Length);
 
-                bool notReady = true;
+                //bool notReady = true;
                 int rand2 = 0;
 
-                while (notReady)
-                {
+                //while (notReady)
+                //{
                     Random.seed = System.DateTime.Now.Millisecond + 1;
                     rand2 = Random.Range(0, spawnPoints.Length);
-                    if (spawnPoints[rand2].activated)
-                    {
-                        var player = Tools.findNearest(spawnPoints[rand2].transform.position, "Player");
-                        Vector3 t = player.position - spawnPoints[rand2].transform.position;
-                        float distance = Mathf.Sqrt(Mathf.Pow(t.x, 2) + Mathf.Pow(t.y, 2));
-                        if (distance <= 300)
-                        {
-                            notReady = true;
-                        }
+                 //   if (spawnPoints[rand2].activated)
+                    // {
+                    //      var player = Tools.findNearest(spawnPoints[rand2].transform.position, "Player");
+                    //     Vector3 t = player.position - spawnPoints[rand2].transform.position;
+                    //     float distance = Mathf.Sqrt(Mathf.Pow(t.x, 2) + Mathf.Pow(t.y, 2));
+                    //     if (distance <= 300)
+                    //   {
+                   //    notReady = true;
+                    //   }
 
-                    }
-                    Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
-                    enemy.TimeIncrease(totaltime);
-                }
+                //}
+                Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
+                enemy.TimeIncrease(totaltime);
+                //}
+            }
                 if ((int)(totaltime) % 300 == 299)
                 {
                     if (rate > .5)
@@ -79,4 +80,3 @@ public class EnemySpawnerHandler : MonoBehaviour
 
         }
     }
-}
