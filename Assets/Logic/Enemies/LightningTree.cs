@@ -31,7 +31,7 @@ public class LightningTree : MonoBehaviour {
                     float distance = Mathf.Sqrt(Mathf.Pow(t.x, 2) + Mathf.Pow(t.y,2));
                     if (distance <= 200)
                     {
-                        Player.stats.change_shield((-1) * Player.stats.get_shield() + 10);
+                        //Player.stats.change_shield((-1) * Player.stats.get_shield() + 10);
 
                         ///Player p= g.GetComponent<Player>();
                     }

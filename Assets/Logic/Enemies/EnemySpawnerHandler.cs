@@ -6,7 +6,8 @@ public class EnemySpawnerHandler : MonoBehaviour
     public float rate;
     private float timer;
     private float totaltime;
-	public Baseenemy[] enemies;
+    public Baseenemy[] enemies;
+    public Baseenemy[] bosses;
     private int numToSpawnatOnce;
 
     private int maxnumberofenemes = 250;
@@ -36,31 +37,46 @@ public class EnemySpawnerHandler : MonoBehaviour
                 }
                 Random.seed = System.DateTime.Now.Millisecond;
                 int rand1 = Random.Range(0, enemies.Length);
-                
-          
-                Random.seed = System.DateTime.Now.Millisecond + 1;
-                int rand2 = Random.Range(0, spawnPoints.Length);
-                
-                Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
-                enemy.TimeIncrease(totaltime);
-            }
-            if ((int)(totaltime) % 300 == 299)
-            {
-                if (rate > .5)
+
+                bool notReady = true;
+                int rand2 = 0;
+
+                while (notReady)
                 {
-                    rate -= Time.deltaTime;
+                    Random.seed = System.DateTime.Now.Millisecond + 1;
+                    rand2 = Random.Range(0, spawnPoints.Length);
+                    if (spawnPoints[rand2].activated)
+                    {
+                        var player = Tools.findNearest(spawnPoints[rand2].transform.position, "Player");
+                        Vector3 t = player.position - spawnPoints[rand2].transform.position;
+                        float distance = Mathf.Sqrt(Mathf.Pow(t.x, 2) + Mathf.Pow(t.y, 2));
+                        if (distance <= 300)
+                        {
+                            notReady = true;
+                        }
+
+                    }
+                    Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
+                    enemy.TimeIncrease(totaltime);
                 }
-                if (numToSpawnatOnce < 15)
+                if ((int)(totaltime) % 300 == 299)
                 {
-                    numToSpawnatOnce++;
+                    if (rate > .5)
+                    {
+                        rate -= Time.deltaTime;
+                    }
+                    if (numToSpawnatOnce < 15)
+                    {
+                        numToSpawnatOnce++;
+                    }
+                    //spawn boss
                 }
-                //spawn boss
+
+
+
+                timer += rate;
             }
 
-
-
-            timer += rate;
         }
-
     }
 }
