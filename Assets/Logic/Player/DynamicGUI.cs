@@ -124,7 +124,7 @@ public class DynamicGUI : MonoBehaviour {
 
 			// Subtract cost from player stats
 			if (for_next != null) {
-				p.stats.change_scarp(-for_next.scrap_cost);
+				p.stats.change_scrap(-for_next.scrap_cost);
 				p.stats.change_ecores(-for_next.ecore_cost);
 			}
 

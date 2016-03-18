@@ -482,7 +482,7 @@ public class Player : MonoBehaviour {
 			// Shien effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
-			stats.change_scarp(1);
+			stats.change_scrap(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}

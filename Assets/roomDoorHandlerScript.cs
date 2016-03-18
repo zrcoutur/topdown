@@ -18,8 +18,8 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		innerDoors = new List<GameObject>();
 		outerDoors = new List<GameObject>();
 		time = 0;
-		transitionTime = .5f;
-		scrapCost = 0;
+		transitionTime = 3f;
+		scrapCost = 10;
 
 		findNearDoors();
 
@@ -27,7 +27,10 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		playerDetect();
+		if (!paidScrap)
+		{
+			playerDetect();
+		}
 		if (paidScrap == true)
 		{
 			if (time < transitionTime)
@@ -50,7 +53,6 @@ public class roomDoorHandlerScript : MonoBehaviour {
 						gameOBJ.GetComponent<Door>().state = 1;
 					}
 				}
-				paidScrap = false;
 
 			}
 			time += Time.deltaTime;
@@ -62,26 +64,34 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	private void playerDetect()
 	{
 		Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
+		
 		foreach (Collider2D col in hitColliders)
 		{
 			if (col.gameObject.name.Equals("Player"))
 			{
-				if (col.gameObject.GetComponent<Player>().stats.get_scrap() >= scrapCost)
+				if (time > transitionTime)
 				{
-					col.gameObject.GetComponent<Player>().stats.change_scarp(-scrapCost);
-					paidScrap = true;
+					if (col.gameObject.GetComponent<Player>().stats.get_scrap() >= scrapCost)
+					{
+						col.gameObject.GetComponent<Player>().stats.change_scrap(-scrapCost);
+						paidScrap = true;
+						time = 0;
+						transitionTime = .5f;
+					}
+
 				}
-				
+				else
+				{
+					time += Time.deltaTime;
+				}
 			}
 		}
 	}
 
 	private void findNearDoors()
 	{
-		List<GameObject> returnList = new List<GameObject>();
 		Collider2D[]hitColliders = Physics2D.OverlapCircleAll(this.transform.position,10);
-
-
+		
 		foreach (Collider2D col in hitColliders)
 		{
 			if (col.gameObject.name.Equals("DoorPiece1(Clone)"))

@@ -130,7 +130,7 @@ public class Player_Stats {
 
 	/* Adds the given value to the current scrap count. Any addition that would
 	 * result in a negative number will change the count value to zero, instead. */
-	public void change_scarp(int value) {
+	public void change_scrap(int value) {
 		scrap = Mathf.Max( (scrap + value), 0 );
 	}
 
