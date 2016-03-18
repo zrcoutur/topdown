@@ -21,7 +21,7 @@ public abstract class Baseenemy : MonoBehaviour
 	public float[] chanceYield;
 
 	public float speed;
-	public int health = 10;
+	public int health;
     public float rate = 1f;
 	public float rateVariance = 0f;
     public float range = 10f;
@@ -51,6 +51,7 @@ public abstract class Baseenemy : MonoBehaviour
 		flash -= Time.deltaTime;
 
 		if (dieState == 1) {
+			++ScoreBoard.enemies_killed;
 			Destroy(gameObject);
 			return;
 		}
@@ -72,7 +73,7 @@ public abstract class Baseenemy : MonoBehaviour
 						// Create item
 						var s = (GameObject) Instantiate (yields [j], transform.position, Quaternion.Euler (0, 0, 0));
 						// Fly out randomly
-						s.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.Range (-400f, 400f), Random.Range (-400f, 400f)));
+						s.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.Range (-250f, 250f), Random.Range (-250f, 250f)));
 					}
 				}
 			}
@@ -147,10 +148,17 @@ public abstract class Baseenemy : MonoBehaviour
 		}
 	}
 
+<<<<<<< HEAD
 	void OnHit(PlayerAttack hit)
     {
 		lastPlayerToAttack = hit.transform.parent.gameObject;
 		Debug.Log("attacked " + lastPlayerToAttack.name);
+=======
+	void OnHit(PlayerAttack hit) {
+		if (hit is Bullet1) {
+			++ScoreBoard.enemies_hit;
+		}
+>>>>>>> 902261d5df1fb55dd764483fa808b8be9fdb6e27
 
 		// Pushback
 		body.AddForce( hit.hitImpulse );

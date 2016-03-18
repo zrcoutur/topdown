@@ -31,20 +31,12 @@ public class Player_Stats {
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			// determine core cost
-			int c_cost = 1;
-			if (idx > 2) { c_cost = 2; }
-			if (idx > 4) { c_cost = 3; }
-			if (idx > 6) { c_cost = 5; }
-			if (idx == 8) { c_cost = 8; }
-			if (idx == 9) { c_cost = 13; }
-
-			cost_temp[idx] = new Stat_Cost(c_cost, (int)(0.2f * idx * idx) + 3 * idx + 6);
+			cost_temp[idx] = new Stat_Cost(2 * idx + 1, (int)(0.45f * idx * idx) + 5 * idx + 6);
 
 		}
 
 		MAX_HEALTH = new Stat(STAT_TYPE.health, val_temp, cost_temp);
-		health = MAX_HEALTH.current();
+		health = (int)MAX_HEALTH.current();
 		HP_raised = true;
 
 		val_temp = new int[11];
@@ -56,11 +48,11 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.13f * idx * idx) + idx + 2, 4 * idx + 3);
+			cost_temp[idx] = new Stat_Cost((int)(0.13f * idx * idx) + idx + 2, (int)(0.35f * idx * idx) + 3 * idx + 3);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
-		shield = MAX_SHIELD.current();
+		shield = (int)MAX_SHIELD.current();
 		Shield_raised = true;
 
 		WEAPONS = new WeaponStats[4];
@@ -80,7 +72,7 @@ public class Player_Stats {
 		health += value;
 
 		if (health > MAX_HEALTH.current()) {
-			health = MAX_HEALTH.current();
+			health = (int)MAX_HEALTH.current();
 		} else if (health < 0) {
 			health = 0;
 		}
@@ -97,7 +89,7 @@ public class Player_Stats {
 		var excess = 0;
 
 		if (shield > MAX_SHIELD.current()) {
-			shield = MAX_SHIELD.current();
+			shield = (int)MAX_SHIELD.current();
 		} else if (shield < 0) {
 			// returns any overflow damage after the shield is exhausted
 			excess = shield;
