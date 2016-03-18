@@ -21,7 +21,7 @@ public abstract class Baseenemy : MonoBehaviour
 	public float[] chanceYield;
 
 	public float speed;
-	public int health = 10;
+	public int health;
     public float rate = 1f;
 	public float rateVariance = 0f;
     public float range = 10f;

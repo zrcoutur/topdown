@@ -11,10 +11,12 @@ public class EnemySpawner : MonoBehaviour
     private Vector2[] location = new Vector2[4];
 
     private int i;
+
+    public bool activated;
     // Use this for initialization
     void Start()
     {
-
+        activated = true;
         float yScale = transform.lossyScale.y / 2;
         float xScale = transform.lossyScale.x / 2;
         i = 0;

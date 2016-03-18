@@ -6,21 +6,25 @@ public class GrowBoss : SpiderDrone
     Vector3 size;
     void Awake()
     {
-        health = 1000;
+        Maxhealth = 100;
+        health = 100;
         size = transform.lossyScale;
-    }
+        speed = .5f;
+   }
+
     // Update is called once per frame
     void Update()
     {
-        {
+
             if (health < 0)
             {
                 Instantiate(poof, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
                 Destroy(gameObject);
-            }
-            base.flash -= Time.deltaTime;
+        }
+        base.flash -= Time.deltaTime;
+        recollideTimer -= Time.deltaTime;
 
-            if (flash >= 0)
+        if (flash >= 0)
             {
                 toggle = 1 - toggle;
                 base.Srenderer.color = colors[toggle];
@@ -64,7 +68,7 @@ public class GrowBoss : SpiderDrone
 
 
             }
-        }
-        transform.localScale = new Vector3(size.x * health / Maxhealth, size.y * health / Maxhealth);
+        
+        transform.localScale = new Vector3(size.x * (((float)Maxhealth) / health), size.y * (((float)Maxhealth) / health));
     }
 }

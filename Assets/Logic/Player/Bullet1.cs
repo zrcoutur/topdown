@@ -5,13 +5,15 @@ public class Bullet1 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
-	public GameObject bullet;
+	//public GameObject bullet;
 	// duration of the bullet (not in seconds)
 	float duration = 1.0f;
 
+	//private int damage;
+
 	// Use this for initialization
 	void Start () {
-
+	//	damage = 0;
 		body = GetComponent<Rigidbody2D> ();
 
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
@@ -43,9 +45,7 @@ public class Bullet1 : PlayerAttack {
 		}
 
 		if (col.tag == "Enemy") {
-			
 			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
-
 			Instantiate (poof, transform.position, transform.rotation);
 			Destroy (gameObject);
 		}

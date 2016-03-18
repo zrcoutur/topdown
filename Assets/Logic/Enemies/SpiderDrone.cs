@@ -37,9 +37,9 @@ public class SpiderDrone : Baseenemy
         //p.Paudio.PlayOneShot(p.X_Slash, 1.0f);
 
         // Make Slash Effect, Quaternions are dumb
-        var sl = (GameObject)Instantiate(Slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
-        sl.GetComponent<EnemySlash>().damage = base.damage;
-        sl.transform.parent = transform;
+        //var sl = (GameObject)Instantiate(Slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
+        //sl.GetComponent<EnemySlash>().damage = base.damage;
+        //sl.transform.parent = transform;
         //sl.transform.localScale = gameObject.transform.localScale;
         // Shake camera
         p.cam.AddShake(0.1f);
