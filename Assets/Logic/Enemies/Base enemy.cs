@@ -47,6 +47,7 @@ public abstract class Baseenemy : MonoBehaviour
 		flash -= Time.deltaTime;
 
 		if (dieState == 1) {
+			++ScoreBoard.enemies_killed;
 			Destroy(gameObject);
 			return;
 		}
@@ -140,8 +141,10 @@ public abstract class Baseenemy : MonoBehaviour
 		}
 	}
 
-	void OnHit(PlayerAttack hit)
-    {
+	void OnHit(PlayerAttack hit) {
+		if (hit is Bullet1) {
+			++ScoreBoard.enemies_hit;
+		}
 
         // Pushback
 		body.AddForce( hit.hitImpulse );

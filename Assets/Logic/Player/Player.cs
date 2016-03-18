@@ -111,7 +111,10 @@ public class Player : MonoBehaviour {
 				// Slow down movement
 				body.drag = 100.0f;
 
-			
+				// Print out player scores
+				ScoreBoard.display_scores();
+
+				uponDeath = false;
 			}
 
 			return;
@@ -403,6 +406,7 @@ public class Player : MonoBehaviour {
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+			++ScoreBoard.bullets_fired;
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
 
@@ -438,6 +442,7 @@ public class Player : MonoBehaviour {
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				++ScoreBoard.bullets_fired;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
 
@@ -475,6 +480,7 @@ public class Player : MonoBehaviour {
 			stats.change_ecores(1);
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
+			++ScoreBoard.ecores_collected;
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
@@ -484,6 +490,7 @@ public class Player : MonoBehaviour {
 			stats.change_scrap(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
+			++ScoreBoard.scrap_collected;
 		}
 	}
 
