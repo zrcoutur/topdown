@@ -445,6 +445,7 @@ public class Player : MonoBehaviour {
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				b1.transform.parent = transform;
 				++ScoreBoard.bullets_fired;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
