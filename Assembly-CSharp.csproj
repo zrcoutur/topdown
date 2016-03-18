@@ -60,6 +60,8 @@
      <Compile Include="Assets\Logic\Enemies\EnemySpawnerHandler.cs" />
      <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
      <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
+     <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
+     <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
      <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
      <Compile Include="Assets\Logic\Explosion.cs" />
      <Compile Include="Assets\Logic\GenerateRoom.cs" />
@@ -78,6 +80,7 @@
      <Compile Include="Assets\Logic\Player\Stat_Cost.cs" />
      <Compile Include="Assets\Logic\Player\WeaponStats.cs" />
      <Compile Include="Assets\Logic\Poof.cs" />
+     <Compile Include="Assets\Logic\ScoreBoard.cs" />
      <Compile Include="Assets\Logic\SparkPoof.cs" />
      <Compile Include="Assets\Logic\Tools.cs" />
      <Compile Include="Assets\Logic\Weapon.cs" />

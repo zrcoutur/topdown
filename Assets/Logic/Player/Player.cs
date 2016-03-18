@@ -406,11 +406,10 @@ public class Player : MonoBehaviour {
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-<<<<<<< HEAD
+
 			b1.transform.parent = transform;
-=======
 			++ScoreBoard.bullets_fired;
->>>>>>> 902261d5df1fb55dd764483fa808b8be9fdb6e27
+
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
 

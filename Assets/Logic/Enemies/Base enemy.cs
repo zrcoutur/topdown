@@ -148,17 +148,14 @@ public abstract class Baseenemy : MonoBehaviour
 		}
 	}
 
-<<<<<<< HEAD
+
 	void OnHit(PlayerAttack hit)
     {
 		lastPlayerToAttack = hit.transform.parent.gameObject;
-		Debug.Log("attacked " + lastPlayerToAttack.name);
-=======
-	void OnHit(PlayerAttack hit) {
 		if (hit is Bullet1) {
 			++ScoreBoard.enemies_hit;
 		}
->>>>>>> 902261d5df1fb55dd764483fa808b8be9fdb6e27
+
 
 		// Pushback
 		body.AddForce( hit.hitImpulse );
