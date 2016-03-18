@@ -5,11 +5,13 @@ using System.Collections.Generic;
 public class LightningNode : MonoBehaviour {
     public GameObject enemy;
     private float time;
-    private List<LightningNode> children=new List<LightningNode>();
-    public LightningNode parent;
+    public bool rootNode;
+    public bool destroy;
 	// Use this for initialization
 	void Start () {
         time = 0.5f;
+        rootNode = true;
+        destroy = false;
 	}
 	
 	// Update is called once per frame
@@ -17,7 +19,9 @@ public class LightningNode : MonoBehaviour {
         time -=Time.deltaTime;
         if (time < 0)
         {
-            Destroy(this);
+            enemy.GetComponent<Baseenemy>().health = 0;
+            destroy = true;
+
         }
 	}
 }
