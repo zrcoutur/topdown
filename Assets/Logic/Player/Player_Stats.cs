@@ -10,6 +10,9 @@ public class Player_Stats {
 	public readonly Stat MAX_SHIELD;
 	private int shield;
 	public bool Shield_raised;
+	//Related to score value
+	private int score;
+
 
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
@@ -148,4 +151,9 @@ public class Player_Stats {
 
 	/* Returns the number of weapon with stats. */
 	public int num_of_weapons() { return WEAPONS.Length; }
+
+	/*returns the current score of the player*/
+	public int get_score() { return score; }
+
+	public void change_score(int value) { score += value; }
 }

@@ -82,8 +82,8 @@
      <Compile Include="Assets\Logic\Tools.cs" />
      <Compile Include="Assets\Logic\Weapon.cs" />
      <Compile Include="Assets\Logic\energy_core_script.cs" />
+     <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
      <Compile Include="Assets\Shine.cs" />
-     <Compile Include="Assets\roomDoorHandlerScript.cs" />
      <None Include="Assets\Shaders\TileBG.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

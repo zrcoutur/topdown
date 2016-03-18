@@ -6,6 +6,7 @@ using System;
 public class roomDoorHandlerScript : MonoBehaviour {
 
 	public bool paidScrap;
+	bool tryOpen;
 	List<GameObject> innerDoors;
 	List<GameObject> outerDoors;
 	float time;
@@ -18,7 +19,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		innerDoors = new List<GameObject>();
 		outerDoors = new List<GameObject>();
 		time = 0;
-		transitionTime = 3f;
+		transitionTime = .5f;
 		scrapCost = 10;
 
 		findNearDoors();
@@ -67,25 +68,32 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		
 		foreach (Collider2D col in hitColliders)
 		{
-			if (col.gameObject.name.Equals("Player"))
+			if (col.gameObject.name.Equals("Slash(Clone)"))
 			{
-				if (time > transitionTime)
+				tryOpen = true;
+				break;
+			}
+		}
+		if (tryOpen)
+		{
+			foreach (Collider2D col in hitColliders)
+			{
+				if (col.gameObject.name.Equals("Player"))
 				{
 					if (col.gameObject.GetComponent<Player>().stats.get_scrap() >= scrapCost)
 					{
 						col.gameObject.GetComponent<Player>().stats.change_scrap(-scrapCost);
 						paidScrap = true;
-						time = 0;
-						transitionTime = .5f;
 					}
-
-				}
-				else
-				{
-					time += Time.deltaTime;
+					else
+					{
+						tryOpen = false;
+					}
 				}
 			}
 		}
+
+
 	}
 
 	private void findNearDoors()
@@ -100,6 +108,11 @@ public class roomDoorHandlerScript : MonoBehaviour {
 			}else if (col.gameObject.name.Equals("DoorPiece2(Clone)") )
 			{
 				outerDoors.Add(col.gameObject);
+			}
+			//turn on spawner in rooms with open doors
+			if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+			{
+
 			}
 			
 		}

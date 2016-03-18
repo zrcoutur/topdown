@@ -404,6 +404,7 @@ public class Player : MonoBehaviour {
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+			b1.transform.parent = transform;
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
 
@@ -474,6 +475,7 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_ecores(1);
+			stats.change_score(5);
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 
@@ -483,6 +485,7 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_scrap(1);
+			stats.change_score(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 		}

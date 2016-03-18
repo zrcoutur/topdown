@@ -28,6 +28,10 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage = 5;
 
+	//used to add to player score
+	public int pointValue;
+	public GameObject lastPlayerToAttack;
+
     public Color[] colors;
     // Use this for initialization
     void Start()
@@ -72,6 +76,9 @@ public abstract class Baseenemy : MonoBehaviour
 					}
 				}
 			}
+
+			//give score to player who dealt the killing attack
+			lastPlayerToAttack.GetComponent<Player>().stats.change_score(damage);
 
 			return;
         }
@@ -142,8 +149,10 @@ public abstract class Baseenemy : MonoBehaviour
 
 	void OnHit(PlayerAttack hit)
     {
+		lastPlayerToAttack = hit.transform.parent.gameObject;
+		Debug.Log("attacked " + lastPlayerToAttack.name);
 
-        // Pushback
+		// Pushback
 		body.AddForce( hit.hitImpulse );
 
 		// Take damage
