@@ -27,7 +27,6 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
-	public ScoreBoard score = new ScoreBoard();
 
 	// Parameters
 	double atkCool;
@@ -113,7 +112,7 @@ public class Player : MonoBehaviour {
 				body.drag = 100.0f;
 
 				// Print out player scores
-				score.display_scores();
+				ScoreBoard.display_scores();
 
 				uponDeath = false;
 			}
@@ -257,9 +256,10 @@ public class Player : MonoBehaviour {
 		int ammo = ammo_regen.increment();
 		GainAmmo(ammo);
 			
-		// Press 'h' to restore HP
-		if ( Input.GetKeyDown(KeyCode.H) ) {
-			GetHealed((int)stats.MAX_HEALTH.current());
+		// Press 'h' to use a medpack to restore half of your HP
+		if ( Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0 ) {
+			GetHealed((int)stats.MAX_HEALTH.current() / 2);
+			stats.MEDPACKS.decrement();
 		}
 		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
@@ -409,7 +409,7 @@ public class Player : MonoBehaviour {
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 
 			b1.transform.parent = transform;
-			score.bullets_fired++;
+			++ScoreBoard.bullets_fired;
 
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
@@ -447,7 +447,7 @@ public class Player : MonoBehaviour {
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.transform.parent = transform;
-				score.bullets_fired++;
+				++ScoreBoard.bullets_fired;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
 
@@ -483,9 +483,10 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_ecores(1);
+			stats.change_score(5);
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
-			score.ecores_collected++;
+			++ScoreBoard.ecores_collected;
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
@@ -493,9 +494,10 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_scrap(1);
+			stats.change_score(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
-			score.scrap_collected++;
+			++ScoreBoard.scrap_collected;
 		}
 	}
 

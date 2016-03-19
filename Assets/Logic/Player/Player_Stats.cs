@@ -10,6 +10,14 @@ public class Player_Stats {
 	public readonly Stat MAX_SHIELD;
 	private int shield;
 	public bool Shield_raised;
+<<<<<<< HEAD
+=======
+	// Related to player's ability to heal themselves
+	public Stat MEDPACKS;
+	// Related to score value
+	private int score;
+
+>>>>>>> c654124685bc9336d4f4885edc0f55bd1a79a871
 
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
@@ -61,6 +69,10 @@ public class Player_Stats {
 
 		energyCores = 0;
 		scrap = 0;
+
+		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
+											 new Stat_Cost[] { new Stat_Cost(5, 32), new Stat_Cost(10, 98), new Stat_Cost(25, 189) } );
+		score = 0;
 	}
 
 	/* Changes health by the given value, but restores it to the range
@@ -141,4 +153,11 @@ public class Player_Stats {
 	/* Returns the number of weapon with stats. */
 	public int num_of_weapons() { return WEAPONS.Length; }
 
+<<<<<<< HEAD
+=======
+	/* Returns the current score of the player. */
+	public int get_score() { return score; }
+
+	public void change_score(int value) { score += value; }
+>>>>>>> c654124685bc9336d4f4885edc0f55bd1a79a871
 }
