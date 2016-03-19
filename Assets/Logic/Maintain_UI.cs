@@ -61,7 +61,8 @@ public class Maintain_UI : MonoBehaviour {
 			item_counters[0].text = "" + p.stats.get_scrap();
 			item_counters[1].text = "" + p.stats.get_ecores();
 			item_counters[2].text = "" + p.stats.MEDPACKS.current();
-			item_counters[3].text = "" + p.stats.get_score();
+			item_counters[3].text = "" + p.score.totalScore;
+			
 		}
 	}
 }
