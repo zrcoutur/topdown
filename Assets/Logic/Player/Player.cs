@@ -43,6 +43,8 @@ public class Player : MonoBehaviour {
 	float flash = 0;
 	int toggle = 0;
 	bool uponDeath = true;
+	float spawnerCheck;
+	float spawnerTime;
 
 	// Keycodes
 	KeyCode M_MoveLeft = KeyCode.A;
@@ -79,6 +81,9 @@ public class Player : MonoBehaviour {
 		wep.transform.parent = transform;
 
 		score = new ScoreBoard();
+
+		spawnerCheck = 0;
+		spawnerTime = 10;
 	}
 	
 	/*******************************************************************************
@@ -268,21 +273,29 @@ public class Player : MonoBehaviour {
 			GainAmmo(1);
 		}
 
-
-		// activate spawners near player
-		Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
-
-		foreach (Collider2D col in hitColliders)
+		if (spawnerCheck >= spawnerTime)
 		{
+			// activate spawners near player
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
 
-			//find nearby players
-			if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+			foreach (Collider2D col in hitColliders)
 			{
 
-				col.gameObject.GetComponent<EnemySpawner>().setActive();
-			}
+				//find nearby players
+				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+				{
 
+					col.gameObject.GetComponent<EnemySpawner>().setActive();
+				}
+
+			}
+			spawnerCheck = 0;
 		}
+		else
+		{
+			spawnerCheck += Time.deltaTime;
+		}
+
 
 
 	}
