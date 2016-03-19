@@ -47,7 +47,7 @@ public class ScoreBoard {
 
 	/* Prints all values out to the commmand line. */
 	public void display_scores() {
-<<<<<<< HEAD
+
 
 		if (totalScore > highscore )
 		{
@@ -61,21 +61,14 @@ public class ScoreBoard {
 			Debug.Log("Accuracy = " + 100 * ((enemies_hit + boxes_hit) / (float)(bullets_fired + sword_attacks)) + "%");
 		}
 	
-		Debug.Log("Enemies killed: " + enemies_killed +
-=======
-		Debug.Log("Accuracy = "+ 100*((float)enemies_hit/ (float)bullets_fired ) + "%");
 		Debug.Log("Enemies killed: " + enemies_killed + 
->>>>>>> 1e59d6c3342627495bf69575f5ecb0ff3a8a457d
+
 				  "\nBullets fired: " + bullets_fired +
 				  "\nSword attacks: " + sword_attacks +
 				  "\nEnemies hit: " + enemies_hit +
-<<<<<<< HEAD
 				  "\nScrap Collected: " + scrap_collected +
 				  "\nE. Cores collected: " + ecores_collected);
 		PlayerPrefs.Save();
-=======
-				  "\nScrap Collected: " + scrap_collected + 
-				  "\nE. Cores collected: " + ecores_collected);
->>>>>>> 1e59d6c3342627495bf69575f5ecb0ff3a8a457d
+
 	}
 }
