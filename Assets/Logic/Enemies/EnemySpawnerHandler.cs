@@ -10,7 +10,7 @@ public class EnemySpawnerHandler : MonoBehaviour
     public Baseenemy[] bosses;
     private int numToSpawnatOnce;
 
-    private int maxnumberofenemes = 250;
+    private int maxnumberofenemes = 50;
     private EnemySpawner[] spawnPoints;
     // Use this for initialization
     void Start()
