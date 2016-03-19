@@ -42,16 +42,24 @@ public abstract class Baseenemy : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         Srenderer = GetComponent<SpriteRenderer>();
         timer = rate;
+
+		pointValue = 25;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+		//Debug.Log((ulong)pointValue);
+
 		recollideTimer -= Time.deltaTime;
 		flash -= Time.deltaTime;
 
 		if (dieState == 1) {
-			++ScoreBoard.enemies_killed;
+			//update score adding one kill to the player giving killing attack, and add pointValue to score
+			lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
+			lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+
 			Destroy(gameObject);
 			return;
 		}
@@ -78,13 +86,32 @@ public abstract class Baseenemy : MonoBehaviour
 				}
 			}
 
-			//give score to player who dealt the killing attack
-			lastPlayerToAttack.GetComponent<Player>().stats.change_score(damage);
+
 
 			return;
         }
 
-        if (flash >= 0)
+
+		Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
+		bool foundPlayer = false;
+		foreach (Collider2D col in hitColliders)
+		{
+
+			//find nearby players
+			if ((col.gameObject.name.Equals("Player(Clone)") || col.gameObject.name.Equals("Player")))
+			{
+				foundPlayer = true;
+				break;
+			}
+
+		}
+		//if players are too far away, detroy the enemy
+		if (foundPlayer == false)
+		{
+			Destroy(gameObject);
+		}
+
+		if (flash >= 0)
         {
             toggle = 1 - toggle;
             Srenderer.color = colors[toggle];
@@ -151,9 +178,10 @@ public abstract class Baseenemy : MonoBehaviour
 
 	void OnHit(PlayerAttack hit)
     {
+		//keep track of last player to attack and update their scores
 		lastPlayerToAttack = hit.transform.parent.gameObject;
 		if (hit is Bullet1) {
-			++ScoreBoard.enemies_hit;
+			hit.transform.parent.gameObject.GetComponent<Player>().score.enemies_hit++;
 		}
 
 

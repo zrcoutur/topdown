@@ -60,7 +60,7 @@ public class Maintain_UI : MonoBehaviour {
 			// Update scrap and e. core displays
 			item_counters [0].text = "" + p.stats.get_scrap();
 			item_counters [1].text = "" + p.stats.get_ecores();
-			item_counters [2].text = "" + p.stats.get_score();
+			item_counters [2].text = "" + p.score.totalScore;
 		}
 	}
 }

@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
+	public ScoreBoard score = new ScoreBoard();
 
 	// Parameters
 	double atkCool;
@@ -112,7 +113,7 @@ public class Player : MonoBehaviour {
 				body.drag = 100.0f;
 
 				// Print out player scores
-				ScoreBoard.display_scores();
+				score.display_scores();
 
 				uponDeath = false;
 			}
@@ -408,7 +409,7 @@ public class Player : MonoBehaviour {
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 
 			b1.transform.parent = transform;
-			++ScoreBoard.bullets_fired;
+			score.bullets_fired++;
 
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
@@ -446,7 +447,7 @@ public class Player : MonoBehaviour {
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 				b1.transform.parent = transform;
-				++ScoreBoard.bullets_fired;
+				score.bullets_fired++;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
 
@@ -482,10 +483,9 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_ecores(1);
-			stats.change_score(5);
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
-			++ScoreBoard.ecores_collected;
+			score.ecores_collected++;
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
@@ -493,10 +493,9 @@ public class Player : MonoBehaviour {
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			stats.change_scrap(1);
-			stats.change_score(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
-			++ScoreBoard.scrap_collected;
+			score.scrap_collected++;
 		}
 	}
 

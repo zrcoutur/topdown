@@ -7,29 +7,33 @@ using UnityEngine;
  * author : Joshua Hooker
  * 18 March 2016
  */
-public static class ScoreBoard {
+public class ScoreBoard {
 	// total number of enemies killed
-	public static ulong enemies_killed;
+	public ulong enemies_killed;
 	// total number of bullets fired
-	public static ulong bullets_fired;
+	public ulong bullets_fired;
 	// the number of bullets that hit an enemy
-	public static ulong enemies_hit;
+	public ulong enemies_hit;
 	// total number of scrap collected
-	public static ulong scrap_collected;
+	public ulong scrap_collected;
 	// total number of e. cores collected
-	public static ulong ecores_collected;
+	public ulong ecores_collected;
+	//total score (points) the player has currently
+	public ulong totalScore;
 
 	// Initialize values
-	static ScoreBoard() {
+	 void Start() {
 		enemies_killed = 0;
 		bullets_fired = 0;
 		enemies_hit = 0;
 		scrap_collected = 0;
 		ecores_collected = 0;
+		totalScore = 0;
 	}
 
+
 	/* Prints all values out to the commmand line. */
-	public static void display_scores() {
+	public void display_scores() {
 		Debug.Log("Enemies killed: " + enemies_killed + 
 				  "\nBullets fired: " + bullets_fired +
 				  "\nEnemies hit: " + enemies_hit +
