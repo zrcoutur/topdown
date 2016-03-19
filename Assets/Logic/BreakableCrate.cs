@@ -13,8 +13,7 @@ public class BreakableCrate : MonoBehaviour {
 	// Box's HP bar
 	public GameObject hp_bar;
 	// droppabble items
-	public GameObject energy_core;
-	public GameObject scrap;
+	public GameObject[] item_drops;
 	// used to determine overlap amongst other Blocks
 	public bool collision_tag;
 	// initial durability of a crate
@@ -71,16 +70,20 @@ public class BreakableCrate : MonoBehaviour {
 	private void remove_crate() {
 		float chance = UnityEngine.Random.value;
 
-		// Possibly drop an e. core
-		if (chance >= 0.03f && chance <= 0.37f) {
-			var d = (GameObject)Instantiate(energy_core, transform.localPosition, Quaternion.identity);
+		if (chance > 0.05f && chance <= 0.15f) {
+			// Drop a med_pack
+			var d = (GameObject)Instantiate(item_drops[2], transform.localPosition, Quaternion.identity);
+			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)));
+		} else if (chance > 0.15f && chance <= 0.45f) {
+			// Drop an e. core
+			var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
-		} else if (chance > 0.37f) {
-			// Drop between 0 and 10 scrap pieces
+		} else if (chance > 0.45f) {
+			// Drop between 3 and 8 scrap pieces
 			int drops = UnityEngine.Random.Range(3, 8);
 
 			for (int i = 0; i < drops; ++i) {
-					var d = (GameObject)Instantiate(scrap, transform.localPosition, Quaternion.identity);
+				var d = (GameObject)Instantiate(item_drops[0], transform.localPosition, Quaternion.identity);
 					d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-350f, 350f), Random.Range(-350f, 350f)));
 			}
 		}
