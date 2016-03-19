@@ -7,11 +7,15 @@ public class roomDoorHandlerScript : MonoBehaviour {
 
 	public bool paidScrap;
 	bool tryOpen;
+	bool open;
 	List<GameObject> innerDoors;
 	List<GameObject> outerDoors;
 	float time;
 	float transitionTime;
 	int scrapCost;
+
+	float playerCheck;
+	float playerTime;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +25,11 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		time = 0;
 		transitionTime = .5f;
 		scrapCost = 10;
+		open = false;
+
+		playerCheck = 0;
+		playerTime = .5f;
+
 
 		findNearDoors();
 
@@ -28,11 +37,15 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!paidScrap)
+		if (!paidScrap && playerCheck >= playerTime)
 		{
 			playerDetect();
 		}
-		if (paidScrap == true)
+		else
+		{
+			playerCheck += Time.deltaTime;
+		}
+		if (paidScrap == true && !open)
 		{
 			if (time < transitionTime)
 			{
@@ -52,10 +65,12 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					if (gameOBJ.GetComponent<Door>().state == 0)
 					{
 						gameOBJ.GetComponent<Door>().state = 1;
+						open = true;
 					}
 				}
 
 			}
+			
 			time += Time.deltaTime;
 
 		}

@@ -276,7 +276,7 @@ public class Player : MonoBehaviour {
 		if (spawnerCheck >= spawnerTime)
 		{
 			// activate spawners near player
-			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
 
 			foreach (Collider2D col in hitColliders)
 			{

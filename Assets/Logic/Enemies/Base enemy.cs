@@ -91,26 +91,6 @@ public abstract class Baseenemy : MonoBehaviour
 			return;
         }
 
-		/*
-		Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
-		bool foundPlayer = false;
-		foreach (Collider2D col in hitColliders)
-		{
-
-			//find nearby players
-			if ((col.gameObject.name.Equals("Player(Clone)") || col.gameObject.name.Equals("Player")))
-			{
-				foundPlayer = true;
-				break;
-			}
-
-		}
-		//if players are too far away, detroy the enemy
-		if (foundPlayer == false)
-		{
-			Destroy(gameObject);
-		}
-		*/
 		if (flash >= 0)
         {
             toggle = 1 - toggle;
