@@ -34,10 +34,11 @@ public class ScoreBoard {
 
 	/* Prints all values out to the commmand line. */
 	public void display_scores() {
-		Debug.Log("Enemies killed: " + enemies_killed + 
+	//	Debug.Log("Accuracy = "+ 100*((float)enemies_hit/ (float)bullets_fired ) + "%");
+	/*	Debug.Log("Enemies killed: " + enemies_killed + 
 				  "\nBullets fired: " + bullets_fired +
 				  "\nEnemies hit: " + enemies_hit +
 				  "\nScrap Collected: " + scrap_collected + 
-				  "\nE. Cores collected: " + ecores_collected);
+				  "\nE. Cores collected: " + ecores_collected);*/
 	}
 }
