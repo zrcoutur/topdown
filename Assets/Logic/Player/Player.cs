@@ -509,9 +509,21 @@ public class Player : MonoBehaviour {
 	// Run into items
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		GameObject obj = trigger.gameObject;
+		// Med pack
+		if (obj.tag == "med_pack") {
+			// Shien effect
+			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
+			Destroy(obj);
+			int ret = stats.MEDPACKS.increment();
+			// If you cannot hold anymore med_packs
+			if (ret == 0) {
+				stats.change_scrap(10);
+				stats.change_ecores(1);
+			}
+		}
 		// Energy Core
-		if (obj.tag == "core") {
+		else if (obj.tag == "core") {
 			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
@@ -522,7 +534,7 @@ public class Player : MonoBehaviour {
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
-			// Shien effect
+			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
