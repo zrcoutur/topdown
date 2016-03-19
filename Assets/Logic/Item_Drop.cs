@@ -13,7 +13,7 @@ public class Item_Drop : MonoBehaviour {
 		// Find all players
 		players = FindObjectsOfType<Player>();
 		// Initialize timer
-		duration = 5f * (UnityEngine.Random.Range(100, 160) / 100f);
+		duration = 3f * (UnityEngine.Random.Range(100, 167) / 100f);
 	}
 
 	public void Update() {
@@ -32,7 +32,6 @@ public class Item_Drop : MonoBehaviour {
 		} else { // Remove item from the game
 			// Shine effect
 			Instantiate(shine, gameObject.transform.position, Quaternion.Euler (0, 0, 0));
-
 			Destroy(this.gameObject);
 		}
 	}

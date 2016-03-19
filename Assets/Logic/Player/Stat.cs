@@ -84,6 +84,12 @@ public class Stat {
 		return 0;
 	}
 
+	/* Sets the stat value back one value. If the pointer is already at 0,
+	 * then nothing changes. */
+	protected void decrement() {
+		pointer = System.Math.Max(0, pointer - 1);
+	}
+
 	/* Returns the number of values for this stat. */
 	public int values_length() { return values.Length; }
 
