@@ -487,6 +487,7 @@ public class Player : MonoBehaviour {
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 			score.ecores_collected++;
+			stats.change_ecores(1);
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
@@ -496,6 +497,7 @@ public class Player : MonoBehaviour {
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 			score.scrap_collected++;
+			stats.change_scrap(1);
 		}
 	}
 
