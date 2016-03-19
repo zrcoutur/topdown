@@ -84,6 +84,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					{
 						col.gameObject.GetComponent<Player>().stats.change_scrap(-scrapCost);
 						paidScrap = true;
+						
 					}
 					else
 					{
@@ -91,6 +92,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					}
 				}
 			}
+			findNearDoors();
 		}
 
 
@@ -108,13 +110,15 @@ public class roomDoorHandlerScript : MonoBehaviour {
 			}else if (col.gameObject.name.Equals("DoorPiece2(Clone)") )
 			{
 				outerDoors.Add(col.gameObject);
-			}
-			//turn on spawner in rooms with open doors
-			if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+			}else if (col.gameObject.name.Equals("baseSpawner(Clone)"))
 			{
-
+				col.gameObject.GetComponent<EnemySpawner>().inSpecialRoom = true;
+				if (paidScrap)
+				{
+					col.gameObject.GetComponent<EnemySpawner>().inSpecialRoom = false; ;
+				}
 			}
-			
+
 		}
 		
 	}

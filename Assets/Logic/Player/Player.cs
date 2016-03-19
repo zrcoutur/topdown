@@ -267,6 +267,24 @@ public class Player : MonoBehaviour {
 		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
 		}
+
+
+		// activate spawners near player
+		Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 40);
+
+		foreach (Collider2D col in hitColliders)
+		{
+
+			//find nearby players
+			if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+			{
+
+				col.gameObject.GetComponent<EnemySpawner>().setActive();
+			}
+
+		}
+
+
 	}
 
 	/*******************************************************************************
