@@ -11,7 +11,7 @@ public class Player_Stats {
 	private int shield;
 	public bool Shield_raised;
 	// Related to player's ability to heal themselves
-	private Stat MEDPACKS;
+	public Stat MEDPACKS;
 	// Related to score value
 	private int score;
 
@@ -149,9 +149,6 @@ public class Player_Stats {
 
 	/* Returns the number of weapon with stats. */
 	public int num_of_weapons() { return WEAPONS.Length; }
-
-	/* Returns the player's medpacks stat. */
-	public Stat get_medpacks() { return MEDPACKS; }
 
 	/* Returns the current score of the player. */
 	public int get_score() { return score; }

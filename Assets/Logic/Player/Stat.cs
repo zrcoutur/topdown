@@ -86,7 +86,7 @@ public class Stat {
 
 	/* Sets the stat value back one value. If the pointer is already at 0,
 	 * then nothing changes. */
-	protected void decrement() {
+	public void decrement() {
 		pointer = System.Math.Max(0, pointer - 1);
 	}
 

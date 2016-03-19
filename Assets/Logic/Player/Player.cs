@@ -256,9 +256,10 @@ public class Player : MonoBehaviour {
 		int ammo = ammo_regen.increment();
 		GainAmmo(ammo);
 			
-		// Press 'h' to restore HP
-		if ( Input.GetKeyDown(KeyCode.H) ) {
-			GetHealed((int)stats.MAX_HEALTH.current());
+		// Press 'h' to use a medpack to restore half of your HP
+		if ( Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0 ) {
+			GetHealed((int)stats.MAX_HEALTH.current() / 2);
+			stats.MEDPACKS.decrement();
 		}
 		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
