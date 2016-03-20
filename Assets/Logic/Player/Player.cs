@@ -231,6 +231,8 @@ public class Player : MonoBehaviour {
 			stats.cycle_weapons();
 			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
+			atkCool = 0;
+
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
@@ -276,18 +278,17 @@ public class Player : MonoBehaviour {
 			GainAmmo(1);
 		}
 
+		//Activates spawners within a certain radius of the player every so often
 		if (spawnerCheck >= spawnerTime)
 		{
-			// activate spawners near player
+			
 			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
 
+			//find nearby game objects that are spawners
 			foreach (Collider2D col in hitColliders)
 			{
-
-				//find nearby players
 				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
 				{
-
 					col.gameObject.GetComponent<EnemySpawner>().setActive();
 				}
 
