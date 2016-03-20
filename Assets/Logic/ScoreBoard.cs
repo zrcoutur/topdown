@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 /**
  * A class designed to hold the player's progress in the game in some key areas.
@@ -7,7 +8,7 @@ using UnityEngine;
  * author : Joshua Hooker
  * 18 March 2016
  */
-public class ScoreBoard {
+public class ScoreBoard : MonoBehaviour {
 	// total number of enemies killed
 	public ulong enemies_killed;
 	// total number of bullets fired
@@ -28,6 +29,7 @@ public class ScoreBoard {
 	public ulong totalScore;
 	// all time high score
 	public ulong highscore;
+
 
 	// Initialize values
 	 void Start() {

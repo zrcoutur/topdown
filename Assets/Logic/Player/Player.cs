@@ -122,6 +122,9 @@ public class Player : MonoBehaviour {
 				score.display_scores();
 
 				uponDeath = false;
+
+				PlayerPrefs.SetInt ("FinalScore", (int) this.score.totalScore);
+				UnityEngine.SceneManagement.SceneManager.LoadScene ("gameOver");
 			}
 
 			return;
