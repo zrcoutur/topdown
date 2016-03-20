@@ -48,6 +48,8 @@ public class BreakableCrate : MonoBehaviour {
 			/* bullets and swords deal differing damage */
 			if (collider.tag == "bullet_1") {
 				durability -= 1;
+				//increment player stat
+				collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
 			} else if (collider.tag == "sword") {
 				durability -= 8;
 			}

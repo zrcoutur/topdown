@@ -160,7 +160,7 @@ public abstract class Baseenemy : MonoBehaviour
     {
 		//keep track of last player to attack and update their scores
 		lastPlayerToAttack = hit.transform.parent.gameObject;
-		if (hit is Bullet1) {
+		if (hit is Bullet1 || hit is Slash) {
 			hit.transform.parent.gameObject.GetComponent<Player>().score.enemies_hit++;
 		}
 

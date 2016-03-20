@@ -409,6 +409,7 @@ public class Player : MonoBehaviour {
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 			sl.transform.parent = transform;
+			score.sword_attacks++;
 			sl.damage = damage_for_weapon ();
 
 			// Shake camera
