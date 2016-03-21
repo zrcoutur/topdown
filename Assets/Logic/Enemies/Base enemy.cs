@@ -28,10 +28,16 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage = 5;
 
+    public bool infected;
+    public bool isBoss;
+    private float timeTillDestroy;
+
     public Color[] colors;
     // Use this for initialization
     void Start()
     {
+        timeTillDestroy = 0.5f;
+        infected = false;
         SearchDelay = 0.5f;
         nearest = null;
 
@@ -51,7 +57,7 @@ public abstract class Baseenemy : MonoBehaviour
 			return;
 		}
 
-        if (health < 0)
+        if (health < 0||timeTillDestroy<=0)
         {
 			dieState = 1;
 
@@ -122,6 +128,33 @@ public abstract class Baseenemy : MonoBehaviour
             body.AddForce(Tools.AngleToVec2(currentAngle - 90.0f, speed));
 
 
+        }
+
+        if (infected)
+        {
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
+            int count = 0;
+            foreach(Collider2D coll in hitColliders)
+            {
+                if (coll.gameObject.tag == "Player")
+                {
+                    int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
+                    coll.gameObject.GetComponent<Player>().GetHurt(damage);
+                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                    break;
+                }
+                if (count == 2)
+                {
+                    break;
+                }
+                if (coll.gameObject.tag == "Enemy"&&!coll.gameObject.GetComponent<Baseenemy>().isBoss)
+                {
+                    coll.gameObject.GetComponent<Baseenemy>().infected = true;
+                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                    count++;
+                }
+            }
+            timeTillDestroy -= Time.deltaTime;
         }
     }
 

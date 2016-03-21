@@ -70,11 +70,13 @@ public class EnemySpawnerHandler : MonoBehaviour
                     {
                         numToSpawnatOnce++;
                     }
-                    //spawn boss
+                    Random.seed = System.DateTime.Now.Millisecond;
+                    int rand1 = Random.Range(0, bosses.Length);
+                    Random.seed = System.DateTime.Now.Millisecond + 1;
+                    int rand2 = Random.Range(0, spawnPoints.Length);
+                    Baseenemy enemy = spawnPoints[rand2].spawn(bosses[rand1]);
+                    enemy.TimeIncrease(totaltime);
                 }
-
-
-
                 timer += rate;
             }
 
