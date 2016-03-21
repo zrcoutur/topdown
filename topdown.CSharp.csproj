@@ -78,8 +78,6 @@
     <Compile Include="Assets\Logic\Enemies\EnemySpawnerHandler.cs" />
     <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
     <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
-    <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
-    <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
     <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
     <Compile Include="Assets\Logic\Explosion.cs" />
     <Compile Include="Assets\Logic\GenerateRoom.cs" />
