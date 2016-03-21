@@ -8,7 +8,7 @@ using UnityEngine.UI;
  * author : Joshua Hooker
  * 18 March 2016
  */
-public class ScoreBoard : MonoBehaviour {
+public class ScoreBoard {
 	// total number of enemies killed
 	public ulong enemies_killed;
 	// total number of bullets fired
@@ -32,7 +32,7 @@ public class ScoreBoard : MonoBehaviour {
 
 
 	// Initialize values
-	 void Start() {
+	public ScoreBoard() {
 		enemies_killed = 0;
 		bullets_fired = 0;
 		sword_attacks = 0;

@@ -150,7 +150,7 @@ public abstract class Baseenemy : MonoBehaviour
 				float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
 
 				// Rotate to face target
-				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f));
+				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 6.0f * speed));
 
 				// Move at target
 				body.AddForce (dir * GetComponent<Baseenemy>().speed);

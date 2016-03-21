@@ -90,6 +90,9 @@ public class Stat {
 		pointer = System.Math.Max(0, pointer - 1);
 	}
 
+	/* Return the current value of the pointer. */
+	public int pointer_value() { return pointer; }
+
 	/* Returns the number of values for this stat. */
 	public int values_length() { return values.Length; }
 
