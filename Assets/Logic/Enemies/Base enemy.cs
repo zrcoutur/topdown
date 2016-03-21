@@ -19,6 +19,7 @@ public abstract class Baseenemy : MonoBehaviour
 	public int[] numYielded;
 	public GameObject[] yields;
 	public float[] chanceYield;
+	private Pathfinding2D pf;
 
 	public float speed;
 	public int health;
@@ -36,12 +37,13 @@ public abstract class Baseenemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        SearchDelay = 0.5f;
+        SearchDelay = 1.0f;
         nearest = null;
 
         body = GetComponent<Rigidbody2D>();
         Srenderer = GetComponent<SpriteRenderer>();
         timer = rate;
+		pf = GetComponent<Pathfinding2D> ();
 
 		pointValue = 25;
     }
@@ -104,40 +106,63 @@ public abstract class Baseenemy : MonoBehaviour
         if (SearchDelay <= 0)
         {
 
-            SearchDelay = 1.0f;
+			// Find nearest player
+			nearest = Tools.findNearest(transform.position, "Player");
 
-            nearest = Tools.findNearest(transform.position, "Player");
+			// Pathfind to player
+			pf.FindPath (transform.position, nearest.transform.position);
+
+			// Long re-track timer
+			SearchDelay = 5.0f;
+
+			// Much more accurate re-tracking at point-blank
+			if ( Vector3.Distance( transform.position, nearest.transform.position ) < 10f)
+				SearchDelay -= 4.0f;
 
         }
 
-        if (nearest != null )
-        {
-
-            // Calculate angle to target
-            Vector2 dir = nearest.position - transform.position;
-            float currentAngle = Tools.QuaternionToAngle(transform.rotation);
-            float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
+		if (nearest != null )
+		{
 
 			// Attack check - within range and you attack
-            if (Mathf.Sqrt(Mathf.Pow(dir.x, 2f) + Mathf.Pow(dir.y, 2f)) <= range
+			if (Vector3.Distance( transform.position, nearest.position) <= range 
 				&& rate != -1f )
-            {
-                if (timer <= 0)
-                {
-                    attack();
+			{
+				if (timer <= 0)
+				{
+					attack();
 					timer += rate + Random.Range (-rateVariance, rateVariance);
-                }
-                timer -= Time.deltaTime;
-            }
+				}
+				timer -= Time.deltaTime;
+			}
 
-            // Rotate to face target
-            transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f));
+			// Move towards target
 
-            // Move towards target
-            body.AddForce(Tools.AngleToVec2(currentAngle - 90.0f, speed));
+			// Check if something obstructs your movement to the target
+			if (Vector2.Distance( transform.position, nearest.position ) > 10.0f ) {
+				pf.Move ();
+			}
+			// Otherwise, move straight to the target
+			else {
+				// Calculate angle to target
+				Vector2 dir = (nearest.position - transform.position).normalized;
+				float currentAngle = Tools.QuaternionToAngle(transform.rotation);
+				float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
+
+				// Rotate to face target
+				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f));
+
+				// Move at target
+				body.AddForce (dir * GetComponent<Baseenemy>().speed);
+
+			}
+
+			// Check if you have completed your path - search sooner if so
+			if (SearchDelay > 0.5f && pf.Path.Count == 0)
+				SearchDelay = 0.5f;
 
 
-        }
+		}
     }
 
 	// Bump into walls/player
