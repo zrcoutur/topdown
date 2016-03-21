@@ -26,11 +26,11 @@ public class Player_Stats {
 		Stat_Cost[] cost_temp = new Stat_Cost[9];
 		// initialize health values
 		for (int idx = 0; idx < val_temp.Length; ++idx) {
-			val_temp[idx] = (idx * idx) + 2 * idx + 5;
+			val_temp[idx] = (idx * idx) + 2 * idx + 6;
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost(0, (int)(2.1f * idx * idx) + 5 * idx + 6);
+			cost_temp[idx] = new Stat_Cost(0, (int)(1f * idx * idx * idx) + (int)(1.5f * idx * idx) + 6 * idx + 8);
 
 		}
 
@@ -47,7 +47,7 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.18f * idx * idx) + 5 * idx + 3, 0);
+			cost_temp[idx] = new Stat_Cost((int)(0.4f * idx * idx) + 6 * idx + 3, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
