@@ -6,16 +6,11 @@ using System;
 public class roomDoorHandlerScript : MonoBehaviour {
 
 	public bool paidScrap;
-	bool tryOpen;
-	bool open;
 	List<GameObject> innerDoors;
 	List<GameObject> outerDoors;
 	float time;
 	float transitionTime;
 	int scrapCost;
-
-	float playerCheck;
-	float playerTime;
 
 	// Use this for initialization
 	void Start () {
@@ -23,13 +18,8 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		innerDoors = new List<GameObject>();
 		outerDoors = new List<GameObject>();
 		time = 0;
-		transitionTime = .5f;
+		transitionTime = 3f;
 		scrapCost = 10;
-		open = false;
-
-		playerCheck = 0;
-		playerTime = .5f;
-
 
 		findNearDoors();
 
@@ -37,15 +27,11 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!paidScrap && playerCheck >= playerTime)
+		if (!paidScrap)
 		{
 			playerDetect();
 		}
-		else
-		{
-			playerCheck += Time.deltaTime;
-		}
-		if (paidScrap == true && !open)
+		if (paidScrap == true)
 		{
 			if (time < transitionTime)
 			{
@@ -65,12 +51,10 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					if (gameOBJ.GetComponent<Door>().state == 0)
 					{
 						gameOBJ.GetComponent<Door>().state = 1;
-						open = true;
 					}
 				}
 
 			}
-			
 			time += Time.deltaTime;
 
 		}
@@ -83,34 +67,25 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		
 		foreach (Collider2D col in hitColliders)
 		{
-			if (col.gameObject.name.Equals("Slash(Clone)"))
+			if (col.gameObject.name.Equals("Player"))
 			{
-				tryOpen = true;
-				break;
-			}
-		}
-		if (tryOpen)
-		{
-			foreach (Collider2D col in hitColliders)
-			{
-				if (col.gameObject.name.Equals("Player"))
+				if (time > transitionTime)
 				{
 					if (col.gameObject.GetComponent<Player>().stats.get_scrap() >= scrapCost)
 					{
 						col.gameObject.GetComponent<Player>().stats.change_scrap(-scrapCost);
 						paidScrap = true;
-						
+						time = 0;
+						transitionTime = .5f;
 					}
-					else
-					{
-						tryOpen = false;
-					}
+
+				}
+				else
+				{
+					time += Time.deltaTime;
 				}
 			}
-			findNearDoors();
 		}
-
-
 	}
 
 	private void findNearDoors()
@@ -125,15 +100,8 @@ public class roomDoorHandlerScript : MonoBehaviour {
 			}else if (col.gameObject.name.Equals("DoorPiece2(Clone)") )
 			{
 				outerDoors.Add(col.gameObject);
-			}else if (col.gameObject.name.Equals("baseSpawner(Clone)"))
-			{
-				col.gameObject.GetComponent<EnemySpawner>().inSpecialRoom = true;
-				if (paidScrap)
-				{
-					col.gameObject.GetComponent<EnemySpawner>().inSpecialRoom = false; ;
-				}
 			}
-
+			
 		}
 		
 	}

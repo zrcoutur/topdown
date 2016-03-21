@@ -6,9 +6,10 @@ using System.Collections;
 public class DynamicGUI : MonoBehaviour {
 	// Determines if the window is shown
 	private bool show;
-	// Window dimensions
+
+	private bool initialized;
+
 	private Rect window_dimensions;
-	// Dimensions of each of the contents of window
 	private StatDisplay[] displays;
 	
 	private static GUIStyle lbl_grn_text;
@@ -23,12 +24,15 @@ public class DynamicGUI : MonoBehaviour {
 	}
 
 	public void Update() {
-		displays = new StatDisplay[6];
-		// Initialize stat displays
-		displays[0] = new StatDisplay("Health", p.stats.MAX_HEALTH);
-		displays[1] = new StatDisplay("Shield", p.stats.MAX_SHIELD);
-		displays[2] = new StatDisplay("Medpacks", p.stats.MEDPACKS);
-		switchWeaponStats();
+		if (!initialized) {
+			displays = new StatDisplay[5];
+			// Initialize stat displays
+			displays[0] = new StatDisplay("Health", p.stats.MAX_HEALTH);
+			displays[1] = new StatDisplay("Shield", p.stats.MAX_SHIELD);
+			switchWeaponStats();
+
+			initialized = true;
+		}
 
 		// Toggle the display on and off
 		if (Input.GetKeyDown (KeyCode.Tab)) {
@@ -76,7 +80,7 @@ public class DynamicGUI : MonoBehaviour {
 
 			if (idx == 0) { // position based on the window display
 				previous = new Rect(0, 0, 0, 0);
-			} else if (idx == 3) {
+			} else 	if (idx == 2) {
 				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
 			} else { // position a stat display based on the previous stat display
 				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
@@ -92,9 +96,14 @@ public class DynamicGUI : MonoBehaviour {
 		foreach (StatDisplay sd in displays) {
 			drawStatDisplay(sd);
 		}
-		// Prints the name of the current weapon
-		Rect weapon_lbl = StatDisplay.relativeRect(displays[2].labels[1], 2, -8, 35, 48, 22);
+
+		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, -8, 35, 48, 22);
 		GUI.Label(weapon_lbl, p.stats.weapon_by_type( p.stats.current_weapon() ).type.ToString());
+
+		// Button for switching between the stats of each weapon
+		/*if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
+			switchWeaponStats();
+		}*/
 	}
 
 	/* Draws the fields of the given stat display */
@@ -102,7 +111,7 @@ public class DynamicGUI : MonoBehaviour {
 		// display title
 		GUI.Label(display.labels[0], display.name);
 
-		// Determines if the stat value is capped
+		// Determins if the stat value is capped
 		bool is_last = display.stat.next() == -1;
 		// Determines if the player can afford the next upgrade
 		Stat_Cost for_next = display.stat.next_cost();
@@ -141,9 +150,9 @@ public class DynamicGUI : MonoBehaviour {
 	public void switchWeaponStats() {
 		WeaponStats current = p.stats.weapon_by_type( p.stats.current_weapon() );
 
-		displays[3] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
-		displays[4] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
-		displays[5] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
+		displays[2] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
+		displays[3] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
+		displays[4] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
 
 		updatePositions();
 	}

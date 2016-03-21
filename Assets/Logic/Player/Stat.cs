@@ -10,7 +10,7 @@ public class Stat {
 	// the type of stat
 	public readonly STAT_TYPE type;
 	// A non-empty sequence of values for the stat
-	private readonly float[] values;
+	private readonly int[] values;
 	// The costs of each next respective stat upgrade in values
 	private readonly Stat_Cost[] costs;
 	private int pointer;
@@ -20,12 +20,7 @@ public class Stat {
 	 */
 	public Stat (STAT_TYPE t, int[] vals) {
 		type = t;
-		values = new float[vals.Length];
-
-		for (int idx = 0; idx < vals.Length; ++idx) {
-			values[idx] = vals[idx];
-		}
-
+		values = vals;
 		pointer = 0;
 		costs = null;
 	}
@@ -36,33 +31,18 @@ public class Stat {
 	 */
 	public Stat (STAT_TYPE t, int[] vals, Stat_Cost[] sc) {
 		type = t;
-		values = new float[vals.Length];
-
-		for (int idx = 0; idx < vals.Length; ++idx) {
-			values[idx] = vals[idx];
-		}
-		pointer = 0;
-		costs = sc;
-	}
-
-	/**
-	 * Creates a stat of the given type with the given costs;
-	 * The sc array should have one less value than the vals array! 
-	 */
-	public Stat (STAT_TYPE t, float[] vals, Stat_Cost[] sc) {
-		type = t;
 		values = vals;
 		pointer = 0;
 		costs = sc;
 	}
 
 	/* Returns the element in values pointed at by current_value. */
-	public float current() { return values[pointer]; }
+	public int current() { return values[pointer]; }
 
 	/* Returns the element in values after the element referenced by
 	 * current_value if one exists; -1 is returned if the current_value
 	 * points to the end of values. */
-	public float next() {
+	public int next() {
 		return (pointer >= values.Length - 1) ? -1 : values[pointer + 1];
 	}
 
@@ -82,12 +62,6 @@ public class Stat {
 		}
 
 		return 0;
-	}
-
-	/* Sets the stat value back one value. If the pointer is already at 0,
-	 * then nothing changes. */
-	public void decrement() {
-		pointer = System.Math.Max(0, pointer - 1);
 	}
 
 	/* Returns the number of values for this stat. */

@@ -27,15 +27,14 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
-	public ScoreBoard score;
 
 	// Parameters
 	double atkCool;
 	Regen_Counter ammo_regen;
-	private static readonly float maxAmmo = 100f;
+    int maxAmmo;
 	float shieldRegenTime;
 	float shieldRecoverTime;
-	public float ammo;
+	public int ammo;
 	public float shieldMaxRegenTime = 2.5f;
 	public float shieldMaxRecoverTime = 0.1f;
 
@@ -43,8 +42,6 @@ public class Player : MonoBehaviour {
 	float flash = 0;
 	int toggle = 0;
 	bool uponDeath = true;
-	float spawnerCheck;
-	float spawnerTime;
 
 	// Keycodes
 	KeyCode M_MoveLeft = KeyCode.A;
@@ -71,7 +68,8 @@ public class Player : MonoBehaviour {
 
 		// Set base params
 		stats = new Player_Stats();
-		ammo = 100f;
+		maxAmmo = 100;
+		ammo = 100;
 		ammo_regen = new Regen_Counter(0.45f, 0.25f);
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
@@ -80,10 +78,6 @@ public class Player : MonoBehaviour {
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
 		wep.transform.parent = transform;
 
-		score = new ScoreBoard();
-
-		spawnerCheck = 0;
-		spawnerTime = 10;
 	}
 	
 	/*******************************************************************************
@@ -118,13 +112,7 @@ public class Player : MonoBehaviour {
 				// Slow down movement
 				body.drag = 100.0f;
 
-				// Print out player scores
-				score.display_scores();
-
-				uponDeath = false;
-
-				PlayerPrefs.SetInt ("FinalScore", (int) this.score.totalScore);
-				UnityEngine.SceneManagement.SceneManager.LoadScene ("gameOver");
+			
 			}
 
 			return;
@@ -154,9 +142,9 @@ public class Player : MonoBehaviour {
 			shieldRecoverTime -= Time.deltaTime;
 
 			// Regen a tick of shield if delay is over
-			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
+			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current ()) {
 				
-				stats.change_shield( (int)(shieldSlider.maxValue / 33f + 0.99f) );
+				stats.change_shield(1);
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -231,8 +219,6 @@ public class Player : MonoBehaviour {
 			stats.cycle_weapons();
 			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
-			atkCool = 0;
-
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
@@ -268,40 +254,14 @@ public class Player : MonoBehaviour {
 		int ammo = ammo_regen.increment();
 		GainAmmo(ammo);
 			
-		// Press 'h' to use a medpack to restore half of your HP
-		if ( Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0 ) {
-			GetHealed((int)stats.MAX_HEALTH.current() / 2);
-			stats.MEDPACKS.decrement();
+		// Press 'h' to restore HP
+		if ( Input.GetKeyDown(KeyCode.H) ) {
+			GetHealed(stats.MAX_HEALTH.current());
 		}
 		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
 		}
-
-		//Activates spawners within a certain radius of the player every so often
-		if (spawnerCheck >= spawnerTime)
-		{
-			
-			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
-
-			//find nearby game objects that are spawners
-			foreach (Collider2D col in hitColliders)
-			{
-				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
-				{
-					col.gameObject.GetComponent<EnemySpawner>().setActive();
-				}
-
-			}
-			spawnerCheck = 0;
-		}
-		else
-		{
-			spawnerCheck += Time.deltaTime;
-		}
-
-
-
 	}
 
 	/*******************************************************************************
@@ -351,7 +311,7 @@ public class Player : MonoBehaviour {
 	 * does nothing and returns false.
 	 *
 	 *******************************************************************************/
-	bool UseAmmo( float cost ) {
+	bool UseAmmo( int cost ) {
 		
 		// Check if you have enough ammo
 		if (ammo >= cost) {
@@ -374,7 +334,7 @@ public class Player : MonoBehaviour {
 	 * Called whenever you regain ammo. Updates UI info, too.
 	 *
 	 *******************************************************************************/
-	void GainAmmo( float ammoGained ) {
+	void GainAmmo( int ammoGained ) {
 		
 		// Gain ammo up to maximum
 		ammo = Mathf.Min( ammo + ammoGained, maxAmmo );
@@ -410,7 +370,6 @@ public class Player : MonoBehaviour {
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 			sl.transform.parent = transform;
-			score.sword_attacks++;
 			sl.damage = damage_for_weapon ();
 
 			// Shake camera
@@ -445,10 +404,6 @@ public class Player : MonoBehaviour {
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-
-			b1.transform.parent = transform;
-			score.bullets_fired++;
-
 			b1.damage = damage_for_weapon();
 			b1.set_duration(0.85f);
 
@@ -484,8 +439,6 @@ public class Player : MonoBehaviour {
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-				b1.transform.parent = transform;
-				score.bullets_fired++;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
 
@@ -508,44 +461,30 @@ public class Player : MonoBehaviour {
 
 	/* Get current weapon damage */
 	private int damage_for_weapon() {
-		return (int)( stats.weapon_by_type(stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current() );
+		return stats.weapon_by_type( stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current();
 	}
 
 	// Run into items
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		GameObject obj = trigger.gameObject;
-		// Med pack
-		if (obj.tag == "med_pack") {
-			// Shien effect
-			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
-			Destroy(obj);
-			int ret = stats.MEDPACKS.increment();
-			// If you cannot hold anymore med_packs
-			if (ret == 0) {
-				stats.change_scrap(8);
-				stats.change_ecores(1);
-			}
-		}
 		// Energy Core
-		else if (obj.tag == "core") {
+		if (obj.tag == "core") {
 			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
+			stats.change_ecores(1);
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
-			score.ecores_collected++;
-			stats.change_ecores(1);
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
-			// Shine effect
+			// Shien effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
 
+			stats.change_scrap(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
-			score.scrap_collected++;
-			stats.change_scrap(1);
 		}
 	}
 
