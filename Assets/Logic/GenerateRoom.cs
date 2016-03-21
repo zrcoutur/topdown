@@ -296,7 +296,7 @@ public class GenerateRoom : MonoBehaviour
 					//
 					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
 					{
-						int chance = UnityEngine.Random.Range(0, 10);
+						int chance = UnityEngine.Random.Range(0, 0);
 						if (chance == 0 && spawnerCap > spawnersPlaced)
 						{
 							returnMatrix[x, y] = 2;
