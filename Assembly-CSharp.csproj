@@ -38,10 +38,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>E:/Programs/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>E:/Programs/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -88,13 +88,36 @@
      <Compile Include="Assets\Logic\Weapon.cs" />
      <Compile Include="Assets\Logic\energy_core_script.cs" />
      <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer2D.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\Lines.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\SearchPlayerAI.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\SetGrid.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\SimpleAI.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\SimpleAI2D.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\TDEnemy.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\TDManager.cs" />
+     <Compile Include="Assets\Pathfinding\Scenes\Scripts\WaypointPlayer.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\DynamicMapUpdate.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\DynamicTDGridObject.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\Node.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\NodeSearch.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\Pathfinder.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\Pathfinder2D.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\Pathfinding.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\Pathfinding2D.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\QueuePath.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\WaypointListNode.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\WaypointNode.cs" />
+     <Compile Include="Assets\Pathfinding\Scripts\WaypointPathfinder.cs" />
      <Compile Include="Assets\Shine.cs" />
      <None Include="Assets\Shaders\TileBG.shader" />
  <Reference Include="UnityEngine.UI">
- <HintPath>E:/Programs/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>E:/Programs/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

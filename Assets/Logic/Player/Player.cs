@@ -154,9 +154,9 @@ public class Player : MonoBehaviour {
 			shieldRecoverTime -= Time.deltaTime;
 
 			// Regen a tick of shield if delay is over
-			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current ()) {
+			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield(1);
+				stats.change_shield( (int)(shieldSlider.maxValue / 33f + 0.99f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -231,6 +231,8 @@ public class Player : MonoBehaviour {
 			stats.cycle_weapons();
 			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
+			atkCool = 0;
+
 			// Play swap sound
 			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
@@ -276,18 +278,17 @@ public class Player : MonoBehaviour {
 			GainAmmo(1);
 		}
 
+		//Activates spawners within a certain radius of the player every so often
 		if (spawnerCheck >= spawnerTime)
 		{
-			// activate spawners near player
+			
 			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
 
+			//find nearby game objects that are spawners
 			foreach (Collider2D col in hitColliders)
 			{
-
-				//find nearby players
 				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
 				{
-
 					col.gameObject.GetComponent<EnemySpawner>().setActive();
 				}
 
@@ -522,7 +523,7 @@ public class Player : MonoBehaviour {
 			int ret = stats.MEDPACKS.increment();
 			// If you cannot hold anymore med_packs
 			if (ret == 0) {
-				stats.change_scrap(10);
+				stats.change_scrap(8);
 				stats.change_ecores(1);
 			}
 		}

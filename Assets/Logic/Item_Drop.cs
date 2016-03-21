@@ -13,7 +13,7 @@ public class Item_Drop : MonoBehaviour {
 		// Find all players
 		players = FindObjectsOfType<Player>();
 		// Initialize timer
-		duration = 3f * (UnityEngine.Random.Range(100, 167) / 100f);
+		duration = 5f * (UnityEngine.Random.Range(80, 160) / 100f);
 	}
 
 	public void Update() {
@@ -23,7 +23,7 @@ public class Item_Drop : MonoBehaviour {
 			float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
 
 			if (System.Math.Abs(dist_x) <= 2.5f && System.Math.Abs(dist_y) <= 2.5f) {
-				GetComponent<Rigidbody2D>().AddForce( new Vector2(-12f * dist_x, -12f * dist_y) );
+				GetComponent<Rigidbody2D>().AddForce( new Vector2(-15f * dist_x, -15f * dist_y) );
 			}
 		}
 
