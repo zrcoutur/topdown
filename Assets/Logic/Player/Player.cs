@@ -154,9 +154,9 @@ public class Player : MonoBehaviour {
 			shieldRecoverTime -= Time.deltaTime;
 
 			// Regen a tick of shield if delay is over
-			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current ()) {
+			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield(1);
+				stats.change_shield( (int)(shieldSlider.maxValue / 33f + 0.99f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -523,7 +523,7 @@ public class Player : MonoBehaviour {
 			int ret = stats.MEDPACKS.increment();
 			// If you cannot hold anymore med_packs
 			if (ret == 0) {
-				stats.change_scrap(10);
+				stats.change_scrap(8);
 				stats.change_ecores(1);
 			}
 		}
