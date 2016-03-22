@@ -10,6 +10,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	bool open;
 	List<GameObject> innerDoors;
 	List<GameObject> outerDoors;
+	public GameObject upgrade;
 	float time;
 	float transitionTime;
 	int scrapCost;
@@ -40,6 +41,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		if (!paidScrap && playerCheck >= playerTime)
 		{
 			playerDetect();
+			playerCheck = 0; 
 		}
 		else
 		{
@@ -107,7 +109,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					}
 				}
 			}
-			findNearDoors();
+			//findNearDoors();
 		}
 
 

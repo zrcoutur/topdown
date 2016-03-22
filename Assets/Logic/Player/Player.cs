@@ -567,6 +567,11 @@ public class Player : MonoBehaviour {
 			Destroy(obj);
 			score.scrap_collected++;
 			stats.change_scrap(1);
+		}else if(obj.tag == "weapon_pack")
+		{
+
+			stats.owned_weapons[obj.GetComponent<WeaponUpgrade>().weapon] = 1;
+			Destroy(obj);
 		}
 	}
 
