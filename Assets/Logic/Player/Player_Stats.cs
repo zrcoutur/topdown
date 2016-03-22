@@ -125,7 +125,7 @@ public class Player_Stats {
 		//weapons not owned yet will not be cycled 
 		for (int i = 1; i < 4; i++)
 		{
-			if (owned_weapons[(byte)held_weapon + i] > 0)
+			if (owned_weapons[((byte)held_weapon + i) % 3] > 0)
 			{
 				// the grenade is currently not implemented, so it is skipped.
 				held_weapon = (WEAPON_TYPE)(((byte)held_weapon + i) % (byte)WEAPON_TYPE.grenade);
