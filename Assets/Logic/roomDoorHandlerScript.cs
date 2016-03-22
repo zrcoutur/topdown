@@ -14,6 +14,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	float time;
 	float transitionTime;
 	int scrapCost;
+	float rePath;
 
 	float playerCheck;
 	float playerTime;
@@ -25,6 +26,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		outerDoors = new List<GameObject>();
 		time = 0;
 		transitionTime = .5f;
+		rePath = 10f;
 		scrapCost = 10;
 		open = false;
 
@@ -38,6 +40,15 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (rePath != 10f )
+			rePath -= Time.deltaTime;
+
+		if (rePath <= 0f) {
+			rePath = 10f;
+			Pathfinder2D.Instance.gen = 0;
+		}
+
 		if (!paidScrap && playerCheck >= playerTime)
 		{
 			playerDetect();
@@ -68,6 +79,8 @@ public class roomDoorHandlerScript : MonoBehaviour {
 					{
 						gameOBJ.GetComponent<Door>().state = 1;
 						open = true;
+
+						rePath = 1.0f;
 					}
 				}
 
