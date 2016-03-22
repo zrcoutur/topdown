@@ -25,13 +25,16 @@ public class Item_Drop : MonoBehaviour {
 			float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
 
 			if (System.Math.Abs(dist_x) <= 2.5f && System.Math.Abs(dist_y) <= 2.5f) {
-				GetComponent<Rigidbody2D>().AddForce( new Vector2(-15f * dist_x, -15f * dist_y) );
+				GetComponent<Rigidbody2D>().AddForce( new Vector2(-20f * dist_x, -20f * dist_y) );
 			}
 		}
 
 		if (duration >= 0) { // Decrement timer
 			duration -= Time.deltaTime;
 		} else { // Remove item from the game
+			// Shine effect
+			Instantiate (shine, transform.position, Quaternion.Euler(0, 0, 0));
+
 			Destroy(this.gameObject);
 		}
 	}

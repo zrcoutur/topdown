@@ -77,7 +77,7 @@ public class Player : MonoBehaviour {
 		// Set base params
 		stats = new Player_Stats();
 		ammo = 100f;
-		ammo_regen = new Regen_Counter(0.45f, 0.25f);
+		ammo_regen = new Regen_Counter(0.3f, 0.2f);
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
 
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour {
 			// Regen a tick of shield if delay is over
 			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield( (int)(shieldSlider.maxValue / 33f + 0.99f) );
+				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 0.99f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -463,7 +463,7 @@ public class Player : MonoBehaviour {
 			score.bullets_fired++;
 
 			b1.damage = damage_for_weapon();
-			b1.set_duration(0.85f);
+			b1.set_duration(1.35f * UnityEngine.Random.Range(75, 115) / 100f);
 
 			// Mildly shake camera
 			cam.AddShake( 0.06f );
@@ -502,7 +502,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 				b1.damage = damage_for_weapon();
-				b1.set_duration(0.25f);
+				b1.set_duration(0.45f);
 
 				// Calculate bullet's velocity
 
@@ -586,7 +586,7 @@ public class Player : MonoBehaviour {
 		// current point in time between ammo gains
 		private float counter;
 		// delays ammo gain when the Player is firing a gun
-		private bool delayed;
+		private float delayed = 0.0f;
 
 		/* Creates a regen counter with the given rate and chance in rate. */
 		public Regen_Counter(float r, float delta) {
@@ -594,14 +594,14 @@ public class Player : MonoBehaviour {
 			rate_delta = delta;
 			rate_counter = 1f;
 			counter = 0f;
-			delayed = false;
+			delayed = 0.2f;
 		}
 
 		/* Incements the counter and rate counter. If the counter reaches
 		 * the rate value, then 2 is returned, otherwise 0 is returned. */
 		public int increment() {
-			if (delayed) { // regen is delayed
-				delayed = false;
+			if (delayed >= 0) { // regen is delayed
+				delayed -= Time.deltaTime;
 				rate_counter = 1f;
 			} else if (counter >= rate) { // return ammo gain
 				counter = 0f;
@@ -615,6 +615,6 @@ public class Player : MonoBehaviour {
 		}
 
 		/* Set regen delay flag. */
-		public void delay_regen() { delayed = true; }
+		public void delay_regen() { delayed = 0.2f; }
 	}
 }
