@@ -35,14 +35,22 @@ public class Pathfinding2D : MonoBehaviour
 			float currentAngle = Tools.QuaternionToAngle(GetComponent<Rigidbody2D>().transform.rotation);
 			float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
 
-			GetComponent<Baseenemy>().transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f));
+			GetComponent<Baseenemy>().transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f * GetComponent<Baseenemy>().speed));
 
 
 			// Continue to next path segment
-            if (Vector3.Distance(transform.position, Path[0]) < 0.4f)
+            if (Vector3.Distance(transform.position, Path[0]) < 0.6f)
             {
                 Path.RemoveAt(0);
             }
+
+			// Skip one segment
+			if (Path.Count > 1) {
+				if (Vector3.Distance (transform.position, Path [1]) < 0.6f) {
+					Path.RemoveAt (0);
+					Path.RemoveAt (0);
+				}
+			}
         }
     }
 
