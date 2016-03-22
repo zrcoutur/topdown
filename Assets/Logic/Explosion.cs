@@ -6,6 +6,14 @@ public class Explosion : MonoBehaviour {
 	float animDone = 0.45f;
 	public bool triggerHit = false;
 
+	// Explosion SFX
+	public AudioClip X_Explode;
+
+	void Start () {
+		// Play explosion SFX
+		CameraRunner.gAudio.PlayOneShot( X_Explode );
+	}
+
 	// Update is called once per frame
 	void Update () {
 		animDone -= Time.deltaTime;

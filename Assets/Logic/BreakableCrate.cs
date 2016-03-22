@@ -12,6 +12,10 @@ using System.Collections;
 public class BreakableCrate : MonoBehaviour {
 	// Box's HP bar
 	public GameObject hp_bar;
+	// Break sfx
+	public AudioClip X_break;
+	// Break poof
+	public GameObject pf;
 	// droppabble items
 	public GameObject[] item_drops;
 	// used to determine overlap amongst other Blocks
@@ -37,6 +41,9 @@ public class BreakableCrate : MonoBehaviour {
 
 		/* remove the crate when its durability reaches zero */
 		if (durability <= 0) {
+			// Play break sfx
+			CameraRunner.gAudio.PlayOneShot( X_break, 0.5f );
+			Instantiate (pf, transform.position, transform.rotation);
 			remove_crate();
 		}
 	}

@@ -5,7 +5,6 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	// Object components
-	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
 	SpriteRenderer Srenderer;
@@ -27,6 +26,13 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
+	public AudioClip X_Shotgun_Shoot;
+	public AudioClip X_Core_Get;
+	public AudioClip X_Scrap_Get;
+	public AudioClip X_Medpack_Get;
+	public AudioClip X_Hurt;
+	public AudioClip X_Die;
+	public AudioClip X_Healed;
 	public ScoreBoard score;
 
 	// Parameters
@@ -66,7 +72,6 @@ public class Player : MonoBehaviour {
 		// Get components
 		body = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
-		Paudio = GetComponent<AudioSource>();
 		Srenderer = GetComponent<SpriteRenderer>();
 
 		// Set base params
@@ -117,6 +122,9 @@ public class Player : MonoBehaviour {
 
 				// Slow down movement
 				body.drag = 100.0f;
+
+				// Play death SFX
+				CameraRunner.gAudio.PlayOneShot( X_Die );
 
 				// Print out player scores
 				score.display_scores();
@@ -173,22 +181,22 @@ public class Player : MonoBehaviour {
 
 		// Move Up
 		if (Input.GetKey( M_MoveUp )) {
-			body.AddForce (new Vector2 (0, 20));
+			body.AddForce (new Vector2 (0, 26));
 		}
 
 		// Move Down
 		if (Input.GetKey( M_MoveDown )) {
-			body.AddForce (new Vector2 (0, -20));
+			body.AddForce (new Vector2 (0, -26));
 		}
 
 		// Move Left
 		if (Input.GetKey( M_MoveLeft )) {
-			body.AddForce (new Vector2 (-20, 0));
+			body.AddForce (new Vector2 (-26, 0));
 		}
 
 		// Move Right
 		if (Input.GetKey( M_MoveRight )) {
-			body.AddForce (new Vector2 (20, 0));
+			body.AddForce (new Vector2 (26, 0));
 		}
 
 		// Strafe Input
@@ -234,7 +242,7 @@ public class Player : MonoBehaviour {
 			atkCool = 0;
 
 			// Play swap sound
-			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
 			wep.updateWeapon = (int)stats.current_weapon();
 
@@ -324,6 +332,9 @@ public class Player : MonoBehaviour {
 		// Flash when hurt
 		flash = 0.4f;
 
+		// Play Hurt SFX
+		CameraRunner.gAudio.PlayOneShot( X_Hurt );
+
 		// Reset shield regen window
 		shieldRegenTime = shieldMaxRegenTime;
 
@@ -342,7 +353,9 @@ public class Player : MonoBehaviour {
 		// Cap health at maximum
 		stats.change_health(damageRecovered);
 		hpSlider.value = stats.get_health();
-		// TODO: heal sfx/effect?
+
+		// Heal SFX
+		CameraRunner.gAudio.PlayOneShot( X_Healed );
 	}
 
 	/*******************************************************************************
@@ -405,7 +418,7 @@ public class Player : MonoBehaviour {
 				break;
 
 			// Play Slash Sound
-			Paudio.PlayOneShot (X_Slash, 1.0f);
+			CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
 
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
@@ -429,16 +442,16 @@ public class Player : MonoBehaviour {
 
 		case (int)WEAPON_TYPE.rifle:
 			
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
 			// Ammo Check
 			if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 				break;
 			}
 
+			// Cooldown
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+
 			// Play Shoot Sound
-			Paudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
+			CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 			// Calculate creation position of bullet (from gun)
 			var pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
@@ -467,17 +480,19 @@ public class Player : MonoBehaviour {
 
 		case (int)WEAPON_TYPE.shotgun:
 
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
 			// Ammo Check
 			if ( !UseAmmo( stats.weapon_by_type(WEAPON_TYPE.shotgun).weapon_stat(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
+
+			// Cooldown
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+
+			// Play Shoot Sound
+			CameraRunner.gAudio.PlayOneShot( X_Shotgun_Shoot, 1.0f );
+
 			// Fire five bullets in succession
 			for (int bullet = 0; bullet <= 4; ++bullet) {
-				// Play Shoot Sound
-				Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
 	
 				// Calculate creation position of bullet (from gun)
 				pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
@@ -487,7 +502,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 				b1.damage = damage_for_weapon();
-				b1.set_duration(0.45f);
+				b1.set_duration(0.25f);
 
 				// Calculate bullet's velocity
 
@@ -516,8 +531,10 @@ public class Player : MonoBehaviour {
 		GameObject obj = trigger.gameObject;
 		// Med pack
 		if (obj.tag == "med_pack") {
-			// Shien effect
+			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Medpack_Get );
 
 			Destroy(obj);
 			int ret = stats.MEDPACKS.increment();
@@ -531,6 +548,8 @@ public class Player : MonoBehaviour {
 		else if (obj.tag == "core") {
 			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Core_Get );
 
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
@@ -541,6 +560,8 @@ public class Player : MonoBehaviour {
 		} else if (obj.tag == "scrap") {
 			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Scrap_Get );
 
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
