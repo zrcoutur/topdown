@@ -29,7 +29,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		open = false;
 
 		playerCheck = 0;
-		playerTime = .5f;
+		playerTime = .2f;
 
 
 		findNearDoors();
