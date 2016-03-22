@@ -4,6 +4,8 @@ using UnityEngine;
 public class Item_Drop : MonoBehaviour {
 
 	public Shine shine;
+	// Sound played when grabbed
+	public AudioClip getSound;
 	// List of players
 	private Player[] players;
 	/* How long the item will stay in the game before disappearing */
@@ -30,8 +32,6 @@ public class Item_Drop : MonoBehaviour {
 		if (duration >= 0) { // Decrement timer
 			duration -= Time.deltaTime;
 		} else { // Remove item from the game
-			// Shine effect
-			Instantiate(shine, gameObject.transform.position, Quaternion.Euler (0, 0, 0));
 			Destroy(this.gameObject);
 		}
 	}

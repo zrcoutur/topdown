@@ -5,7 +5,10 @@ public class Bullet1 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
-	//public GameObject bullet;
+
+	public AudioClip X_Wall_Hit;
+	public AudioClip X_Enemy_Hit;
+
 	// duration of the bullet (not in seconds)
 	float duration = 1.0f;
 
@@ -39,14 +42,28 @@ public class Bullet1 : PlayerAttack {
 	void OnTriggerEnter2D(Collider2D col) {
 		
 		if (col.tag == "Block") {
+			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
+
+			// Play wall hit sound effect
+			CameraRunner.gAudio.PlayOneShot( X_Wall_Hit );
+
+			// Destroy self
 			Destroy (gameObject);
 
 		}
 
 		if (col.tag == "Enemy") {
+			// Tell enemy it's been hit!
 			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
+
+			// Play hit sound effect
+			CameraRunner.gAudio.PlayOneShot( X_Enemy_Hit );
+
+			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
+
+			// Destroy self
 			Destroy (gameObject);
 		}
 
