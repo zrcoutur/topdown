@@ -9,4 +9,12 @@ public class MainMenuLogic : MonoBehaviour {
 		PlayerPrefs.SetInt ("FinalScore", finalScore);
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("test");
 	}
+
+	public void Multiplayer() {
+		
+	}
+
+	public void Quit() {
+		Application.Quit ();
+	}
 }
