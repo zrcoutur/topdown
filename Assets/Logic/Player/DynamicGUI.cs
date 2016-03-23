@@ -109,7 +109,7 @@ public class DynamicGUI : MonoBehaviour {
 	/* Draws the fields of the given stat display */
 	private void drawStatDisplay(StatDisplay display) {
 		// display title
-		GUI.Label(display.labels[0], display.name);
+		GUI.Label(display.labels[0], display.name + " (" + display.stat.pointer_value() + ")");
 
 		// Determins if the stat value is capped
 		bool is_last = display.stat.next() == -1;

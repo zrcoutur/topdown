@@ -5,7 +5,6 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	// Object components
-	AudioSource Paudio;
 	Weapon wep;
 	Rigidbody2D body;
 	SpriteRenderer Srenderer;
@@ -27,14 +26,22 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
+	public AudioClip X_Shotgun_Shoot;
+	public AudioClip X_Core_Get;
+	public AudioClip X_Scrap_Get;
+	public AudioClip X_Medpack_Get;
+	public AudioClip X_Hurt;
+	public AudioClip X_Die;
+	public AudioClip X_Healed;
+	public ScoreBoard score;
 
 	// Parameters
 	double atkCool;
 	Regen_Counter ammo_regen;
-    int maxAmmo;
+	private static readonly float maxAmmo = 100f;
 	float shieldRegenTime;
 	float shieldRecoverTime;
-	public int ammo;
+	public float ammo;
 	public float shieldMaxRegenTime = 2.5f;
 	public float shieldMaxRecoverTime = 0.1f;
 
@@ -42,6 +49,8 @@ public class Player : MonoBehaviour {
 	float flash = 0;
 	int toggle = 0;
 	bool uponDeath = true;
+	float spawnerCheck;
+	float spawnerTime;
 
 	// Keycodes
 	KeyCode M_MoveLeft = KeyCode.A;
@@ -63,14 +72,12 @@ public class Player : MonoBehaviour {
 		// Get components
 		body = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
-		Paudio = GetComponent<AudioSource>();
 		Srenderer = GetComponent<SpriteRenderer>();
 
 		// Set base params
 		stats = new Player_Stats();
-		maxAmmo = 100;
-		ammo = 100;
-		ammo_regen = new Regen_Counter(0.45f, 0.25f);
+		ammo = 100f;
+		ammo_regen = new Regen_Counter(0.3f, 0.2f);
 		shieldRegenTime = shieldMaxRegenTime;
 		shieldRecoverTime = shieldMaxRecoverTime;
 
@@ -78,6 +85,10 @@ public class Player : MonoBehaviour {
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
 		wep.transform.parent = transform;
 
+		score = new ScoreBoard();
+
+		spawnerCheck = 0;
+		spawnerTime = 10;
 	}
 	
 	/*******************************************************************************
@@ -112,7 +123,16 @@ public class Player : MonoBehaviour {
 				// Slow down movement
 				body.drag = 100.0f;
 
-			
+				// Play death SFX
+				CameraRunner.gAudio.PlayOneShot( X_Die );
+
+				// Print out player scores
+				score.display_scores();
+
+				uponDeath = false;
+
+				PlayerPrefs.SetInt ("FinalScore", (int) this.score.totalScore);
+				UnityEngine.SceneManagement.SceneManager.LoadScene ("gameOver");
 			}
 
 			return;
@@ -142,9 +162,9 @@ public class Player : MonoBehaviour {
 			shieldRecoverTime -= Time.deltaTime;
 
 			// Regen a tick of shield if delay is over
-			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current ()) {
+			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield(1);
+				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 0.99f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -161,22 +181,22 @@ public class Player : MonoBehaviour {
 
 		// Move Up
 		if (Input.GetKey( M_MoveUp )) {
-			body.AddForce (new Vector2 (0, 20));
+			body.AddForce (new Vector2 (0, 26));
 		}
 
 		// Move Down
 		if (Input.GetKey( M_MoveDown )) {
-			body.AddForce (new Vector2 (0, -20));
+			body.AddForce (new Vector2 (0, -26));
 		}
 
 		// Move Left
 		if (Input.GetKey( M_MoveLeft )) {
-			body.AddForce (new Vector2 (-20, 0));
+			body.AddForce (new Vector2 (-26, 0));
 		}
 
 		// Move Right
 		if (Input.GetKey( M_MoveRight )) {
-			body.AddForce (new Vector2 (20, 0));
+			body.AddForce (new Vector2 (26, 0));
 		}
 
 		// Strafe Input
@@ -219,8 +239,10 @@ public class Player : MonoBehaviour {
 			stats.cycle_weapons();
 			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
+			atkCool = 0;
+
 			// Play swap sound
-			Paudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
 			// Change weapon sprite
 			wep.updateWeapon = (int)stats.current_weapon();
 
@@ -254,14 +276,40 @@ public class Player : MonoBehaviour {
 		int ammo = ammo_regen.increment();
 		GainAmmo(ammo);
 			
-		// Press 'h' to restore HP
-		if ( Input.GetKeyDown(KeyCode.H) ) {
-			GetHealed(stats.MAX_HEALTH.current());
+		// Press 'h' to use a medpack to restore half of your HP
+		if ( Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0 ) {
+			GetHealed((int)stats.MAX_HEALTH.current() / 2);
+			stats.MEDPACKS.decrement();
 		}
 		// Hold 'space' to gain ammo
 		if ( Input.GetKey(KeyCode.Space) ) {
 			GainAmmo(1);
 		}
+
+		//Activates spawners within a certain radius of the player every so often
+		if (spawnerCheck >= spawnerTime)
+		{
+			
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
+
+			//find nearby game objects that are spawners
+			foreach (Collider2D col in hitColliders)
+			{
+				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
+				{
+					col.gameObject.GetComponent<EnemySpawner>().setActive();
+				}
+
+			}
+			spawnerCheck = 0;
+		}
+		else
+		{
+			spawnerCheck += Time.deltaTime;
+		}
+
+
+
 	}
 
 	/*******************************************************************************
@@ -284,6 +332,9 @@ public class Player : MonoBehaviour {
 		// Flash when hurt
 		flash = 0.4f;
 
+		// Play Hurt SFX
+		CameraRunner.gAudio.PlayOneShot( X_Hurt );
+
 		// Reset shield regen window
 		shieldRegenTime = shieldMaxRegenTime;
 
@@ -302,7 +353,9 @@ public class Player : MonoBehaviour {
 		// Cap health at maximum
 		stats.change_health(damageRecovered);
 		hpSlider.value = stats.get_health();
-		// TODO: heal sfx/effect?
+
+		// Heal SFX
+		CameraRunner.gAudio.PlayOneShot( X_Healed );
 	}
 
 	/*******************************************************************************
@@ -311,7 +364,7 @@ public class Player : MonoBehaviour {
 	 * does nothing and returns false.
 	 *
 	 *******************************************************************************/
-	bool UseAmmo( int cost ) {
+	bool UseAmmo( float cost ) {
 		
 		// Check if you have enough ammo
 		if (ammo >= cost) {
@@ -334,7 +387,7 @@ public class Player : MonoBehaviour {
 	 * Called whenever you regain ammo. Updates UI info, too.
 	 *
 	 *******************************************************************************/
-	void GainAmmo( int ammoGained ) {
+	void GainAmmo( float ammoGained ) {
 		
 		// Gain ammo up to maximum
 		ammo = Mathf.Min( ammo + ammoGained, maxAmmo );
@@ -365,11 +418,12 @@ public class Player : MonoBehaviour {
 				break;
 
 			// Play Slash Sound
-			Paudio.PlayOneShot (X_Slash, 1.0f);
+			CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
 
 			// Make Slash Effect
 			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 			sl.transform.parent = transform;
+			score.sword_attacks++;
 			sl.damage = damage_for_weapon ();
 
 			// Shake camera
@@ -388,24 +442,28 @@ public class Player : MonoBehaviour {
 
 		case (int)WEAPON_TYPE.rifle:
 			
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
 			// Ammo Check
 			if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 				break;
 			}
 
+			// Cooldown
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+
 			// Play Shoot Sound
-			Paudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
+			CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 			// Calculate creation position of bullet (from gun)
 			var pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
 
 			// Create bullet
 			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+
+			b1.transform.parent = transform;
+			score.bullets_fired++;
+
 			b1.damage = damage_for_weapon();
-			b1.set_duration(0.85f);
+			b1.set_duration(1.35f * UnityEngine.Random.Range(75, 115) / 100f);
 
 			// Mildly shake camera
 			cam.AddShake( 0.06f );
@@ -422,23 +480,27 @@ public class Player : MonoBehaviour {
 
 		case (int)WEAPON_TYPE.shotgun:
 
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
 			// Ammo Check
 			if ( !UseAmmo( stats.weapon_by_type(WEAPON_TYPE.shotgun).weapon_stat(STAT_TYPE.ammo).current() ) ) {
 				break;
 			}
+
+			// Cooldown
+			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+
+			// Play Shoot Sound
+			CameraRunner.gAudio.PlayOneShot( X_Shotgun_Shoot, 1.0f );
+
 			// Fire five bullets in succession
 			for (int bullet = 0; bullet <= 4; ++bullet) {
-				// Play Shoot Sound
-				Paudio.PlayOneShot( X_Bullet_Shoot, 1.0f );
 	
 				// Calculate creation position of bullet (from gun)
 				pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
 
 				// Create bullet
 				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				b1.transform.parent = transform;
+				score.bullets_fired++;
 				b1.damage = damage_for_weapon();
 				b1.set_duration(0.45f);
 
@@ -461,29 +523,54 @@ public class Player : MonoBehaviour {
 
 	/* Get current weapon damage */
 	private int damage_for_weapon() {
-		return stats.weapon_by_type( stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current();
+		return (int)( stats.weapon_by_type(stats.current_weapon() ).weapon_stat(STAT_TYPE.damage).current() );
 	}
 
 	// Run into items
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		GameObject obj = trigger.gameObject;
-
-		// Energy Core
-		if (obj.tag == "core") {
+		// Med pack
+		if (obj.tag == "med_pack") {
 			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Medpack_Get );
 
-			stats.change_ecores(1);
+			Destroy(obj);
+			int ret = stats.MEDPACKS.increment();
+			// If you cannot hold anymore med_packs
+			if (ret == 0) {
+				stats.change_scrap(8);
+				stats.change_ecores(1);
+			}
+		}
+		// Energy Core
+		else if (obj.tag == "core") {
+			// Shine effect
+			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Core_Get );
+
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
+			score.ecores_collected++;
+			stats.change_ecores(1);
 
 		// Scrap
 		} else if (obj.tag == "scrap") {
-			// Shien effect
+			// Shine effect
 			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			// SFX
+			CameraRunner.gAudio.PlayOneShot( X_Scrap_Get );
 
-			stats.change_scrap(1);
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
+			Destroy(obj);
+			score.scrap_collected++;
+			stats.change_scrap(1);
+		}else if(obj.tag == "weapon_pack")
+		{
+
+			stats.owned_weapons[obj.GetComponent<WeaponUpgrade>().weapon] = 1;
 			Destroy(obj);
 		}
 	}
@@ -499,7 +586,7 @@ public class Player : MonoBehaviour {
 		// current point in time between ammo gains
 		private float counter;
 		// delays ammo gain when the Player is firing a gun
-		private bool delayed;
+		private float delayed = 0.0f;
 
 		/* Creates a regen counter with the given rate and chance in rate. */
 		public Regen_Counter(float r, float delta) {
@@ -507,14 +594,14 @@ public class Player : MonoBehaviour {
 			rate_delta = delta;
 			rate_counter = 1f;
 			counter = 0f;
-			delayed = false;
+			delayed = 0.2f;
 		}
 
 		/* Incements the counter and rate counter. If the counter reaches
 		 * the rate value, then 2 is returned, otherwise 0 is returned. */
 		public int increment() {
-			if (delayed) { // regen is delayed
-				delayed = false;
+			if (delayed >= 0) { // regen is delayed
+				delayed -= Time.deltaTime;
 				rate_counter = 1f;
 			} else if (counter >= rate) { // return ammo gain
 				counter = 0f;
@@ -528,6 +615,6 @@ public class Player : MonoBehaviour {
 		}
 
 		/* Set regen delay flag. */
-		public void delay_regen() { delayed = true; }
+		public void delay_regen() { delayed = 0.2f; }
 	}
 }

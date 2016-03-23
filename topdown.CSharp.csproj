@@ -127,6 +127,7 @@
     <Compile Include="Assets\Pathfinding\Scripts\WaypointNode.cs" />
     <Compile Include="Assets\Pathfinding\Scripts\WaypointPathfinder.cs" />
     <Compile Include="Assets\Shine.cs" />
+    <Compile Include="Assets\WeaponUpgrade.cs" />
     <Compile Include="Assets\roomDoorHandlerScript.cs" />
   </ItemGroup>
   <ItemGroup>
