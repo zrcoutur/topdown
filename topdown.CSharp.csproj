@@ -89,8 +89,6 @@
     <Compile Include="Assets\Logic\Player\Bullet1.cs" />
     <Compile Include="Assets\Logic\Player\DynamicGUI.cs" />
     <Compile Include="Assets\Logic\Player\Enumerations.cs" />
-    <Compile Include="Assets\Logic\Player\Menus\GameOverLogic.cs" />
-    <Compile Include="Assets\Logic\Player\Menus\MainMenuLogic.cs" />
     <Compile Include="Assets\Logic\Player\Player.cs" />
     <Compile Include="Assets\Logic\Player\PlayerAttack.cs" />
     <Compile Include="Assets\Logic\Player\Player_Stats.cs" />
@@ -105,7 +103,6 @@
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Weapon.cs" />
     <Compile Include="Assets\Logic\energy_core_script.cs" />
-    <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer2D.cs" />
@@ -130,6 +127,7 @@
     <Compile Include="Assets\Pathfinding\Scripts\WaypointNode.cs" />
     <Compile Include="Assets\Pathfinding\Scripts\WaypointPathfinder.cs" />
     <Compile Include="Assets\Shine.cs" />
+    <Compile Include="Assets\roomDoorHandlerScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\TileBG.shader" />
