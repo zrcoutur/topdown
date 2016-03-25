@@ -19,6 +19,7 @@ public abstract class Baseenemy : MonoBehaviour
 	public int[] numYielded;
 	public GameObject[] yields;
 	public float[] chanceYield;
+	private Pathfinding2D pf;
 
 	public float speed;
 	public int health;
@@ -28,22 +29,20 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage = 5;
 
+	//used to add to player score
+	public int pointValue;
+	public GameObject lastPlayerToAttack;
+
+    public Color[] colors;
+    // Use this for initialization
+
     public bool infected;
     public bool isBoss;
     private float timeTillDestroy;
 
-
-    //used to add to player score
-    public int pointValue;
-    public GameObject lastPlayerToAttack;
-
-    public Color[] colors;
-    // Use this for initialization
     void Start()
     {
-        timeTillDestroy = 0.5f;
-        infected = false;
-        SearchDelay = 0.5f;
+        SearchDelay = 1.0f;
         nearest = null;
 
         body = GetComponent<Rigidbody2D>();
@@ -51,11 +50,14 @@ public abstract class Baseenemy : MonoBehaviour
         timer = rate;
 		pf = GetComponent<Pathfinding2D> ();
 
-		pointValue = 25;
+        timeTillDestroy = 0.5f;
+        infected = false;
+
+        pointValue = 25;
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
 
 		//Debug.Log((ulong)pointValue);
@@ -63,7 +65,7 @@ public abstract class Baseenemy : MonoBehaviour
 		recollideTimer -= Time.deltaTime;
 		flash -= Time.deltaTime;
 
-		if (dieState == 1) {
+		if (dieState == 1 || timeTillDestroy <= 0) {
 			//update score adding one kill to the player giving killing attack, and add pointValue to score
 			lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
 			lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
@@ -72,7 +74,7 @@ public abstract class Baseenemy : MonoBehaviour
 			return;
 		}
 
-        if (health < 0||timeTillDestroy<=0)
+        if (health < 0)
         {
 			dieState = 1;
 
@@ -161,42 +163,42 @@ public abstract class Baseenemy : MonoBehaviour
 				// Move at target
 				body.AddForce (dir * GetComponent<Baseenemy>().speed);
 
-
 			}
-
-        if (infected)
-        {
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
-            int count = 0;
-            foreach(Collider2D coll in hitColliders)
+            if (infected)
             {
-                if (coll.gameObject.tag == "Player")
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
+                int count = 0;
+                foreach (Collider2D coll in hitColliders)
                 {
-                    int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
-                    coll.gameObject.GetComponent<Player>().GetHurt(damage);
-                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                    break;
+                    if (coll.gameObject.tag == "Player")
+                    {
+                        int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
+                        coll.gameObject.GetComponent<Player>().GetHurt(damage);
+                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                        break;
+                    }
+                    if (count == 2)
+                    {
+                        break;
+                    }
+                    if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss)
+                    {
+                        coll.gameObject.GetComponent<Baseenemy>().infected = true;
+                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                        count++;
+                    }
+                    timeTillDestroy -= Time.deltaTime;
                 }
-                if (count == 2)
-                {
-                    break;
-                }
-                if (coll.gameObject.tag == "Enemy"&&!coll.gameObject.GetComponent<Baseenemy>().isBoss)
-                {
-                    coll.gameObject.GetComponent<Baseenemy>().infected = true;
-                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                    count++;
-                }
+                timeTillDestroy -= Time.deltaTime;
             }
-            timeTillDestroy -= Time.deltaTime;
+            // Check if you have completed your path - search sooner if so
+            if (SearchDelay > 0.5f && pf.Path.Count == 0)
+				SearchDelay = 0.5f;
 
 
-                // Check if you have completed your path - search sooner if so
-                if (SearchDelay > 0.5f && pf.Path.Count == 0)
-                    SearchDelay = 0.5f;
-
-            }
-        }
+		}
+        Change();
+    }
 
 	// Bump into walls/player
 	void OnCollisionStay2D( Collision2D col ) {
@@ -212,6 +214,7 @@ public abstract class Baseenemy : MonoBehaviour
 			);
 		}
 	}
+
 
 	void OnHit(PlayerAttack hit)
     {
@@ -234,4 +237,5 @@ public abstract class Baseenemy : MonoBehaviour
     }
     public abstract void TimeIncrease(float time);
     public abstract void attack();
+    public abstract void Change();
 }
