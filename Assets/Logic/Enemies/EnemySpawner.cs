@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using System;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
     private int i;
 
     public bool activated;
+    internal bool inSpecialRoom;
+
     // Use this for initialization
     void Start()
     {
@@ -58,5 +61,10 @@ public class EnemySpawner : MonoBehaviour
 
         return (Baseenemy)Instantiate(b, location[rand], Quaternion.Euler(0, 0, 0));
 
+    }
+
+    internal void setActive()
+    {
+        activated = true;
     }
 }

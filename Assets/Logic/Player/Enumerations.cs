@@ -15,7 +15,8 @@ public enum STAT_TYPE: byte {
 	energy = 2,
 	damage = 3,
 	rate_of_fire = 4,
-	ammo = 5
+	ammo = 5,
+    other=6
 };
 
 public enum COST_TYPE : byte {
