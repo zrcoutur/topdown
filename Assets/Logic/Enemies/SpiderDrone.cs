@@ -47,4 +47,7 @@ public class SpiderDrone : Baseenemy
         // Momentum from swing
         gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 270.0f, 60.0f));
     }
+    public override void Change()
+    { }
+
 }
