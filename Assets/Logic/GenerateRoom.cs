@@ -15,6 +15,9 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject innerDoor;
 	public GameObject outerDoor;
 	public GameObject doorHandler;
+	public GameObject roomFloor;
+	public GameObject hallFloorVertical;
+	public GameObject hallFloorHorizontile;
 
 	int[,] floor;
 
@@ -148,11 +151,15 @@ public class GenerateRoom : MonoBehaviour
 
 	void makeHall(byte doors, int y , int x)
 	{
+		
+
 		//make hallway up
 		if ( (doors & 1) == 1)
 		{
+			
 			int tempx = x + (roomWidth / 2) - 2;
 			int tempy = y + roomHeight;
+			GameObject floor = (GameObject)Instantiate(hallFloorVertical, new Vector3(tileSize * (x + (roomWidth/2)), tileSize * (y + (roomHeight + hallLength/2))-.8f, 0) , Quaternion.identity);
 			for (int j = tempy; j < tempy + hallLength/2 ; j++)
 			{
 				for (int i = tempx; i < tempx + 5 ; i+=4)
@@ -176,6 +183,8 @@ public class GenerateRoom : MonoBehaviour
 		//make hallway right
 		if ((doors & 2) == 2)
 		{
+			GameObject floor = (GameObject)Instantiate(hallFloorHorizontile, new Vector3(tileSize * (x + roomWidth + hallLength/2) - .8f, tileSize * (y + (roomHeight/2 )), 0), Quaternion.identity);
+			
 			int tempx = x + roomWidth;
 			int tempy = y  + (roomHeight / 2) - 2;
 			for (int j = tempy; j < tempy + 5; j += 4)
@@ -357,7 +366,7 @@ public class GenerateRoom : MonoBehaviour
 	// roomMatrix comes from the makeRoomMatrix method
 	private void makeRoom(int y, int x, int[,] roomMatrix, byte door)
 	{
-
+		GameObject floor = (GameObject)Instantiate(roomFloor, new Vector3(tileSize* (x  + (roomWidth / 2)), tileSize* (y + (roomHeight / 2)),0), Quaternion.identity);
 		for (int i = y; i < roomHeight + y; i++)
 		{
 
