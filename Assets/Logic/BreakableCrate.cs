@@ -67,11 +67,6 @@ public class BreakableCrate : MonoBehaviour {
 		if (col.gameObject.tag == "Block") {
 			collision_tag = true;
 		}
-		else if (col.gameObject.tag == "Enemy")
-		{
-			durability -= 1;
-		}
-
 	}
 
 	private void remove_crate() {
