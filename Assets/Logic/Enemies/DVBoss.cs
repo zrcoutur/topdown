@@ -15,7 +15,7 @@ public class DVBoss : Baseenemy
         }
         else
         {
-            var sl = (Slash)Instantiate(slash, body.position, transform.rotation);
+            var sl = (EnemySlash)Instantiate(slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
             sl.transform.parent = transform;
             sl.damage = damage;
         }
@@ -24,7 +24,7 @@ public class DVBoss : Baseenemy
 
     public override void TimeIncrease(float time)
     {
-        Lightning *= (time / 100);
+        Lightning *= (time / 300);
         var timeScale = 105f;
         health = health + (int)(0.15f * health * time / timeScale);
         Maxhealth = health;
@@ -40,7 +40,7 @@ public class DVBoss : Baseenemy
         base.speed = 0.5f;
         base.Maxhealth = 10000000;
         base.rate = 2.5f;
-        base.rate = 4f;
+        //base.rate = 4f;
         Lightning = 0.01f;
         damage = 10;
     }
