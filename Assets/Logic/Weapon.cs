@@ -8,6 +8,15 @@ public class Weapon : MonoBehaviour {
 	public Sprite swordSprite;
 	public Sprite rifleSprite;
 	public Sprite shotgunSprite;
+	public Sprite lancerRifleSprite;
+	public Sprite plasmaGatlingSprite;
+	public Sprite twinBlasterSprite;
+	public Sprite armageddonSprite;
+	public Sprite autoShotgunSprite;
+	public Sprite confluxShotSprite;
+	public Sprite omegaSwordSprite;
+
+	public Player_Stats stats;
 
 	// Use this for initialization
 	void Start () {
@@ -22,14 +31,34 @@ public class Weapon : MonoBehaviour {
 		if (updateWeapon >= 0) {
 			
 			switch (updateWeapon) {
+
 				case (int)weapons.BeamSword:
-				GetComponent<SpriteRenderer>().sprite = swordSprite;
+				if ( stats.upgrades[(int)weapons.BeamSword] == 0 )
+					GetComponent<SpriteRenderer>().sprite = swordSprite;
+				else
+					GetComponent<SpriteRenderer>().sprite = omegaSwordSprite;
 					break;
+
 				case (int)weapons.PlasmaRifle:
-				GetComponent<SpriteRenderer>().sprite = rifleSprite;
+				if ( stats.upgrades[(int)weapons.PlasmaRifle] == 0 )
+					GetComponent<SpriteRenderer>().sprite = rifleSprite;
+				else if ( stats.upgrades[(int)weapons.PlasmaRifle] == 1 )
+					GetComponent<SpriteRenderer>().sprite = lancerRifleSprite;
+				else if ( stats.upgrades[(int)weapons.PlasmaRifle] == 2 )
+					GetComponent<SpriteRenderer>().sprite = plasmaGatlingSprite;
+				else
+					GetComponent<SpriteRenderer>().sprite = twinBlasterSprite;
 					break;
+
 				case (int)weapons.Shotgun:
-				GetComponent<SpriteRenderer>().sprite = shotgunSprite;
+				if ( stats.upgrades[(int)weapons.Shotgun] == 0 )
+					GetComponent<SpriteRenderer>().sprite = shotgunSprite;
+				else if ( stats.upgrades[(int)weapons.Shotgun] == 1 )
+					GetComponent<SpriteRenderer>().sprite = armageddonSprite;
+				else if ( stats.upgrades[(int)weapons.Shotgun] == 2 )
+					GetComponent<SpriteRenderer>().sprite = autoShotgunSprite;
+				else
+					GetComponent<SpriteRenderer>().sprite = confluxShotSprite;
 					break;
 			}
 

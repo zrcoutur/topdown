@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: f23ffdceef4e4094c9c090310df2c932
-timeCreated: 1454001942
+guid: ddcfb902959489a47aa6ff8d15033a0b
+timeCreated: 1459227141
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Slash_strip2_0
-    21300002: Slash_strip2_1
+    21300000: Slash2_strip2_0
+    21300002: Slash2_strip2_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -52,7 +52,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Slash_strip2_0
+    - name: Slash2_strip2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -60,16 +60,17 @@ TextureImporter:
         width: 80
         height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0.3}
+      pivot: {x: 0.4905838, y: 0.23222694}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -13, y: 38.8}
-        - {x: -26, y: 33.8}
-        - {x: -26, y: 0.79999924}
-        - {x: 26, y: 0.79999924}
-        - {x: 26, y: 21.8}
-        - {x: 18, y: 38.8}
-    - name: Slash_strip2_1
+      - - {x: 11.753296, y: 47.137474}
+        - {x: -15.246704, y: 47.137474}
+        - {x: -28.246704, y: 27.137476}
+        - {x: -28.246704, y: 4.137476}
+        - {x: 29.753296, y: 4.137476}
+        - {x: 29.753296, y: 20.137476}
+        - {x: 24.753296, y: 39.137474}
+    - name: Slash2_strip2_1
       rect:
         serializedVersion: 2
         x: 80
@@ -77,18 +78,18 @@ TextureImporter:
         width: 80
         height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0.27}
+      pivot: {x: 0.51059324, y: 0.20133007}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 13, y: 38.72}
-        - {x: 7, y: 40.72}
-        - {x: -10, y: 40.72}
-        - {x: -23, y: 31.720001}
-        - {x: -25, y: 19.720001}
-        - {x: -25, y: 8.720001}
-        - {x: 25, y: 8.720001}
-        - {x: 25, y: 21.720001}
-        - {x: 22, y: 30.720001}
+      - - {x: 12.152542, y: 43.114876}
+        - {x: 6.152542, y: 45.114876}
+        - {x: -10.847458, y: 45.114876}
+        - {x: -23.847458, y: 36.114876}
+        - {x: -25.847458, y: 24.114876}
+        - {x: -25.847458, y: 13.114876}
+        - {x: 24.152542, y: 13.114876}
+        - {x: 24.152542, y: 26.114876}
+        - {x: 21.152542, y: 35.114876}
     outline: []
   spritePackingTag: 
   userData: 

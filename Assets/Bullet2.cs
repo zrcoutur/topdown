@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Threading;
 
-public class Bullet1 : PlayerAttack {
+public class Bullet2 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
@@ -13,46 +12,42 @@ public class Bullet1 : PlayerAttack {
 	// duration of the bullet (not in seconds)
 	float duration = 1.0f;
 
-	public int twin = 0;
-	public int osc = 0;
-	float otime = 0;
+	Rigidbody2D body;
+
+	// number of enemies that can be pierced
+	int life;
 
 	//private int damage;
 
 	// Use this for initialization
 	void Start () {
-	//	damage = 0;
+		//	damage = 0;
 		body = GetComponent<Rigidbody2D> ();
+
+		life = 3;
 
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-		base.hitImpulse = body.velocity * 2.0f;
+		base.hitImpulse = body.velocity * 6.0f;
 
 	}
 
-	Rigidbody2D body;
-	
 	// Update is called once per frame
 	void Update () {
-
-		//Twin intertwining
-		if (twin == 1) {
-			otime += Time.deltaTime;
-			body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity)+90.0f,Mathf.Cos(otime*15.0f)*50.0f*osc));
-		}
-
 		// Remove the bullet after a certain period of time
 		if (duration >= 0.0f) {
 			duration -= Time.deltaTime;
 		} else {
-			Destroy( GameObject.Find("Bullet1(Clone)") );
+			Destroy( GameObject.Find("Bullet2(Clone)") );
 		}
+
+		if (body.drag > 0) body.drag/=2;
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		
+
 		if (col.tag == "Block") {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
@@ -75,8 +70,11 @@ public class Bullet1 : PlayerAttack {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
 
+			// Decrement life, speed and damage
+			life -= 1; damage /= 2; body.drag = 2.0f;
+
 			// Destroy self
-			Destroy (gameObject);
+			if (life <= 0 ) duration = 0f;
 		}
 
 	}
