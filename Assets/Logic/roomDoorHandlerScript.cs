@@ -98,7 +98,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		
 		foreach (Collider2D col in hitColliders)
 		{
-			if (col.gameObject.name.Equals("Slash(Clone)"))
+			if (col.tag == "sword")
 			{
 				tryOpen = true;
 				break;
@@ -108,7 +108,7 @@ public class roomDoorHandlerScript : MonoBehaviour {
 		{
 			foreach (Collider2D col in hitColliders)
 			{
-				if (col.gameObject.name.Equals("Player"))
+				if (col.tag == "Player")
 				{
 					if (col.gameObject.GetComponent<Player>().stats.get_scrap() >= scrapCost)
 					{
