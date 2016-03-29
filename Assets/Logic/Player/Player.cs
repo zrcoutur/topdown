@@ -612,7 +612,7 @@ public class Player : MonoBehaviour {
 				}
 
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.6f;
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.6f);
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
@@ -904,6 +904,7 @@ public class Player : MonoBehaviour {
 					// sword has only one upgrade
 					if (weapon.weapon_stat(STAT_TYPE.damage).pointer_value() > 5) {
 						weapon.setUgrade(1);
+						wep.updateWeapon = (int)stats.current_weapon();
 					}
 				} else {
 					// determine each of the weapon's stat's current level
@@ -920,6 +921,8 @@ public class Player : MonoBehaviour {
 						} else { // no focus upgrade
 							weapon.setUgrade(3);
 						}
+
+						wep.updateWeapon = (int)stats.current_weapon();
 					}
 				}
 			}
