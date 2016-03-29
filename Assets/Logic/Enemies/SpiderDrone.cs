@@ -12,7 +12,7 @@ public class SpiderDrone : Baseenemy
 
 		base.Maxhealth = 20;
 		base.health = base.Maxhealth;
-        base.speed = 1.2f;
+        base.speed = 1.5f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
@@ -20,14 +20,22 @@ public class SpiderDrone : Baseenemy
     }
 
 
-    public override void TimeIncrease(float time)
-    {
+    public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 115f;
-		health = health + (int)(0.85f * health * time / timeScale);
-		Maxhealth = health;
-		speed = speed + (0.12f * speed * time / timeScale);
-		damage = damage + (int)(0.65f * damage * time / timeScale);
+		var timeScale = 75f;
+
+		if (health < 999999999) {
+			health = health + (int)(0.5f * health * time / timeScale);
+			Maxhealth = health;
+		}
+
+		if (speed < 16f) {
+			speed = speed + (0.065f * speed * time / timeScale);
+		}
+
+		if (damage < 500) {
+			damage = damage + (int)(0.65f * damage * time / timeScale);
+		}
     }
 
     public override void attack()

@@ -67,8 +67,10 @@ public abstract class Baseenemy : MonoBehaviour
 
 		if (dieState == 1 || timeTillDestroy <= 0) {
 			//update score adding one kill to the player giving killing attack, and add pointValue to score
-			lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
-			lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+			if (lastPlayerToAttack != null) {
+				lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
+				lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+			}
 
 			Destroy(gameObject);
 			return;
@@ -158,7 +160,7 @@ public abstract class Baseenemy : MonoBehaviour
 				float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
 
 				// Rotate to face target
-				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 6.0f * speed));
+				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
 
 				// Move at target
 				body.AddForce (dir * GetComponent<Baseenemy>().speed);
@@ -244,6 +246,7 @@ public abstract class Baseenemy : MonoBehaviour
         flash = 0.3f;
 
     }
+
     public abstract void TimeIncrease(float time);
     public abstract void attack();
     public abstract void Change();

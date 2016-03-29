@@ -20,14 +20,14 @@ public class BreakableCrate : MonoBehaviour {
 	public GameObject[] item_drops;
 	// used to determine overlap amongst other Blocks
 	public bool collision_tag;
-	// initial durability of a crate
-	private static readonly int MAX_DURABILITY = 22;
+	private int initial_durability;
 	// The amount of damage a crate can sustain until it breaks
 	private float durability;
 
 	// Use this for initialization
 	void Start () {
-		durability = MAX_DURABILITY;
+		initial_durability = UnityEngine.Random.Range(18, 25);
+		durability = initial_durability;
 		collision_tag = false;
 	}
 	
@@ -35,7 +35,7 @@ public class BreakableCrate : MonoBehaviour {
 	void Update () {
 		/* the HP bar shrinks as the crate's durability decreases */
 		Transform hp_len = hp_bar.transform;
-		var x_scale = ( durability / MAX_DURABILITY );
+		var x_scale = ( durability / initial_durability );
 
 		hp_len.localScale = new Vector3(x_scale, hp_len.localScale.y, hp_len.localScale.y);
 

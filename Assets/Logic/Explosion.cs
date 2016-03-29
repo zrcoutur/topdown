@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Explosion : MonoBehaviour {
-	public int damage;
+	public int damage = 0;
 	float animDone = 0.45f;
 	private float timer;
 	public bool triggerHit = false;
@@ -11,7 +11,6 @@ public class Explosion : MonoBehaviour {
 	public AudioClip X_Explode;
 
 	void Start () {
-		damage = UnityEngine.Random.Range(8, 12);
 		// Play explosion SFX
 		CameraRunner.gAudio.PlayOneShot( X_Explode );
 	}
@@ -24,6 +23,7 @@ public class Explosion : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
+
 	void OnTriggerEnter2D(Collider2D coll) {
 		Player is_player = coll.GetComponent<Player>();
 
