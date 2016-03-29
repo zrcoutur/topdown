@@ -61,13 +61,13 @@ public class WeaponStats {
 										  new Stat_Cost(64, 156), new Stat_Cost(99, 378), new Stat_Cost(166, 671) };
 			} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
 				dmg = new int[] { 5, 8, 13, 22, 34, 52, 73, 109, 213 };
-				rof = new int[] { 2, 3, 5, 8, 12, 16, 22 };
+				rof = new int[] { 2, 3, 5, 8, 11, 15 };
 				amo = new float[] { 18f, 15f, 12f, 9f, 7f, 5f, 3.33f };
 
 				dmg_c = new Stat_Cost[] { new Stat_Cost(0, 9), new Stat_Cost(0, 17), new Stat_Cost(0, 35), new Stat_Cost(0, 56),
 										  new Stat_Cost(0, 93), new Stat_Cost(33, 155), new Stat_Cost(72, 367),	new Stat_Cost(126, 721) };
-				rof_c = new Stat_Cost[] { new Stat_Cost(1, 8), new Stat_Cost(3, 23), new Stat_Cost(7, 56), new Stat_Cost(11, 113),
-										  new Stat_Cost(21, 206), new Stat_Cost(36, 389) };
+				rof_c = new Stat_Cost[] { new Stat_Cost(1, 8), new Stat_Cost(3, 23), new Stat_Cost(7, 56), new Stat_Cost(19, 143),
+										  new Stat_Cost(41, 406) };
 				amo_c = new Stat_Cost[] { new Stat_Cost(9, 0), new Stat_Cost(21, 0), new Stat_Cost(43, 0), new Stat_Cost(78, 213),
 										  new Stat_Cost(145, 345), new Stat_Cost(231, 989) };
 			} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {

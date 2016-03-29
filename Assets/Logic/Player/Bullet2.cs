@@ -24,7 +24,7 @@ public class Bullet2 : PlayerAttack {
 		//	damage = 0;
 		body = GetComponent<Rigidbody2D> ();
 
-		life = 3;
+		life = 5;
 
 		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
 
@@ -48,7 +48,7 @@ public class Bullet2 : PlayerAttack {
 
 	void OnTriggerEnter2D(Collider2D col) {
 
-		if (col.tag == "Block") {
+		if (col.gameObject.GetComponent<BreakableCrate>() == null && col.tag == "Block") {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
 
@@ -61,20 +61,33 @@ public class Bullet2 : PlayerAttack {
 		}
 
 		if (col.tag == "Enemy") {
+			
 			// Tell enemy it's been hit!
-			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
+			col.gameObject.SendMessage("OnHit", (PlayerAttack)this);
 
 			// Play hit sound effect
-			CameraRunner.gAudio.PlayOneShot( X_Enemy_Hit );
+			CameraRunner.gAudio.PlayOneShot(X_Enemy_Hit);
 
 			// Make poof
-			Instantiate (poof, transform.position, transform.rotation);
+			Instantiate(poof, transform.position, transform.rotation);
 
 			// Decrement life, speed and damage
-			life -= 1; damage /= 2; body.drag = 2.0f;
+			life -= 1;
+			damage /= 2;
+			body.drag = 2.0f;
 
 			// Destroy self
-			if (life <= 0 ) duration = 0f;
+			if (life <= 0)
+				duration = 0f;
+		} else if (col.gameObject.GetComponent<BreakableCrate>() != null) {
+			// Decrement life, speed and damage
+			life -= 1;
+			damage /= 2;
+			body.drag = 2.0f;
+
+			// Destroy self
+			if (life <= 0)
+				duration = 0f;
 		}
 
 	}

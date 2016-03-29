@@ -13,9 +13,6 @@ public class Player_Stats {
 	// Related to player's ability to heal themselves
 	public Stat MEDPACKS;
 
-	// Weapon upgrades
-	//public int[] upgrades = { 1,2,3,1 };
-
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
 	private WEAPON_TYPE held_weapon;
@@ -64,8 +61,8 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 0;
-		energyCores = 0;
+		scrap = 22000;
+		energyCores = 4000;
 		// 21253
 		// 3652
 

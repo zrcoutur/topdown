@@ -27,8 +27,9 @@ public class Explosion : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
 		Player is_player = coll.GetComponent<Player>();
 
-		if (is_player != null && !triggerHit) {
+		if (!triggerHit && is_player != null && !triggerHit) {
 			triggerHit = true;
+			Debug.Log("Explosion: " + damage);
 			is_player.GetHurt(damage);
 		}
 		//Add similar condition for enemy

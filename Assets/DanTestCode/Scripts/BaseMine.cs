@@ -11,8 +11,8 @@ public class BaseMine : MonoBehaviour {
 	private bool trigger = false;
 
 	public void Start() {
-		timer = 1.05f;
-		damage = UnityEngine.Random.Range(6, 10);
+		timer = 65f;
+		damage = UnityEngine.Random.Range(8, 12);
 	}
 
 	public void Update() {
@@ -21,8 +21,8 @@ public class BaseMine : MonoBehaviour {
 				((Explosion)Instantiate(expl, transform.position, transform.rotation)).GetComponent<Explosion>().damage = damage;
 				Destroy(this.gameObject);
 			} else { // Updates the damage of the mine overtime
-				timer = 1.05f;
-				damage += UnityEngine.Random.Range(0, 8);
+				timer = 65f;
+				damage += UnityEngine.Random.Range(0, 5);
 			}
 		} else {
 			timer -= Time.deltaTime;
@@ -36,7 +36,13 @@ public class BaseMine : MonoBehaviour {
 			// Starts flashing animation to indicate the mine is triggered
 			this.GetComponent<Animator>().SetTrigger("mine_set");
 			// sets delay time between 1/2 ~ 2 seconds
-			timer = UnityEngine.Random.Range(50, 200) / 100f;
+			timer = UnityEngine.Random.Range(10, 250) / 100f;
+		} else if (!trigger && coll.GetComponent<Explosion>() != null) {
+			trigger = true;
+			// Starts flashing animation to indicate the mine is triggered
+			this.GetComponent<Animator>().SetTrigger("mine_set");
+			// sets delay time between 1/2 ~ 2 seconds
+			timer = 0f;
 		}
 		//Add similar condition for enemy
 	}

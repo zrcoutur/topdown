@@ -477,7 +477,7 @@ public class Player : MonoBehaviour {
 				wep.GetComponent<Renderer> ().enabled = false;
 
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current ();
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 				break;
 
@@ -499,7 +499,7 @@ public class Player : MonoBehaviour {
 				}
 
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current ();
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat (STAT_TYPE.rate_of_fire).current();
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
@@ -533,12 +533,12 @@ public class Player : MonoBehaviour {
 			case 1:
 
 				// Ammo Check
-				if (!UseAmmo (2.0f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
+				if (!UseAmmo (4.0f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.4f);
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.2f);
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Rifle_Shoot, 1.0f);
@@ -552,8 +552,8 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.damage = (int)(damage_for_weapon () * 3.0f);
-				b2.set_duration (1.5f * UnityEngine.Random.Range (75, 115) / 100f);
+				b2.damage = (int)(2.0f * damage_for_weapon ());
+				b2.set_duration (UnityEngine.Random.Range (125, 265) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake (0.08f);
@@ -568,12 +568,12 @@ public class Player : MonoBehaviour {
 			// Plasma Gatling			
 			case 2:
 				// Ammo Check
-				if (!UseAmmo (0.5f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
+				if (!UseAmmo (0.66f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current())) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 1.8f);
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 1.5f);
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 0.4f);
@@ -587,8 +587,8 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = (int)(damage_for_weapon ());
-				b1.set_duration (0.8f * UnityEngine.Random.Range (75, 115) / 100f);
+				b1.damage = (int)(0.35f * damage_for_weapon());
+				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake (0.04f);
@@ -607,30 +607,32 @@ public class Player : MonoBehaviour {
 			case 3:
 
 				// Ammo Check
-				if (!UseAmmo (1.9f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
+				if (!UseAmmo(1.85f * stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.6f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.45f);
 
 				// Play Shoot Sound
-				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
+				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 				// Calculate creation position of bullet (from gun)
-				pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+				pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
 
 				// Create bullet
-				b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
-				var b0 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				var b0 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 
 				b1.transform.parent = transform;
 				b0.transform.parent = transform;
 				score.bullets_fired += 2;
 
-				b1.damage = damage_for_weapon ();
-				b0.damage = damage_for_weapon ();
-				var twinDur = UnityEngine.Random.Range (75, 115) / 100f;
+				var dmg = (int)(1.5f * damage_for_weapon());
+				b1.damage = dmg;
+				b0.damage = dmg;
+
+				var twinDur = UnityEngine.Random.Range (95, 125) / 100f;
 				b1.set_duration (twinDur);
 				b0.set_duration (twinDur);
 
@@ -688,7 +690,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = damage_for_weapon ();
+					b1.damage = damage_for_weapon();
 					b1.set_duration (0.4f);
 	
 					// Calculate bullet's velocity
@@ -708,18 +710,18 @@ public class Player : MonoBehaviour {
 			// Armageddon
 			case 1:
 				// Ammo Check
-				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 2.0f)) {
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 1.85f)) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 2.2f;
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.33f);
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_MegaShotgun_Shoot, 1.0f);
 	
 				// Fire SEVENTEEN bullets in succession
-				for (int bullet = 0; bullet <= 16; ++bullet) {
+				for (int bullet = 0; bullet <= 12; ++bullet) {
 		
 					// Calculate creation position of bullet (from gun)
 					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
@@ -728,7 +730,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = damage_for_weapon ();
+					b1.damage = (int)(1.5f * damage_for_weapon());
 					b1.set_duration (0.45f);
 	
 					// Calculate bullet's velocity
@@ -748,18 +750,18 @@ public class Player : MonoBehaviour {
 			// Auto shotgun
 			case 2:
 				// Ammo Check
-				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 1.1f)) {
+				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 0.66f)) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.85f;
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current());
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
 	
 				// Fire six bullets in succession
-				for (int bullet = 0; bullet <= 5; ++bullet) {
+				for (int bullet = 0; bullet <= 6; ++bullet) {
 		
 					// Calculate creation position of bullet (from gun)
 					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
@@ -768,8 +770,8 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = damage_for_weapon ();
-					b1.set_duration (0.7f);
+					b1.damage = (int)(0.9f * damage_for_weapon());
+					b1.set_duration (0.65f);
 	
 					// Calculate bullet's velocity
 	
@@ -788,12 +790,12 @@ public class Player : MonoBehaviour {
 			case 3:
 
 				// Ammo Check
-				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current ()*1.3f)) {
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 1.5f)) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current ();
+				atkCool = 2.0f / (0.66f * stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current());
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
@@ -808,7 +810,7 @@ public class Player : MonoBehaviour {
 					var b3 = (Bullet3)Instantiate (bullet3, pos, transform.rotation);
 					b3.transform.parent = transform;
 					score.bullets_fired++;
-					b3.damage = (int)(damage_for_weapon ()*0.7f); // Note that damage is increased by the shot behavior.
+					b3.damage = (int)(0.66f * damage_for_weapon()); // Note that damage is increased by the shot behavior.
 					b3.set_duration (0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
