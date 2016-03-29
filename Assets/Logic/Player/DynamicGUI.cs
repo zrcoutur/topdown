@@ -124,6 +124,9 @@ public class DynamicGUI : MonoBehaviour {
 				p.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
 				p.stats.Shield_raised = true;
+			} else {
+				// Updates the player's weapon if necessary
+				p.updateWeapons();
 			}
 		}
 		GUI.enabled = true;

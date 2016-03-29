@@ -427,7 +427,7 @@ public class Player : MonoBehaviour {
 				break;
 
 			// Determine weapon subtype
-			switch (stats.upgrades [(int)WEAPON_TYPE.sword]) {
+			switch (stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state()) {
 
 			// Standard Beam Sword
 			case 0:
@@ -488,7 +488,7 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.rifle:
 
 			// Determine weapon subtype
-			switch (stats.upgrades [(int)WEAPON_TYPE.rifle]) {
+			switch (stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()) {
 
 			// Plasma Rifle
 			case 0:
@@ -663,7 +663,7 @@ public class Player : MonoBehaviour {
 		case (int)WEAPON_TYPE.shotgun:
 
 			// Determine weapon subtype
-			switch (stats.upgrades [(int)WEAPON_TYPE.shotgun]) {
+			switch (stats.weapon_by_type(WEAPON_TYPE.shotgun).upgrade_state()) {
 
 			// Shotgun
 			case 0:
@@ -881,8 +881,48 @@ public class Player : MonoBehaviour {
 		}else if(obj.tag == "weapon_pack")
 		{
 
-			stats.owned_weapons[obj.GetComponent<WeaponUpgrade>().weapon] = 1;
+			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
+		}
+	}
+
+	/* Checks the curent values of each weapon stat and upgrades any weapon that meets a
+	 * specific criteria:
+	 * 
+	 * The sum of a weapon's levels for damage, rate of fire, and ammo consumption must
+	 * be greater than or equal to 6.
+	 * For the damage upgrade, the damage level must be greater than or equal to 3,
+	 * for the speed upgrade the rate of fire level must be greater than or equal to 3,
+	 * for any other case, the non focus upgrade is reached after a total of 6 levels. */
+	public void updateWeapons() {
+		/* Loop through all weapons. */
+		for (WEAPON_TYPE idx = WEAPON_TYPE.sword; idx <= WEAPON_TYPE.grenade; ++idx) {
+			WeaponStats weapon = stats.weapon_by_type(idx);
+			// Verify that weapon has not already been upgraded
+			if (weapon.upgrade_state() == 0) {
+				if (idx == WEAPON_TYPE.sword) {
+					// sword has only one upgrade
+					if (weapon.weapon_stat(STAT_TYPE.damage).pointer_value() > 5) {
+						weapon.setUgrade(1);
+					}
+				} else {
+					// determine each of the weapon's stat's current level
+					int dmg_lvl = weapon.weapon_stat(STAT_TYPE.damage).pointer_value();
+					int rof_lvl = weapon.weapon_stat(STAT_TYPE.rate_of_fire).pointer_value();
+					int ac_lvl = weapon.weapon_stat(STAT_TYPE.ammo).pointer_value();
+					// the sum of all three levels must greater than 5
+					if ((dmg_lvl + rof_lvl + ac_lvl) > 5) {
+
+						if (dmg_lvl >= 4) { // damage focus upgrade
+							weapon.setUgrade(1);
+						} else if (rof_lvl >= 4) { // speed focus upgrade
+							weapon.setUgrade(2);
+						} else { // no focus upgrade
+							weapon.setUgrade(3);
+						}
+					}
+				}
+			}
 		}
 	}
 

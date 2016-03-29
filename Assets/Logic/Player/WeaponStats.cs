@@ -9,15 +9,21 @@
 public class WeaponStats {
 	// the type of weapon
 	public readonly WEAPON_TYPE type;
+	/* This value is used to determine which upgrade the weapon currently has if any.
+	 * 0 -> no upgrade
+	 * 1 -> damage focus upgrade
+	 * 2 -> rate of fire focused upgrade
+	 * 3 -> no focus upgrade */
+	private int state;
 	// the list of values for the weapons damage, rate of fire, and ammo consumption
 	private readonly Stat[] stats;
-
 
 	/**
 	 * Creates a weapon with the given type
 	 */
 	public WeaponStats(byte t) {
 		type = (WEAPON_TYPE)t;
+		state = 0;
 		// currently there are only three stats
 		stats = new Stat[3];
 		initializeStats();
@@ -81,6 +87,18 @@ public class WeaponStats {
 		stats[1] = new Stat(STAT_TYPE.rate_of_fire, rof, rof_c);
 		stats[2] = new Stat(STAT_TYPE.ammo, amo, amo_c);
 	}
+
+	/* If the given value is a valid upgrade value and the upgrade
+	 * is equal to 0 (initial state), then upgrade is set to the
+	 * given value.*/
+	public void setUgrade(int upgrade) {
+		if (state == 0 && upgrade >= 0 && upgrade <= 3) {
+			state = upgrade;
+		}
+	}
+
+	/* Returns the current state of the weapon. */
+	public int upgrade_state() { return state; }
 
 	/* Returns the weapon stat corresponding to the given type.
 	 * See Enumerations class for valid values for parameter t. */

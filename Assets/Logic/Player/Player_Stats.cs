@@ -14,12 +14,11 @@ public class Player_Stats {
 	public Stat MEDPACKS;
 
 	// Weapon upgrades
-	public int[] upgrades = { 1,2,3,1 };
+	//public int[] upgrades = { 1,2,3,1 };
 
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
 	private WEAPON_TYPE held_weapon;
-	public int[] owned_weapons = { 1,1,1,0 };
 
 	// Counters for consumable materials
 	private int energyCores;
@@ -65,8 +64,8 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		energyCores = 0;
-		scrap = 0;
+		scrap = 22000;
+		energyCores = 4000;
 		// 21253
 		// 3652
 
@@ -126,18 +125,10 @@ public class Player_Stats {
 	/* Cycles to the next weapon base on the integer value associated with a weapon type. */
 	public void cycle_weapons() {
 		
-		//checks all weapon slots for the next weapon owned, then sets held weaon to that
-		//weapons not owned yet will not be cycled 
-		for (int i = 1; i < 4; i++)
-		{
-			if (owned_weapons[((byte)held_weapon + i) % 3] > 0)
-			{
-				// the grenade is currently not implemented, so it is skipped.
-				held_weapon = (WEAPON_TYPE)(((byte)held_weapon + i) % (byte)WEAPON_TYPE.grenade);
-				break;
-			}
-		}
-		
+		/* Checks all weapon slots for the next weapon owned, then sets held weaon to that
+		 * weapons not owned yet will not be cycled
+		 * the grenade is currently not implemented, so it is skipped. */
+		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 3);
 	}
 
 	/* Returns the integer representation of the Player's current weapon */
