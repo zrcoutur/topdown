@@ -13,10 +13,13 @@ public class Player_Stats {
 	// Related to player's ability to heal themselves
 	public Stat MEDPACKS;
 
+	// Weapon upgrades
+	public int[] upgrades = { 1,2,3,1 };
+
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
 	private WEAPON_TYPE held_weapon;
-	public int[] owned_weapons = { 1,1,1,0};
+	public int[] owned_weapons = { 1,1,1,0 };
 
 	// Counters for consumable materials
 	private int energyCores;
