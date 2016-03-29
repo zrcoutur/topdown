@@ -200,6 +200,15 @@ public abstract class Baseenemy : MonoBehaviour
         Change();
     }
 
+	public void OnTriggerEnter2D(Collider2D trigger) {
+		if (trigger.gameObject.GetComponent<Explosion>() != null) {
+			health -= trigger.gameObject.GetComponent<Explosion>().damage;
+
+			// Flash
+			flash = 0.3f;
+		}
+	}
+
 	// Bump into walls/player
 	void OnCollisionStay2D( Collision2D col ) {
 
