@@ -29,7 +29,7 @@ public class Explosion : MonoBehaviour {
 
 		if (!triggerHit && is_player != null && !triggerHit) {
 			triggerHit = true;
-			Debug.Log("Explosion: " + damage);
+			//Debug.Log("Explosion: " + damage);
 			is_player.GetHurt(damage);
 		}
 		//Add similar condition for enemy

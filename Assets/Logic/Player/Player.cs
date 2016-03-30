@@ -538,7 +538,7 @@ public class Player : MonoBehaviour {
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.2f);
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.35f);
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Rifle_Shoot, 1.0f);
@@ -552,7 +552,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.damage = (int)(2.0f * damage_for_weapon ());
+				b2.damage = (int)(2.5f * damage_for_weapon ());
 				b2.set_duration (UnityEngine.Random.Range (125, 265) / 100f);
 
 				// Mildly shake camera
@@ -568,12 +568,12 @@ public class Player : MonoBehaviour {
 			// Plasma Gatling			
 			case 2:
 				// Ammo Check
-				if (!UseAmmo (0.66f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current())) {
+				if (!UseAmmo (0.25f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current())) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 1.5f);
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 2.0f);
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 0.4f);
@@ -587,7 +587,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = (int)(0.45f * damage_for_weapon());
+				b1.damage = (int)(0.66f * damage_for_weapon());
 				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
 
 				// Mildly shake camera
@@ -607,12 +607,12 @@ public class Player : MonoBehaviour {
 			case 3:
 
 				// Ammo Check
-				if (!UseAmmo(1.85f * stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
+				if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.45f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current());
 
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
@@ -628,7 +628,7 @@ public class Player : MonoBehaviour {
 				b0.transform.parent = transform;
 				score.bullets_fired += 2;
 
-				var dmg = (int)(1.5f * damage_for_weapon());
+				var dmg = damage_for_weapon();
 				b1.damage = dmg;
 				b0.damage = dmg;
 
@@ -691,7 +691,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.damage = damage_for_weapon();
-					b1.set_duration (0.4f);
+					b1.set_duration (0.45f);
 	
 					// Calculate bullet's velocity
 	
@@ -710,12 +710,12 @@ public class Player : MonoBehaviour {
 			// Armageddon
 			case 1:
 				// Ammo Check
-				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 1.85f)) {
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 2.0f)) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.33f);
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.5f);
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_MegaShotgun_Shoot, 1.0f);
@@ -730,8 +730,8 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = (int)(1.5f * damage_for_weapon());
-					b1.set_duration (0.45f);
+					b1.damage = (int)(1.25f * damage_for_weapon());
+					b1.set_duration (0.5f);
 	
 					// Calculate bullet's velocity
 	
@@ -750,12 +750,12 @@ public class Player : MonoBehaviour {
 			// Auto shotgun
 			case 2:
 				// Ammo Check
-				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 0.66f)) {
+				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 0.5f)) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current());
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current() * 1.2f);
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
@@ -770,7 +770,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = (int)(0.9f * damage_for_weapon());
+					b1.damage = (int)(0.66f * damage_for_weapon());
 					b1.set_duration (0.65f);
 	
 					// Calculate bullet's velocity
@@ -790,12 +790,12 @@ public class Player : MonoBehaviour {
 			case 3:
 
 				// Ammo Check
-				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 1.5f)) {
+				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current())) {
 					break;
 				}
 	
 				// Cooldown
-				atkCool = 2.0f / (0.66f * stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current());
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current());
 	
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
@@ -810,7 +810,7 @@ public class Player : MonoBehaviour {
 					var b3 = (Bullet3)Instantiate (bullet3, pos, transform.rotation);
 					b3.transform.parent = transform;
 					score.bullets_fired++;
-					b3.damage = (int)(0.5f * damage_for_weapon()); // Note that damage is increased by the shot behavior.
+					b3.damage = damage_for_weapon(); // Note that damage is increased by the shot behavior.
 					b3.set_duration (0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
