@@ -41,7 +41,7 @@ public class EnemyBullet : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		
-		if (col.tag == "Block") {
+		if (col.tag == "Block" || col.tag == "sword") {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
 
@@ -63,7 +63,6 @@ public class EnemyBullet : MonoBehaviour {
 			// Destroy self
 			Destroy (gameObject);
 		}
-
 	}
 
 	/* Sets the duration of the bullet. */
