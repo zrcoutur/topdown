@@ -15,8 +15,11 @@ public class Player : MonoBehaviour {
 	public readonly DynamicGUI upgradeWindow;
 	public Weapon weapon;
 	public Slash slash;
+	public Slash slash2;
 	public Shine shine;
 	public Bullet1 bullet1;
+	public Bullet2 bullet2;
+	public Bullet3 bullet3;
 	public CameraRunner cam;
 	public Slider hpSlider;
 	public Slider energySlider;
@@ -26,7 +29,9 @@ public class Player : MonoBehaviour {
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
+	public AudioClip X_Rifle_Shoot;
 	public AudioClip X_Shotgun_Shoot;
+	public AudioClip X_MegaShotgun_Shoot;
 	public AudioClip X_Core_Get;
 	public AudioClip X_Scrap_Get;
 	public AudioClip X_Medpack_Get;
@@ -83,6 +88,7 @@ public class Player : MonoBehaviour {
 
 		// Create weapon object and make it follow you
 		wep = (Weapon) Instantiate( weapon, body.position, transform.rotation );
+		wep.stats = stats;
 		wep.transform.parent = transform;
 
 		score = new ScoreBoard();
@@ -132,7 +138,7 @@ public class Player : MonoBehaviour {
 				uponDeath = false;
 
 				PlayerPrefs.SetInt ("FinalScore", (int) this.score.totalScore);
-				UnityEngine.SceneManagement.SceneManager.LoadScene ("gameOver");
+				UnityEngine.SceneManagement.SceneManager.LoadScene("gameOver");
 			}
 
 			return;
@@ -403,10 +409,13 @@ public class Player : MonoBehaviour {
 	 * pressed (for 'sticky' attack styles)
 	 * 
 	 *******************************************************************************/
-	void PerformAttack ( int weaponType, bool pressed ) {
+	void PerformAttack (int weaponType, bool pressed)
+	{
 		
 		// You cannot fire when the upgrade window is open
-		if (upgrade_window.isOpen()) { return; }
+		if (upgrade_window.isOpen ()) {
+			return;
+		}
 
 
 		switch (weaponType) {
@@ -417,109 +426,413 @@ public class Player : MonoBehaviour {
 			if (!pressed)
 				break;
 
-			// Play Slash Sound
-			CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
+			// Determine weapon subtype
+			switch (stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state()) {
 
-			// Make Slash Effect
-			var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
-			sl.transform.parent = transform;
-			score.sword_attacks++;
-			sl.damage = damage_for_weapon ();
+			// Standard Beam Sword
+			case 0:
 
-			// Shake camera
-			cam.AddShake( 0.08f );
+				// Play Slash Sound
+				CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
 
-			// Momentum from swing
-			body.AddForce ( Tools.AngleToVec2( (body.rotation * transform.forward).z + 90.0f, 120.0f ) );
+				// Make Slash Effect
+				var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
+				sl.transform.parent = transform;
+				score.sword_attacks++;
+				sl.damage = damage_for_weapon ();
 
-			// Hide weapon
-			wep.GetComponent<Renderer> ().enabled = false;
+				// Shake camera
+				cam.AddShake (0.08f);
 
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+				// Momentum from swing
+				body.AddForce (Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f, 120.0f));
+
+				// Hide weapon
+				wep.GetComponent<Renderer> ().enabled = false;
+
+				// Cooldown
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current ();
+
+				break;
+
+			// Omega Beam Sword
+			case 1:
+
+				// Play Slash Sound
+				CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
+
+				// Make Slash Effect
+				var sl2 = (Slash)Instantiate (slash2, body.position, transform.rotation);
+				sl2.transform.parent = transform;
+				score.sword_attacks++;
+				sl2.damage = damage_for_weapon ();
+
+				// Shake camera
+				cam.AddShake (0.12f);
+
+				// Momentum from swing
+				body.AddForce (Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f, 200.0f));
+
+				// Hide weapon
+				wep.GetComponent<Renderer> ().enabled = false;
+
+				// Cooldown
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+
+				break;
+
+			}
 
 			break;
 
 		case (int)WEAPON_TYPE.rifle:
-			
-			// Ammo Check
-			if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
+
+			// Determine weapon subtype
+			switch (stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()) {
+
+			// Plasma Rifle
+			case 0:
+
+				// Ammo Check
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
+					break;
+				}
+
+				// Cooldown
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat (STAT_TYPE.rate_of_fire).current();
+
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
+
+				// Calculate creation position of bullet (from gun)
+				var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+				// Create bullet
+				var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+
+				b1.transform.parent = transform;
+				score.bullets_fired++;
+
+				b1.damage = damage_for_weapon ();
+				b1.set_duration (UnityEngine.Random.Range (75, 115) / 100f);
+
+				// Mildly shake camera
+				cam.AddShake (0.06f);
+
+				// Calculate bullet's velocity
+
+				// Shot spread range.
+				var spread = Random.Range (-3.0f, 3.0f);
+
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+
 				break;
+
+			// Lancer Rifle
+			case 1:
+
+				// Ammo Check
+				if (!UseAmmo (4.0f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current ())) {
+					break;
+				}
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.35f);
+
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Rifle_Shoot, 1.0f);
+
+				// Calculate creation position of bullet (from gun)
+				pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+				// Create bullet
+				var b2 = (Bullet2)Instantiate (bullet2, pos, transform.rotation);
+
+				b2.transform.parent = transform;
+				score.bullets_fired++;
+
+				b2.damage = (int)(2.5f * damage_for_weapon ());
+				b2.set_duration (UnityEngine.Random.Range (125, 265) / 100f);
+
+				// Mildly shake camera
+				cam.AddShake (0.08f);
+
+				// Calculate bullet's velocity
+
+				// Set final velocity based on travel angle
+				b2.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f, 18.0f);
+
+				break;
+			
+			// Plasma Gatling			
+			case 2:
+				// Ammo Check
+				if (!UseAmmo (0.25f * stats.weapon_by_type (WEAPON_TYPE.rifle).weapon_stat (STAT_TYPE.ammo).current())) {
+					break;
+				}
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 2.0f);
+
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 0.4f);
+
+				// Calculate creation position of bullet (from gun)
+				pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+				// Create bullet
+				b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+
+				b1.transform.parent = transform;
+				score.bullets_fired++;
+
+				b1.damage = (int)(0.66f * damage_for_weapon());
+				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
+
+				// Mildly shake camera
+				cam.AddShake (0.04f);
+
+				// Calculate bullet's velocity
+
+				// Shot spread range.
+				spread = Random.Range (-12.0f, 12.0f);
+
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + spread + 90.0f, 16.0f);
+
+				break;
+
+			// Twin Cannon
+			case 3:
+
+				// Ammo Check
+				if (!UseAmmo(stats.weapon_by_type(WEAPON_TYPE.rifle).weapon_stat(STAT_TYPE.ammo).current())) {
+					break;
+				}
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current());
+
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
+
+				// Calculate creation position of bullet (from gun)
+				pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+				// Create bullet
+				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+				var b0 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
+
+				b1.transform.parent = transform;
+				b0.transform.parent = transform;
+				score.bullets_fired += 2;
+
+				var dmg = damage_for_weapon();
+				b1.damage = dmg;
+				b0.damage = dmg;
+
+				var twinDur = UnityEngine.Random.Range (95, 125) / 100f;
+				b1.set_duration (twinDur);
+				b0.set_duration (twinDur);
+
+				// Mildly shake camera
+				cam.AddShake (0.09f);
+
+				// Calculate bullet's velocity
+
+				// Set final velocity based on travel angle
+				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f, 14.0f);
+				b0.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f, 14.0f);
+
+				// Coloration
+				//b0.GetComponent<SpriteRenderer>().color = new Vector4(0.5f,0.7f,1f,1f);
+				//b1.GetComponent<SpriteRenderer>().color = new Vector4(0.5f,0.7f,1f,1f);
+
+				b0.twin = 1;
+				b0.osc = 1;
+
+				b1.twin = 1;
+				b1.osc = -1;
+
+				break;
+
+
 			}
-
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
-			// Play Shoot Sound
-			CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
-
-			// Calculate creation position of bullet (from gun)
-			var pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
-
-			// Create bullet
-			var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-
-			b1.transform.parent = transform;
-			score.bullets_fired++;
-
-			b1.damage = damage_for_weapon();
-			b1.set_duration(1.35f * UnityEngine.Random.Range(75, 115) / 100f);
-
-			// Mildly shake camera
-			cam.AddShake( 0.06f );
-
-			// Calculate bullet's velocity
-
-			// Shot spread range.
-			var spread = Random.Range( -3.0f, 3.0f );
-
-			// Set final velocity based on travel angle
-			b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
 
 			break;
 
 		case (int)WEAPON_TYPE.shotgun:
 
-			// Ammo Check
-			if ( !UseAmmo( stats.weapon_by_type(WEAPON_TYPE.shotgun).weapon_stat(STAT_TYPE.ammo).current() ) ) {
+			// Determine weapon subtype
+			switch (stats.weapon_by_type(WEAPON_TYPE.shotgun).upgrade_state()) {
+
+			// Shotgun
+			case 0:
+				// Ammo Check
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current ())) {
+					break;
+				}
+	
+				// Cooldown
+				atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current ();
+	
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
+	
+				// Fire five bullets in succession
+				for (int bullet = 0; bullet <= 4; ++bullet) {
+		
+					// Calculate creation position of bullet (from gun)
+					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+	
+					// Create bullet
+					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+					b1.transform.parent = transform;
+					score.bullets_fired++;
+					b1.damage = damage_for_weapon();
+					b1.set_duration (0.45f);
+	
+					// Calculate bullet's velocity
+	
+					// Shot spread range.
+					var spread = Random.Range (-15.0f, 15.0f);
+	
+					// Set final velocity based on travel angle
+					b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+				}
+	
+				// Mildly shake camera
+				cam.AddShake (0.135f);
+	
+				break;
+	
+			// Armageddon
+			case 1:
+				// Ammo Check
+				if (!UseAmmo (stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 2.0f)) {
+					break;
+				}
+	
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current () * 0.5f);
+	
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_MegaShotgun_Shoot, 1.0f);
+	
+				// Fire SEVENTEEN bullets in succession
+				for (int bullet = 0; bullet <= 12; ++bullet) {
+		
+					// Calculate creation position of bullet (from gun)
+					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+	
+					// Create bullet
+					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+					b1.transform.parent = transform;
+					score.bullets_fired++;
+					b1.damage = (int)(1.25f * damage_for_weapon());
+					b1.set_duration (0.5f);
+	
+					// Calculate bullet's velocity
+	
+					// Shot spread range.
+					var spread = Random.Range (-30.0f, 30.0f);
+	
+					// Set final velocity based on travel angle
+					b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + spread, Random.Range (13.0f, 17.0f));
+				}
+	
+				// Moderately shake camera
+				cam.AddShake (0.435f);
+	
+				break;
+
+			// Auto shotgun
+			case 2:
+				// Ammo Check
+				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current () * 0.5f)) {
+					break;
+				}
+	
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon ()).weapon_stat (STAT_TYPE.rate_of_fire).current() * 1.2f);
+	
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
+	
+				// Fire six bullets in succession
+				for (int bullet = 0; bullet <= 6; ++bullet) {
+		
+					// Calculate creation position of bullet (from gun)
+					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+	
+					// Create bullet
+					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
+					b1.transform.parent = transform;
+					score.bullets_fired++;
+					b1.damage = (int)(0.66f * damage_for_weapon());
+					b1.set_duration (0.65f);
+	
+					// Calculate bullet's velocity
+	
+					// Shot spread range.
+					var spread = Random.Range (-12.0f, 12.0f);
+	
+					// Set final velocity based on travel angle
+					b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+				}
+
+				// Mildly shake camera
+				cam.AddShake (0.2f);
+				break;
+
+			// Conflux Shot
+			case 3:
+
+				// Ammo Check
+				if (!UseAmmo(stats.weapon_by_type (WEAPON_TYPE.shotgun).weapon_stat (STAT_TYPE.ammo).current())) {
+					break;
+				}
+	
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type (stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current());
+	
+				// Play Shoot Sound
+				CameraRunner.gAudio.PlayOneShot (X_Shotgun_Shoot, 1.0f);
+	
+				// Fire five bullets in succession
+				for (int bullet = 0; bullet <= 4; ++bullet) {
+		
+					// Calculate creation position of bullet (from gun)
+					var pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+	
+					// Create bullet
+					var b3 = (Bullet3)Instantiate (bullet3, pos, transform.rotation);
+					b3.transform.parent = transform;
+					score.bullets_fired++;
+					b3.damage = damage_for_weapon(); // Note that damage is increased by the shot behavior.
+					b3.set_duration (0.4f);
+					b3.outset = -60.0f + 30.0f * bullet;
+	
+					// Calculate bullet's velocity
+	
+					// Shot spread range.
+	
+					// Set final velocity based on travel angle
+					b3.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 30.0f + bullet*30.0f, 15.0f);
+				}
+
+				// Mildly shake camera
+				cam.AddShake (0.335f);
+
 				break;
 			}
 
-			// Cooldown
-			atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
-
-			// Play Shoot Sound
-			CameraRunner.gAudio.PlayOneShot( X_Shotgun_Shoot, 1.0f );
-
-			// Fire five bullets in succession
-			for (int bullet = 0; bullet <= 4; ++bullet) {
-	
-				// Calculate creation position of bullet (from gun)
-				pos = body.position + Tools.AngleToVec2( (body.rotation * transform.forward).z + 70.0f, 1.0f );
-
-				// Create bullet
-				b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
-				b1.transform.parent = transform;
-				score.bullets_fired++;
-				b1.damage = damage_for_weapon();
-				b1.set_duration(0.45f);
-
-				// Calculate bullet's velocity
-
-				// Shot spread range.
-				spread = Random.Range( -15.0f, 15.0f );
-
-				// Set final velocity based on travel angle
-				b1.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ( (body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
-			}
-
-			// Mildly shake camera
-			cam.AddShake( 0.135f );
-
 			break;
-		}
 
 		}
+
+	}
 
 	/* Get current weapon damage */
 	private int damage_for_weapon() {
@@ -570,8 +883,51 @@ public class Player : MonoBehaviour {
 		}else if(obj.tag == "weapon_pack")
 		{
 
-			stats.owned_weapons[obj.GetComponent<WeaponUpgrade>().weapon] = 1;
+			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
+		}
+	}
+
+	/* Checks the curent values of each weapon stat and upgrades any weapon that meets a
+	 * specific criteria:
+	 * 
+	 * The sum of a weapon's levels for damage, rate of fire, and ammo consumption must
+	 * be greater than or equal to 7 (or 6 in the case of the sword).
+	 * For the damage upgrade, the damage level must be greater than or equal to 4 and greater than the rate of fire level,
+	 * for the speed upgrade the rate of fire level must be greater than or equal to 3 and greater than the damage level,
+	 * for any other case, the non focus upgrade is reached after a total of 7 levels. */
+	public void updateWeapons() {
+		/* Loop through all weapons. */
+		for (WEAPON_TYPE idx = WEAPON_TYPE.sword; idx <= WEAPON_TYPE.grenade; ++idx) {
+			WeaponStats weapon = stats.weapon_by_type(idx);
+			// Verify that weapon has not already been upgraded
+			if (weapon.upgrade_state() == 0) {
+				if (idx == WEAPON_TYPE.sword) {
+					// Only the sword's damage can be upgraded
+					if (weapon.weapon_stat(STAT_TYPE.damage).pointer_value() >= 6) {
+						weapon.setUgrade(1);
+						wep.updateWeapon = (int)stats.current_weapon();
+					}
+				} else {
+					// determine each of the weapon's stat's current level
+					int dmg_lvl = weapon.weapon_stat(STAT_TYPE.damage).pointer_value();
+					int rof_lvl = weapon.weapon_stat(STAT_TYPE.rate_of_fire).pointer_value();
+					int ac_lvl = weapon.weapon_stat(STAT_TYPE.ammo).pointer_value();
+					// the sum of all three levels must greater than 5
+					if ((dmg_lvl + rof_lvl + ac_lvl) >= 7) {
+
+						if (dmg_lvl >= 4 && dmg_lvl > rof_lvl) { // damage focus upgrade
+							weapon.setUgrade(1);
+						} else if (rof_lvl >= 3 && rof_lvl > dmg_lvl) { // speed focus upgrade
+							weapon.setUgrade(2);
+						} else { // no focus upgrade
+							weapon.setUgrade(3);
+						}
+
+						wep.updateWeapon = (int)stats.current_weapon();
+					}
+				}
+			}
 		}
 	}
 

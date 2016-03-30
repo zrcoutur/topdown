@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class Pathfinding2D : MonoBehaviour
 {
@@ -21,32 +22,37 @@ public class Pathfinding2D : MonoBehaviour
     }
 
     //A test move function, can easily be replaced
-	public void Move()
-    {
-        if (Path.Count > 0)
-        {
+	public void Move ()
+	{
+		if (Path.Count > 0) {
 			// Unit direction vector to point
-			Vector2 dir = (Path[0] - transform.position).normalized;
+			Vector2 dir = (Path [0] - transform.position).normalized;
+
+			// Get rigidbody
+			var body = GetComponent<Rigidbody2D>();
 
 			// Add a force towards next point in the path.
-			GetComponent<Rigidbody2D>().AddForce (dir * GetComponent<Baseenemy>().speed);
+			body.AddForce (dir * GetComponent<Baseenemy> ().speed);
 
 			// Calculate angle to target
-			float currentAngle = Tools.QuaternionToAngle(GetComponent<Rigidbody2D>().transform.rotation);
-			float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
+			float currentAngle = Tools.QuaternionToAngle (body.transform.rotation);
+			float targetAngle = Tools.Vector2ToAngle (dir) + 90.0f;
 
-			GetComponent<Baseenemy>().transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 3.0f * GetComponent<Baseenemy>().speed));
+			GetComponent<Baseenemy> ().transform.rotation = Tools.AngleToQuaternion (Mathf.MoveTowardsAngle (currentAngle, targetAngle, 3.0f * GetComponent<Baseenemy> ().speed));
 
 
 			// Continue to next path segment
-            if (Vector3.Distance(transform.position, Path[0]) < 0.6f)
-            {
-                Path.RemoveAt(0);
-            }
+			if (Vector3.Distance (transform.position, Path [0]) < 1.2f) {
+				Path.RemoveAt (0);
+			}
+			// Careful traversal
+			else if (Vector3.Magnitude (body.velocity) > 3.0f) {
+				body.velocity = Vector3.Normalize(body.velocity) * 3.0f;
+			}
 
 			// Skip one segment
 			if (Path.Count > 1) {
-				if (Vector3.Distance (transform.position, Path [1]) < 0.6f) {
+				if (Vector3.Distance (transform.position, Path [1]) < 1.2f) {
 					Path.RemoveAt (0);
 					Path.RemoveAt (0);
 				}

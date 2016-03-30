@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class Explosion : MonoBehaviour {
-	public int damage;
+	public int damage = 0;
 	float animDone = 0.45f;
+	private float timer;
 	public bool triggerHit = false;
 
 	// Explosion SFX
@@ -22,11 +23,13 @@ public class Explosion : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
+
 	void OnTriggerEnter2D(Collider2D coll) {
 		Player is_player = coll.GetComponent<Player>();
 
-		if (is_player != null && !triggerHit) {
+		if (!triggerHit && is_player != null && !triggerHit) {
 			triggerHit = true;
+			//Debug.Log("Explosion: " + damage);
 			is_player.GetHurt(damage);
 		}
 		//Add similar condition for enemy

@@ -14,12 +14,11 @@ public class EnemySpawner : MonoBehaviour
     private int i;
 
     public bool activated;
-    internal bool inSpecialRoom;
-
+	public bool inSpecialRoom;
     // Use this for initialization
     void Start()
     {
-        activated = true;
+        activated = false;
         float yScale = transform.lossyScale.y / 2;
         float xScale = transform.lossyScale.x / 2;
         i = 0;
@@ -59,12 +58,33 @@ public class EnemySpawner : MonoBehaviour
 
 		//Debug.Log("enemy spawned at"+location[rand].x + " " + location[rand].y + "i"  +i);
 
-        return (Baseenemy)Instantiate(b, location[rand], Quaternion.Euler(0, 0, 0));
+		activated = false;
 
+        return (Baseenemy)Instantiate(b, location[rand], Quaternion.Euler(0, 0, 0));
     }
 
-    internal void setActive()
-    {
-        activated = true;
+	public void setActive()
+	{
+		if (!inSpecialRoom)
+		{
+			activated = true;
+		}
+		else
+		{
+			//check if doors are open
+			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 7);
+
+			foreach (Collider2D col in hitColliders)
+			{
+				//find nearby doorhandler
+				if (col.gameObject.name.Equals("roomDoorHandler(Clone)"))
+				{
+					if (col.GetComponent<roomDoorHandlerScript>().paidScrap == true)
+					{
+						activated = true;
+					}
+				}
+			}
+		}
     }
 }

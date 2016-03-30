@@ -58,7 +58,7 @@
      <Compile Include="Assets\Logic\Enemies\EnemySlash.cs" />
      <Compile Include="Assets\Logic\Enemies\EnemySpawner.cs" />
      <Compile Include="Assets\Logic\Enemies\EnemySpawnerHandler.cs" />
-     <Compile Include="Assets\Logic\Enemies\FlyingDrone.cs" />
+     <Compile Include="Assets\Logic\Enemies\FlyerDrone.cs" />
      <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
      <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
      <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
@@ -71,6 +71,8 @@
      <Compile Include="Assets\Logic\Menus\GameOverLogic.cs" />
      <Compile Include="Assets\Logic\Menus\MainMenuLogic.cs" />
      <Compile Include="Assets\Logic\Player\Bullet1.cs" />
+     <Compile Include="Assets\Logic\Player\Bullet2.cs" />
+     <Compile Include="Assets\Logic\Player\Bullet3.cs" />
      <Compile Include="Assets\Logic\Player\DynamicGUI.cs" />
      <Compile Include="Assets\Logic\Player\Enumerations.cs" />
      <Compile Include="Assets\Logic\Player\Player.cs" />
@@ -80,12 +82,14 @@
      <Compile Include="Assets\Logic\Player\Stat.cs" />
      <Compile Include="Assets\Logic\Player\StatDisplay.cs" />
      <Compile Include="Assets\Logic\Player\Stat_Cost.cs" />
+     <Compile Include="Assets\Logic\Player\Weapon.cs" />
      <Compile Include="Assets\Logic\Player\WeaponStats.cs" />
+     <Compile Include="Assets\Logic\Player\WeaponUpgrade.cs" />
      <Compile Include="Assets\Logic\Poof.cs" />
      <Compile Include="Assets\Logic\ScoreBoard.cs" />
+     <Compile Include="Assets\Logic\Shine.cs" />
      <Compile Include="Assets\Logic\SparkPoof.cs" />
      <Compile Include="Assets\Logic\Tools.cs" />
-     <Compile Include="Assets\Logic\Weapon.cs" />
      <Compile Include="Assets\Logic\energy_core_script.cs" />
      <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
      <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
@@ -111,8 +115,6 @@
      <Compile Include="Assets\Pathfinding\Scripts\WaypointListNode.cs" />
      <Compile Include="Assets\Pathfinding\Scripts\WaypointNode.cs" />
      <Compile Include="Assets\Pathfinding\Scripts\WaypointPathfinder.cs" />
-     <Compile Include="Assets\Shine.cs" />
-     <Compile Include="Assets\WeaponUpgrade.cs" />
      <None Include="Assets\Shaders\TileBG.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

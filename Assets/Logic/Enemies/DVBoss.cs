@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DVBoss : Baseenemy {
+public class DVBoss : Baseenemy
+{
     private float Lightning;
     public EnemySlash slash;
     public override void attack()
@@ -13,8 +14,8 @@ public class DVBoss : Baseenemy {
             lightning();
         }
         else
-        { 
-            var sl = (Slash)Instantiate(slash, body.position, transform.rotation);
+        {
+            var sl = (EnemySlash)Instantiate(slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
             sl.transform.parent = transform;
             sl.damage = damage;
         }
@@ -23,7 +24,7 @@ public class DVBoss : Baseenemy {
 
     public override void TimeIncrease(float time)
     {
-        Lightning *= (time / 100);
+        Lightning *= (time / 300);
         var timeScale = 105f;
         health = health + (int)(0.15f * health * time / timeScale);
         Maxhealth = health;
@@ -32,21 +33,19 @@ public class DVBoss : Baseenemy {
     }
 
     // Use this for initialization
-    void awake () {
+    void awake()
+    {
         isBoss = true;
         base.health = 10000000;
-        base.speed =0.5f;
+        base.speed = 0.5f;
         base.Maxhealth = 10000000;
         base.rate = 2.5f;
-        base.rate = 4f;
+        //base.rate = 4f;
         Lightning = 0.01f;
         damage = 10;
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // Update is called once per frame
     void lightning()
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
@@ -66,4 +65,6 @@ public class DVBoss : Baseenemy {
             }
         }
     }
+    public override void Change()
+    { }
 }

@@ -17,18 +17,17 @@ public class BreakableCrate : MonoBehaviour {
 	// Break poof
 	public GameObject pf;
 	// droppabble items
-	public GameObject energy_core;
-	public GameObject scrap;
+	public GameObject[] item_drops;
 	// used to determine overlap amongst other Blocks
 	public bool collision_tag;
-	// initial durability of a crate
-	private static readonly int MAX_DURABILITY = 21;
+	private int initial_durability;
 	// The amount of damage a crate can sustain until it breaks
 	private float durability;
 
 	// Use this for initialization
 	void Start () {
-		durability = MAX_DURABILITY;
+		initial_durability = UnityEngine.Random.Range(18, 25);
+		durability = initial_durability;
 		collision_tag = false;
 	}
 	
@@ -36,7 +35,7 @@ public class BreakableCrate : MonoBehaviour {
 	void Update () {
 		/* the HP bar shrinks as the crate's durability decreases */
 		Transform hp_len = hp_bar.transform;
-		var x_scale = ( durability / MAX_DURABILITY );
+		var x_scale = ( durability / initial_durability );
 
 		hp_len.localScale = new Vector3(x_scale, hp_len.localScale.y, hp_len.localScale.y);
 
@@ -54,10 +53,18 @@ public class BreakableCrate : MonoBehaviour {
 		/* Reduce durability upon coming in contact with bullets and beam swords */
 		if (collider != null) {
 			/* bullets and swords deal differing damage */
-			if (collider.tag == "bullet_1") {
+			if (collider.GetComponent<Bullet1>() != null) {
 				durability -= 1;
-			} else if (collider.tag == "sword") {
+				//increment player stat
+				collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
+			} else if (collider.GetComponent<Bullet2>() != null) {
+				durability -= 6;
+			} else if (collider.GetComponent<Bullet3>() != null) {
+				durability -= 3;
+			} else if (collider.GetComponent<Slash>() != null) {
 				durability -= 8;
+			} else if (collider.GetComponent<Explosion>() != null) {
+				durability -= 22;
 			}
 		}
 	}
@@ -70,16 +77,21 @@ public class BreakableCrate : MonoBehaviour {
 
 	private void remove_crate() {
 		float chance = UnityEngine.Random.value;
-		// Possibly drop an e. core
-		if (chance >= 0.03f && chance <= 0.37f) {
-			var d = (GameObject)Instantiate(scrap, transform.localPosition, Quaternion.identity);
+
+		if (chance > 0.05f && chance <= 0.15f) {
+			// Drop a med_pack
+			var d = (GameObject)Instantiate(item_drops[2], transform.localPosition, Quaternion.identity);
+			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)));
+		} else if (chance > 0.15f && chance <= 0.45f) {
+			// Drop an e. core
+			var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
-		} else if (chance > 0.37f) {
-			// Drop between 0 and 10 scrap pieces
-			int drops = UnityEngine.Random.Range(2, 6);
+		} else if (chance > 0.45f) {
+			// Drop between 3 and 8 scrap pieces
+			int drops = UnityEngine.Random.Range(2, 5);
 
 			for (int i = 0; i < drops; ++i) {
-					var d = (GameObject)Instantiate(scrap, transform.localPosition, Quaternion.identity);
+				var d = (GameObject)Instantiate(item_drops[0], transform.localPosition, Quaternion.identity);
 					d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-350f, 350f), Random.Range(-350f, 350f)));
 			}
 		}

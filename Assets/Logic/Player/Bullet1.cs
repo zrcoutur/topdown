@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 
 public class Bullet1 : PlayerAttack {
 
@@ -14,6 +15,10 @@ public class Bullet1 : PlayerAttack {
 
     // duration of the bullet (not in seconds)
     float duration = 1.0f;
+
+	public int twin = 0;
+	public int osc = 0;
+	float otime = 0;
 
 	//private int damage;
 
@@ -34,6 +39,13 @@ public class Bullet1 : PlayerAttack {
 	
 	// Update is called once per frame
 	void Update () {
+
+		//Twin intertwining
+		if (twin == 1) {
+			otime += Time.deltaTime;
+			body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity)+90.0f,Mathf.Cos(otime*15.0f)*50.0f*osc));
+		}
+
 		// Remove the bullet after a certain period of time
 		if (duration >= 0.0f) {
 			duration -= Time.deltaTime;
