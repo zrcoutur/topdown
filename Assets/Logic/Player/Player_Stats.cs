@@ -47,7 +47,7 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.5f * idx * idx) + 7 * idx + 5, 0);
+			cost_temp[idx] = new Stat_Cost((int)(2f * idx * idx) + 7 * idx + 5, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);

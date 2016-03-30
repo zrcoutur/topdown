@@ -49,6 +49,7 @@ public class Player : MonoBehaviour {
 	public float ammo;
 	public float shieldMaxRegenTime = 2.5f;
 	public float shieldMaxRecoverTime = 0.1f;
+	private float death_timer = 5f;
 
 	// Timers, etc.
 	float flash = 0;
@@ -106,13 +107,13 @@ public class Player : MonoBehaviour {
 
 		// Dead! Do nothing.
 		if (stats.get_health() <= 0) {
+			death_timer -= Time.deltaTime;
 
 			// Perform once
 			if (uponDeath) {
 
 				// Destroy your weapon if its not already destroyed
-				if (wep != null)
-				{
+				if (wep != null) {
 					Destroy(wep.gameObject);
 				}
 				
@@ -121,7 +122,7 @@ public class Player : MonoBehaviour {
 				body.freezeRotation = true;
 
 				// Set dead animation
-				anim.SetBool ("Dead", true);
+				anim.SetBool("Dead", true);
 
 				// Stop color
 				Srenderer.color = colors [0];
@@ -130,14 +131,15 @@ public class Player : MonoBehaviour {
 				body.drag = 100.0f;
 
 				// Play death SFX
-				CameraRunner.gAudio.PlayOneShot( X_Die );
+				CameraRunner.gAudio.PlayOneShot(X_Die);
 
 				// Print out player scores
 				score.display_scores();
 
 				uponDeath = false;
 
-				PlayerPrefs.SetInt ("FinalScore", (int) this.score.totalScore);
+			} else if (death_timer <= 0f) {
+				PlayerPrefs.SetInt("FinalScore", (int)this.score.totalScore);
 				UnityEngine.SceneManagement.SceneManager.LoadScene("gameOver");
 			}
 
@@ -245,7 +247,7 @@ public class Player : MonoBehaviour {
 			stats.cycle_weapons();
 			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 
-			atkCool = 0;
+			//atkCool = 0;
 
 			// Play swap sound
 			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
