@@ -53,7 +53,7 @@ public class BreakableCrate : MonoBehaviour {
 		/* Reduce durability upon coming in contact with bullets and beam swords */
 		if (collider != null) {
 			/* bullets and swords deal differing damage */
-			if (collider.GetComponent<Bullet1>() != null) {
+			if (collider.GetComponent<Bullet1>() != null || collider.GetComponent<EnemyBullet>() != null) {
 				durability -= 1;
 				//increment player stat
 				collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;

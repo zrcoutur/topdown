@@ -461,10 +461,11 @@ public class Player : MonoBehaviour {
 			case 1:
 
 				// Play Slash Sound
-				CameraRunner.gAudio.PlayOneShot (X_Slash, 1.0f);
+				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
 
 				// Make Slash Effect
-				var sl2 = (Slash)Instantiate (slash2, body.position, transform.rotation);
+				var sl2 = (Slash)Instantiate(slash2, body.position, transform.rotation);
+				sl2.can_deflect = true;
 				sl2.transform.parent = transform;
 				score.sword_attacks++;
 				sl2.damage = damage_for_weapon ();
@@ -722,7 +723,7 @@ public class Player : MonoBehaviour {
 				// Play Shoot Sound
 				CameraRunner.gAudio.PlayOneShot (X_MegaShotgun_Shoot, 1.0f);
 	
-				// Fire SEVENTEEN bullets in succession
+				// Fire TWELVE bullets in succession
 				for (int bullet = 0; bullet <= 12; ++bullet) {
 		
 					// Calculate creation position of bullet (from gun)
