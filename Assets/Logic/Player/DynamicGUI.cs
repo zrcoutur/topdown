@@ -136,7 +136,7 @@ public class DynamicGUI : MonoBehaviour {
 			display.stat.decrement();
 
 			// Readd cost of the upgrade to player stats
-			if (for_next != null) {
+			if (display.stat.next_cost() != null) {
 				p.stats.change_scrap(display.stat.next_cost().scrap_cost);
 				p.stats.change_ecores(display.stat.next_cost().ecore_cost);
 			}
