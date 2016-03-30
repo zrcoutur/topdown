@@ -1,17 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Logic\Weapon.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Logic\Player\Bullet3.cs">
     <Files>
-      <File FileName="Assets\Logic\Player.cs" Line="170" Column="27" />
       <File FileName="Assets\Logic\Tools.cs" Line="5" Column="7" />
-      <File FileName="Assets\Logic\Bullet1.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\Slash.cs" Line="33" Column="113" />
-      <File FileName="Assets\Logic\Storage.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\HP_Slider_Script.cs" Line="20" Column="1" />
-      <File FileName="Assets\Logic\Shield_Slider_Script.cs" Line="19" Column="2" />
       <File FileName="Assets\Logic\BreakableCrate.cs" Line="1" Column="1" />
-      <File FileName="Assets\Logic\DynamicGUI.cs" Line="80" Column="5" />
-      <File FileName="Assets\Logic\Weapon.cs" Line="10" Column="9" />
+      <File FileName="Assets\Logic\Menus\MainMenuLogic.cs" Line="14" Column="23" />
+      <File FileName="Assets\Logic\Player\Bullet3.cs" Line="5" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
