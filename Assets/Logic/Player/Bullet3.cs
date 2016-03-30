@@ -19,6 +19,7 @@ public class Bullet3 : PlayerAttack {
 	float rot = 0;
 	float startup = 0.125f;
 	float damageApprox;
+	int damageMax;
 
 	//private int damage;
 
@@ -31,6 +32,7 @@ public class Bullet3 : PlayerAttack {
 		rot = -outset;
 
 		damageApprox = damage;
+		damageMax = damage*2;
 
 		base.hitImpulse = body.velocity * 4.0f;
 
@@ -44,7 +46,7 @@ public class Bullet3 : PlayerAttack {
 		if (startup < 1.0f) {
 			startup *= 120.0f * Time.deltaTime;
 			damageApprox *= 1.0f + (30.0f * Time.deltaTime);
-			damage = (int)damageApprox;
+			damage = Mathf.Min((int)damageApprox, damageMax);
 		}
 
 		body.AddForce (Tools.AngleToVec2 (Tools.Vector2ToAngle(body.velocity)+Mathf.Clamp(rot*5.0f,-80.0f,80.0f), startup*(40.0f+Mathf.Abs(rot-outset))));

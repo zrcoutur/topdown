@@ -1,0 +1,59 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class FlyerDrone : Baseenemy
+{
+    //public GameObject Slash;
+	public EnemyBullet bullet;
+	public AudioClip X_Bullet_Shoot;
+    
+
+    // Use this for initialization
+    void Awake()
+    {
+
+		base.Maxhealth = 30;
+		base.health = base.Maxhealth;
+        base.speed = 2.0f;
+        base.rate = 1.2f;
+		base.rateVariance = 0.1f;
+        base.range = 10f;
+        base.damage = 8;
+    }
+
+
+    public override void TimeIncrease(float time) {
+		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
+		var timeScale = 75f;
+
+		if (health < 999999999) {
+			health = health + (int)(0.5f * health * time / timeScale);
+			Maxhealth = health;
+		}
+
+		if (speed < 16f) {
+			speed = speed + (0.065f * speed * time / timeScale);
+		}
+
+		if (damage < 500) {
+			damage = damage + (int)(0.65f * damage * time / timeScale);
+		}
+    }
+
+    public override void attack()
+    {
+        // Play Shoot Sound
+		CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
+
+		// Make Bullet
+		var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
+		b.damage = damage / 2;
+
+		// Impart velocity to bullet
+		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 8.0f);
+
+  }
+    public override void Change()
+    { }
+
+}

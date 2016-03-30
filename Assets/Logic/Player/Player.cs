@@ -587,7 +587,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = (int)(0.35f * damage_for_weapon());
+				b1.damage = (int)(0.45f * damage_for_weapon());
 				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
 
 				// Mildly shake camera
@@ -810,7 +810,7 @@ public class Player : MonoBehaviour {
 					var b3 = (Bullet3)Instantiate (bullet3, pos, transform.rotation);
 					b3.transform.parent = transform;
 					score.bullets_fired++;
-					b3.damage = (int)(0.66f * damage_for_weapon()); // Note that damage is increased by the shot behavior.
+					b3.damage = (int)(0.5f * damage_for_weapon()); // Note that damage is increased by the shot behavior.
 					b3.set_duration (0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
