@@ -12,7 +12,7 @@ public class FlyerDrone : Baseenemy
     void Awake()
     {
 
-		base.Maxhealth = 30;
+		base.Maxhealth = 25;
 		base.health = base.Maxhealth;
         base.speed = 2.0f;
         base.rate = 1.2f;
@@ -26,16 +26,16 @@ public class FlyerDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = 75f;
 
-		if (health < 999999999) {
-			health = health + (int)(0.5f * health * time / timeScale);
+		if (health < 16000) {
+			health = health + (int)(0.75f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
-		if (speed < 16f) {
-			speed = speed + (0.065f * speed * time / timeScale);
+		if (speed < 12f) {
+			speed = speed + (0.08f * speed * time / timeScale);
 		}
 
-		if (damage < 500) {
+		if (damage < 650) {
 			damage = damage + (int)(0.65f * damage * time / timeScale);
 		}
     }

@@ -61,8 +61,8 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 12000;
-		energyCores = 2200;
+		scrap = 0;
+		energyCores = 0;
 		// 11826
 		// 2108
 
