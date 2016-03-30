@@ -5,12 +5,15 @@ public class Bullet1 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
-
+   
 	public AudioClip X_Wall_Hit;
 	public AudioClip X_Enemy_Hit;
 
-	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
+
+    public GameObject Bounce;
+
+    // duration of the bullet (not in seconds)
+    float duration = 1.0f;
 
 	//private int damage;
 
@@ -54,8 +57,14 @@ public class Bullet1 : PlayerAttack {
 		}
 
 		if (col.tag == "Enemy") {
-			// Tell enemy it's been hit!
-			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
+            if (col.gameObject.name.Substring(0, 2) == "DV")
+            {
+                GameObject temp=(GameObject)Instantiate(Bounce, gameObject.transform.position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(this.gameObject.transform.rotation) + 180));
+                temp.GetComponent<BouncingBullet>().damage = this.damage;
+                Destroy(gameObject);
+            }
+                // Tell enemy it's been hit!
+                col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
 
 			// Play hit sound effect
 			CameraRunner.gAudio.PlayOneShot( X_Enemy_Hit );

@@ -71,6 +71,7 @@
     <Compile Include="Assets\Logic\CameraRunner.cs" />
     <Compile Include="Assets\Logic\Door.cs" />
     <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
+    <Compile Include="Assets\Logic\Enemies\BouncingBullet.cs" />
     <Compile Include="Assets\Logic\Enemies\DVBoss.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemyBullet.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemySlash.cs" />
