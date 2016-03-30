@@ -5,6 +5,9 @@ public class CameraRunner : MonoBehaviour {
 
 	public GameObject follow;
 
+	// Global camera variable
+	public static AudioSource gAudio;
+
 	float shake;
 
 	// Allows others to shake the camera
@@ -16,6 +19,8 @@ public class CameraRunner : MonoBehaviour {
 	void Start () {
 
 		shake = 0;
+
+		gAudio = this.GetComponent<AudioSource>();
 	
 	}
 

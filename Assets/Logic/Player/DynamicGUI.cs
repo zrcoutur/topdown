@@ -6,13 +6,14 @@ using System.Collections;
 public class DynamicGUI : MonoBehaviour {
 	// Determines if the window is shown
 	private bool show;
-
-	private bool initialized;
-
+	// Window dimensions
 	private Rect window_dimensions;
+	// Dimensions of each of the contents of window
 	private StatDisplay[] displays;
 	
 	private static GUIStyle lbl_grn_text;
+
+	public Player p;
 
 	public void Start() {
 		show = false;
@@ -22,15 +23,12 @@ public class DynamicGUI : MonoBehaviour {
 	}
 
 	public void Update() {
-		if (!initialized) {
-			displays = new StatDisplay[5];
-			// Initialize stat displays
-			displays[0] = new StatDisplay("Health", Player.stats.MAX_HEALTH);
-			displays[1] = new StatDisplay("Shield", Player.stats.MAX_SHIELD);
-			switchWeaponStats();
-
-			initialized = true;
-		}
+		displays = new StatDisplay[6];
+		// Initialize stat displays
+		displays[0] = new StatDisplay("Health", p.stats.MAX_HEALTH);
+		displays[1] = new StatDisplay("Shield", p.stats.MAX_SHIELD);
+		displays[2] = new StatDisplay("Medpacks", p.stats.MEDPACKS);
+		switchWeaponStats();
 
 		// Toggle the display on and off
 		if (Input.GetKeyDown (KeyCode.Tab)) {
@@ -58,6 +56,7 @@ public class DynamicGUI : MonoBehaviour {
 			window_dimensions = resizeWindow(window_dimensions);
 			// reposition the stat displays if need be
 			if (!Rect.Equals(limbo, window_dimensions)) {
+				//Debug.Log(window_dimensions);
 				updatePositions();
 			}
 
@@ -67,7 +66,7 @@ public class DynamicGUI : MonoBehaviour {
 
 	/* Resizes the window based on the size of the screen */
 	private Rect resizeWindow(Rect original) {
-		return new Rect(Screen.width / 10, Screen.height / 20, Screen.width / 5, 18 * Screen.height / 20);
+		return new Rect(13 * Screen.width / 20, Screen.height / 30, 3 * Screen.width / 10, 28 * Screen.height / 30);
 	}
 
 	/* Updates the positions of all the stat displays in the window */
@@ -76,11 +75,11 @@ public class DynamicGUI : MonoBehaviour {
 			Rect previous;
 
 			if (idx == 0) { // position based on the window display
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, 0);
-			} else 	if (idx == 2) {
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
+				previous = new Rect(0, 0, 0, 0);
+			} else if (idx == 3) {
+				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
 			} else { // position a stat display based on the previous stat display
-				previous = new Rect(window_dimensions.x, window_dimensions.y, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
+				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height);
 			}
 
 			displays[idx].updateRects(previous);
@@ -93,26 +92,21 @@ public class DynamicGUI : MonoBehaviour {
 		foreach (StatDisplay sd in displays) {
 			drawStatDisplay(sd);
 		}
-
-		Rect weapon_lbl = StatDisplay.relativeRect(displays[1].labels[1], 2, -8, 35, 48, 22);
-		GUI.Label(weapon_lbl, Player.stats.weapon_by_type( Player.stats.current_weapon() ).type.ToString());
-
-		// Button for switching between the stats of each weapon
-		/*if ( GUI.Button( StatDisplay.relativeRect( weapon_lbl, 0, 10, 0, 48, 22), "switch") ) {
-			switchWeaponStats();
-		}*/
+		// Prints the name of the current weapon
+		Rect weapon_lbl = StatDisplay.relativeRect(displays[2].labels[1], 2, -8, 35, 48, 22);
+		GUI.Label(weapon_lbl, p.stats.weapon_by_type( p.stats.current_weapon() ).type.ToString());
 	}
 
 	/* Draws the fields of the given stat display */
 	private void drawStatDisplay(StatDisplay display) {
 		// display title
-		GUI.Label(display.labels[0], display.name);
+		GUI.Label(display.labels[0], display.name + " (" + display.stat.pointer_value() + ")");
 
-		// Determins if the stat value is capped
+		// Determines if the stat value is capped
 		bool is_last = display.stat.next() == -1;
 		// Determines if the player can afford the next upgrade
 		Stat_Cost for_next = display.stat.next_cost();
-		bool can_buy = for_next == null || ( for_next.scrap_cost <= Player.stats.get_scrap() && for_next.ecore_cost <= Player.stats.get_ecores() );
+		bool can_buy = for_next == null || ( for_next.scrap_cost <= p.stats.get_scrap() && for_next.ecore_cost <= p.stats.get_ecores() );
 
 		GUI.enabled = !is_last && can_buy;
 		// Create button to increment the pointer
@@ -121,15 +115,18 @@ public class DynamicGUI : MonoBehaviour {
 
 			// Subtract cost from player stats
 			if (for_next != null) {
-				Player.stats.change_scarp(-for_next.scrap_cost);
-				Player.stats.change_ecores(-for_next.ecore_cost);
+				p.stats.change_scrap(-for_next.scrap_cost);
+				p.stats.change_ecores(-for_next.ecore_cost);
 			}
 
 			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
-				Player.stats.HP_raised = true;
+				p.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
-				Player.stats.Shield_raised = true;
+				p.stats.Shield_raised = true;
+			} else {
+				// Updates the player's weapon if necessary
+				p.updateWeapons();
 			}
 		}
 		GUI.enabled = true;
@@ -145,11 +142,11 @@ public class DynamicGUI : MonoBehaviour {
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */
 	public void switchWeaponStats() {
-		WeaponStats current = Player.stats.weapon_by_type( Player.stats.current_weapon() );
+		WeaponStats current = p.stats.weapon_by_type( p.stats.current_weapon() );
 
-		displays[2] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
-		displays[3] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
-		displays[4] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
+		displays[3] = new StatDisplay( "Damage", current.weapon_stat(STAT_TYPE.damage) );
+		displays[4] = new StatDisplay( "Rate of Fire", current.weapon_stat(STAT_TYPE.rate_of_fire) );
+		displays[5] = new StatDisplay( "Ammo Cost", current.weapon_stat(STAT_TYPE.ammo) );
 
 		updatePositions();
 	}

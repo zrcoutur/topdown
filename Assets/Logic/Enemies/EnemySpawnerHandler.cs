@@ -6,10 +6,11 @@ public class EnemySpawnerHandler : MonoBehaviour
     public float rate;
     private float timer;
     private float totaltime;
-	public Baseenemy[] enemies;
+    public Baseenemy[] enemies;
+    public Baseenemy[] bosses;
     private int numToSpawnatOnce;
 
-    private int maxnumberofenemes = 500;
+    private int maxnumberofenemes = 50;
     private EnemySpawner[] spawnPoints;
     // Use this for initialization
     void Start()
@@ -36,28 +37,37 @@ public class EnemySpawnerHandler : MonoBehaviour
                 }
                 Random.seed = System.DateTime.Now.Millisecond;
                 int rand1 = Random.Range(0, enemies.Length);
-                Random.seed = System.DateTime.Now.Millisecond + 1;
-                int rand2 = Random.Range(0, spawnPoints.Length);
-                Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
-                enemy.TimeIncrease(totaltime);
+
+                //bool notReady = true;
+                int rand2 = 0;
+
+
+				Random.seed = System.DateTime.Now.Millisecond + 1;
+				rand2 = Random.Range(0, spawnPoints.Length);
+                if (spawnPoints[rand2].activated)
+				{
+					Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
+					enemy.TimeIncrease(totaltime);
+				}
+
             }
-            if ((int)(totaltime) % 300 == 299)
-            {
-                if (rate > .5)
+                if ((int)(totaltime) % 300 == 299)
                 {
-                    rate -= Time.deltaTime;
+                    if (rate > .5)
+                    {
+                        rate -= Time.deltaTime;
+                    }
+                    if (numToSpawnatOnce < 15)
+                    {
+                        numToSpawnatOnce++;
+                    }
+                    //spawn boss
                 }
-                if (numToSpawnatOnce < 15)
-                {
-                    numToSpawnatOnce++;
-                }
-                //spawn boss
+
+
+
+                timer += rate;
             }
 
-
-
-            timer += rate;
         }
-
     }
-}

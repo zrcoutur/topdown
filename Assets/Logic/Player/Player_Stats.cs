@@ -10,6 +10,8 @@ public class Player_Stats {
 	public readonly Stat MAX_SHIELD;
 	private int shield;
 	public bool Shield_raised;
+	// Related to player's ability to heal themselves
+	public Stat MEDPACKS;
 
 	private readonly WeaponStats[] WEAPONS;
 	/* Player's current weapon (see Enumerations.cs for respective integer-type pairs) */
@@ -20,14 +22,36 @@ public class Player_Stats {
 	private int scrap;
 
 	public Player_Stats() {
-		MAX_HEALTH = new Stat(STAT_TYPE.health, new int[] { 25, 46, 67, 98, 121, 167, 225 },
-												new Stat_Cost[] { new Stat_Cost(5, 1), new Stat_Cost(8, 1), new Stat_Cost(11, 1), new Stat_Cost(14, 2), new Stat_Cost(17, 2), new Stat_Cost(20, 3) } );
-		health = MAX_HEALTH.current();
+		int[] val_temp = new int[10];
+		Stat_Cost[] cost_temp = new Stat_Cost[9];
+		// initialize health values
+		for (int idx = 0; idx < val_temp.Length; ++idx) {
+			val_temp[idx] = (idx * idx) + 2 * idx + 6;
+		}
+		// initialize stat costs
+		for (int idx = 0; idx < cost_temp.Length; ++idx) {
+			cost_temp[idx] = new Stat_Cost(0, (int)(1f * idx * idx * idx) + (int)(1.5f * idx * idx) + 6 * idx + 8);
+
+		}
+
+		MAX_HEALTH = new Stat(STAT_TYPE.health, val_temp, cost_temp);
+		health = (int)MAX_HEALTH.current();
 		HP_raised = true;
 
-		MAX_SHIELD = new Stat(STAT_TYPE.shield, new int[] { 10, 15, 21, 28, 36, 45, 55, 66, 78, 93, 107, 112, 128 },
-			new Stat_Cost[] { new Stat_Cost(3, 1), new Stat_Cost(8, 1), new Stat_Cost(12, 1), new Stat_Cost(17, 2), new Stat_Cost(22, 2), new Stat_Cost(27, 2), new Stat_Cost(32, 3), new Stat_Cost(37, 3), new Stat_Cost(42, 3), new Stat_Cost(47, 4), new Stat_Cost(52, 4), new Stat_Cost(57, 4) });
-		shield = MAX_SHIELD.current();
+		val_temp = new int[14];
+		cost_temp = new Stat_Cost[13];
+		// initialize shield values
+		for (int idx = 0; idx < val_temp.Length; ++idx) {
+			val_temp[idx] = (int)(2.6f * idx * idx) + 3 * idx + 8;
+		}
+
+		// initialize stat costs
+		for (int idx = 0; idx < cost_temp.Length; ++idx) {
+			cost_temp[idx] = new Stat_Cost((int)(0.4f * idx * idx) + 6 * idx + 3, 0);
+		}
+
+		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
+		shield = (int)MAX_SHIELD.current();
 		Shield_raised = true;
 
 		WEAPONS = new WeaponStats[4];
@@ -37,8 +61,14 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		energyCores = 0;
-		scrap = 0;
+		scrap = 22000;
+		energyCores = 4000;
+		// 21253
+		// 3652
+
+		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
+											 new Stat_Cost[] { new Stat_Cost(6, 45), new Stat_Cost(11, 98), new Stat_Cost(23, 189) } );
+
 	}
 
 	/* Changes health by the given value, but restores it to the range
@@ -47,7 +77,7 @@ public class Player_Stats {
 		health += value;
 
 		if (health > MAX_HEALTH.current()) {
-			health = MAX_HEALTH.current();
+			health = (int)MAX_HEALTH.current();
 		} else if (health < 0) {
 			health = 0;
 		}
@@ -64,7 +94,7 @@ public class Player_Stats {
 		var excess = 0;
 
 		if (shield > MAX_SHIELD.current()) {
-			shield = MAX_SHIELD.current();
+			shield = (int)MAX_SHIELD.current();
 		} else if (shield < 0) {
 			// returns any overflow damage after the shield is exhausted
 			excess = shield;
@@ -91,8 +121,11 @@ public class Player_Stats {
 
 	/* Cycles to the next weapon base on the integer value associated with a weapon type. */
 	public void cycle_weapons() {
-		// the grenade is currently not implemented, so it is skipped.
-		held_weapon = (WEAPON_TYPE)( ( (byte)held_weapon + 1 ) % (byte)WEAPON_TYPE.grenade );
+		
+		/* Checks all weapon slots for the next weapon owned, then sets held weaon to that
+		 * weapons not owned yet will not be cycled
+		 * the grenade is currently not implemented, so it is skipped. */
+		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 3);
 	}
 
 	/* Returns the integer representation of the Player's current weapon */
@@ -100,7 +133,7 @@ public class Player_Stats {
 
 	/* Adds the given value to the current scrap count. Any addition that would
 	 * result in a negative number will change the count value to zero, instead. */
-	public void change_scarp(int value) {
+	public void change_scrap(int value) {
 		scrap = Mathf.Max( (scrap + value), 0 );
 	}
 
@@ -118,4 +151,5 @@ public class Player_Stats {
 
 	/* Returns the number of weapon with stats. */
 	public int num_of_weapons() { return WEAPONS.Length; }
+
 }

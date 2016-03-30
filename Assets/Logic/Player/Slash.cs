@@ -31,7 +31,7 @@ public class Slash : PlayerAttack {
 
 		if (col.tag == "Enemy") {
 
-			print (col.gameObject);
+			//print (col.gameObject);
 			col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
 
 		}
