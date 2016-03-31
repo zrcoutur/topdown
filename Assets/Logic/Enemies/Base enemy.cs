@@ -29,6 +29,9 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage = 5;
 
+	private bool slowed;
+	private float slow_duration;
+
 	//used to add to player score
 	public int pointValue;
 	public GameObject lastPlayerToAttack;
@@ -40,8 +43,10 @@ public abstract class Baseenemy : MonoBehaviour
     public bool isBoss;
     private float timeTillDestroy;
 
-    void Start()
-    {
+    void Start() {
+		slowed = false;
+		slow_duration = 0f;
+
         SearchDelay = 1.0f;
         nearest = null;
 
@@ -59,6 +64,13 @@ public abstract class Baseenemy : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+		// Slow debuff logic
+		if (slow_duration >= 0f) {
+			slow_duration -= Time.deltaTime;
+		} else if (slowed) {
+			speed *= 4;
+			slowed = false;
+		}
 
 		//Debug.Log((ulong)pointValue);
 
@@ -201,13 +213,22 @@ public abstract class Baseenemy : MonoBehaviour
 		}
         Change();
     }
-
+	// Enemies take damage from explosions
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		if (trigger.gameObject.GetComponent<Explosion>() != null) {
 			health -= trigger.gameObject.GetComponent<Explosion>().getDamage();
 
 			// Flash
 			flash = 0.3f;
+		}
+	}
+	// Enemies are slowed down by slow areas
+	public void OnTriggerStay2D(Collider2D trigger) {
+		if (trigger.gameObject.GetComponent<SlowArea>() != null) {
+			if (!slowed) { speed /= 4; }
+
+			slowed = true;
+			slow_duration = 3f;
 		}
 	}
 
