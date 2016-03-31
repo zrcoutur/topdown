@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * This class defines the behavoirs of a simple grenade object that explodes after a period of time.
+ * 
+ * author : Joshua Hooker
+ * 31 March 2016
+ */
 public class Grenade : PlayerAttack {
 	// Explosion animation of the grenade
 	public GameObject explosion;
@@ -12,7 +18,8 @@ public class Grenade : PlayerAttack {
 			Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
 			Vector3 scale = exp.transform.localScale;
 			// reduce scale of the explosion
-			exp.transform.localScale = new Vector3(0.65f * scale.x, 0.65f * scale.y, scale.z);
+			exp.transform.localScale = new Vector3(0.5f * scale.x, 0.5f * scale.y, scale.z);
+			// set explosion damage
 			exp.setDamage(damage);
 			Destroy(this.gameObject);
 		} else {
@@ -21,9 +28,9 @@ public class Grenade : PlayerAttack {
 	}
 
 	public void OnColisionEnter(Collider2D collider) {
-		// explosions instantly trigger a grenade to explode
+		// reduce detonation time for theh grenade if it comes contact with an explosion
 		if (collider.gameObject.GetComponent<Explosion>() != null) {
-			duration = 0f;
+			duration -= 5f;
 		}
 	}
 }

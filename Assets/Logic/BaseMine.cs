@@ -41,19 +41,17 @@ public class BaseMine : MonoBehaviour {
 
 	public void OnTriggerEnter2D(Collider2D trig) {
 		// The mine has been triggered by something
-		if (!trigger && trig.gameObject.GetComponent<Player>() != null) {
-			trigger = true;
+		if (trig.gameObject.GetComponent<Player>() != null || trig.gameObject.GetComponent<Explosion>() != null) {
 			// Starts flashing animation to indicate the mine is triggered
 			this.GetComponent<Animator>().SetTrigger("mine_set");
-			// sets delay time between 1/2 ~ 2 seconds
-			timer = UnityEngine.Random.Range(10, 250) / 100f;
-		}
 
-		if (trig.gameObject.GetComponent<Explosion>() != null) {
-			// immediately denote this mine if it is within the range of another explosion
-			trigger = true;
-			this.GetComponent<Animator>().SetTrigger("mine_set");
-			timer = 0f;
+			if (!trigger) {
+				trigger = true;
+				// sets delay time between 1/2 ~ 2 seconds
+				timer = UnityEngine.Random.Range(10, 250) / 100f;
+			} else { // if the mine is already detonated then the timer is reduced by an explosion
+				timer -= 0.9f;
+			}
 		}
 		//Add similar condition for enemy
 	}

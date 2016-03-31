@@ -852,7 +852,7 @@ public class Player : MonoBehaviour {
 			score.bullets_fired++;
 
 			gnd.setDamage( damage_for_weapon() );
-			gnd.setDuration(UnityEngine.Random.Range (75, 115) / 100f);
+			gnd.setDuration(UnityEngine.Random.Range (85, 125) / 100f);
 
 			// Mildly shake camera
 			cam.AddShake (0.06f);
@@ -863,7 +863,7 @@ public class Player : MonoBehaviour {
 			var gnd_spread = Random.Range (-3.0f, 3.0f);
 
 			// Set final velocity based on travel angle
-			gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + gnd_spread, 9.0f);
+			gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + gnd_spread, 16.0f);
 
 			break;
 		}

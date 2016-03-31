@@ -12,7 +12,7 @@ public class SpiderDrone : Baseenemy
 
 		base.Maxhealth = 35;
 		base.health = base.Maxhealth;
-        base.speed = 0.8f;
+		base.speed = 7.5f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
@@ -29,8 +29,8 @@ public class SpiderDrone : Baseenemy
 			Maxhealth = health;
 		}
 
-		if (speed < 15f) {
-			speed = speed + (0.1f * speed * time / timeScale);
+		if (speed < 45f) {
+			speed = speed + (0.55f * speed * time / timeScale);
 		}
 
 		if (damage < 800) {
