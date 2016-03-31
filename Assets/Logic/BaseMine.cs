@@ -50,7 +50,6 @@ public class BaseMine : MonoBehaviour {
 		}
 
 		if (trig.gameObject.GetComponent<Explosion>() != null) {
-			Debug.Log("Explosion");
 			// immediately denote this mine if it is within the range of another explosion
 			trigger = true;
 			this.GetComponent<Animator>().SetTrigger("mine_set");

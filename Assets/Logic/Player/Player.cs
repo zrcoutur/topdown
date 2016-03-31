@@ -12,7 +12,6 @@ public class Player : MonoBehaviour {
 
 	// Outside elements
 	public Player_Stats stats;
-	public readonly DynamicGUI upgradeWindow;
 	public Weapon weapon;
 	public Slash slash;
 	public Slash slash2;
@@ -25,7 +24,7 @@ public class Player : MonoBehaviour {
 	public Slider energySlider;
 	public Slider shieldSlider;
 	public Color[] colors;
-	public DynamicGUI upgrade_window;
+	//public DynamicGUI upgrade_window;
 	public AudioClip X_Slash;
 	public AudioClip X_Weapon_Swap;
 	public AudioClip X_Bullet_Shoot;
@@ -245,14 +244,12 @@ public class Player : MonoBehaviour {
 		 ************************/
 		if (Input.GetKeyDown ( M_Swap )) {
 			stats.cycle_weapons();
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-
-			//atkCool = 0;
-
 			// Play swap sound
 			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
 			// Change weapon sprite
-			wep.updateWeapon = (int)stats.current_weapon();
+			wep.updateWeapon();
 
 		}
 
@@ -411,11 +408,10 @@ public class Player : MonoBehaviour {
 	 * pressed (for 'sticky' attack styles)
 	 * 
 	 *******************************************************************************/
-	void PerformAttack (int weaponType, bool pressed)
-	{
+	void PerformAttack (int weaponType, bool pressed) {
 		
 		// You cannot fire when the upgrade window is open
-		if (upgrade_window.isOpen ()) {
+		if (GetComponentInChildren<DynamicGUI>().isOpen()) {
 			return;
 		}
 
@@ -909,7 +905,6 @@ public class Player : MonoBehaviour {
 					// Only the sword's damage can be upgraded
 					if (weapon.weapon_stat(STAT_TYPE.damage).pointer_value() >= 6) {
 						weapon.setUgrade(1);
-						wep.updateWeapon = (int)stats.current_weapon();
 					}
 				} else {
 					// determine each of the weapon's stat's current level
@@ -926,12 +921,12 @@ public class Player : MonoBehaviour {
 						} else { // no focus upgrade
 							weapon.setUgrade(3);
 						}
-
-						wep.updateWeapon = (int)stats.current_weapon();
 					}
 				}
 			}
 		}
+
+		wep.updateWeapon();
 	}
 
 	/* A simple class used to simulate the Player's ammo regenation. */
