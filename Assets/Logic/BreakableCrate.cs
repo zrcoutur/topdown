@@ -66,7 +66,7 @@ public class BreakableCrate : MonoBehaviour {
 			} else if (collider.GetComponent<Slash>() != null) {
 				durability -= 8;
 			} else if (collider.GetComponent<Explosion>() != null) {
-				durability -= 22;
+				durability -= 13;
 			}
 		}
 	}

@@ -10,9 +10,6 @@ public class Bullet1 : PlayerAttack {
 	public AudioClip X_Wall_Hit;
 	public AudioClip X_Enemy_Hit;
 
-	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
-
 	public int twin = 0;
 	public int osc = 0;
 	float otime = 0;

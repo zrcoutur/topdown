@@ -9,9 +9,6 @@ public class Bullet2 : PlayerAttack {
 	public AudioClip X_Wall_Hit;
 	public AudioClip X_Enemy_Hit;
 
-	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
-
 	Rigidbody2D body;
 
 	// number of enemies that can be pierced

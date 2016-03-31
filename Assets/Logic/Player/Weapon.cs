@@ -91,6 +91,9 @@ public class Weapon : MonoBehaviour {
 			else
 				GetComponent<SpriteRenderer>().sprite = confluxShotSprite;
 			break;
+		case WEAPON_TYPE.grenade:
+			GetComponent<SpriteRenderer>().sprite = rifleSprite;
+			break;
 		}
 	}
 }

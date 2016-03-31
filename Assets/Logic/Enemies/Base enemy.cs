@@ -240,7 +240,7 @@ public abstract class Baseenemy : MonoBehaviour
 		body.AddForce( hit.hitImpulse );
 
 		// Take damage
-		health -= hit.damage;
+		health -= hit.getDamage();
 
         // Flash
         flash = 0.3f;

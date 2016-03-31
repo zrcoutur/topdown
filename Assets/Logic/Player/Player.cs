@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
 	public Bullet1 bullet1;
 	public Bullet2 bullet2;
 	public Bullet3 bullet3;
+	public Grenade grenade;
 	public CameraRunner cam;
 	public Slider hpSlider;
 	public Slider energySlider;
@@ -437,7 +438,7 @@ public class Player : MonoBehaviour {
 				var sl = (Slash)Instantiate (slash, body.position, transform.rotation);
 				sl.transform.parent = transform;
 				score.sword_attacks++;
-				sl.damage = damage_for_weapon ();
+				sl.setDamage(damage_for_weapon());
 
 				// Shake camera
 				cam.AddShake (0.08f);
@@ -464,7 +465,7 @@ public class Player : MonoBehaviour {
 				sl2.can_deflect = true;
 				sl2.transform.parent = transform;
 				score.sword_attacks++;
-				sl2.damage = damage_for_weapon ();
+				sl2.setDamage(damage_for_weapon());
 
 				// Shake camera
 				cam.AddShake (0.12f);
@@ -512,7 +513,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = damage_for_weapon ();
+				b1.setDamage(damage_for_weapon());
 				b1.set_duration (UnityEngine.Random.Range (75, 115) / 100f);
 
 				// Mildly shake camera
@@ -551,7 +552,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.damage = (int)(3.0f * damage_for_weapon ());
+				b2.setDamage( (int)(3.0f * damage_for_weapon ()) );
 				b2.set_duration (UnityEngine.Random.Range (125, 265) / 100f);
 
 				// Mildly shake camera
@@ -586,7 +587,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = (int)(0.75f * damage_for_weapon());
+				b1.setDamage( (int)(0.75f * damage_for_weapon()) );
 				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
 
 				// Mildly shake camera
@@ -628,8 +629,8 @@ public class Player : MonoBehaviour {
 				score.bullets_fired += 2;
 
 				var dmg = damage_for_weapon();
-				b1.damage = dmg;
-				b0.damage = dmg;
+				b1.setDamage(dmg);
+				b0.setDamage(dmg);
 
 				var twinDur = UnityEngine.Random.Range (95, 125) / 100f;
 				b1.set_duration (twinDur);
@@ -689,7 +690,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = damage_for_weapon();
+					b1.setDamage(damage_for_weapon());
 					b1.set_duration (0.45f);
 	
 					// Calculate bullet's velocity
@@ -729,7 +730,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = (int)(1.25f * damage_for_weapon());
+					b1.setDamage( (int)(1.25f * damage_for_weapon()) );
 					b1.set_duration (0.5f);
 	
 					// Calculate bullet's velocity
@@ -769,7 +770,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate (bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.damage = (int)(0.66f * damage_for_weapon());
+					b1.setDamage( (int)(0.66f * damage_for_weapon()) );
 					b1.set_duration (0.65f);
 	
 					// Calculate bullet's velocity
@@ -809,7 +810,7 @@ public class Player : MonoBehaviour {
 					var b3 = (Bullet3)Instantiate (bullet3, pos, transform.rotation);
 					b3.transform.parent = transform;
 					score.bullets_fired++;
-					b3.damage = damage_for_weapon(); // Note that damage is increased by the shot behavior.
+					b3.setDamage(damage_for_weapon()); // Note that damage is increased by the shot behavior.
 					b3.set_duration (0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
@@ -828,7 +829,43 @@ public class Player : MonoBehaviour {
 			}
 
 			break;
+		
+		case (int)WEAPON_TYPE.grenade:
+			// Ammo Check
+			if (!UseAmmo (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
+				break;
+			}
 
+			// Cooldown
+			atkCool = 2.0f / stats.weapon_by_type (stats.current_weapon()).weapon_stat (STAT_TYPE.rate_of_fire).current();
+
+			// Play Shoot Sound
+			CameraRunner.gAudio.PlayOneShot (X_Bullet_Shoot, 1.0f);
+
+			// Calculate creation position of bullet (from gun)
+			var gnd_pos = body.position + Tools.AngleToVec2 ((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+			// Create bullet
+			var gnd = (Grenade)Instantiate(grenade, gnd_pos, transform.rotation);
+
+			gnd.transform.parent = transform;
+			score.bullets_fired++;
+
+			gnd.setDamage( damage_for_weapon() );
+			gnd.setDuration(UnityEngine.Random.Range (75, 115) / 100f);
+
+			// Mildly shake camera
+			cam.AddShake (0.06f);
+
+			// Calculate bullet's velocity
+
+			// Shot spread range.
+			var gnd_spread = Random.Range (-3.0f, 3.0f);
+
+			// Set final velocity based on travel angle
+			gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z + 90.0f + gnd_spread, 9.0f);
+
+			break;
 		}
 
 	}

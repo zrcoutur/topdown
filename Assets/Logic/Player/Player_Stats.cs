@@ -125,7 +125,7 @@ public class Player_Stats {
 		/* Checks all weapon slots for the next weapon owned, then sets held weaon to that
 		 * weapons not owned yet will not be cycled
 		 * the grenade is currently not implemented, so it is skipped. */
-		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 3);
+		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 4);
 	}
 
 	/* Returns the integer representation of the Player's current weapon */
