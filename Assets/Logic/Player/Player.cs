@@ -848,9 +848,9 @@ public class Player : MonoBehaviour {
 		// Med pack
 		if (obj.tag == "med_pack") {
 			// Shine effect
-			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
-			CameraRunner.gAudio.PlayOneShot( X_Medpack_Get );
+			CameraRunner.gAudio.PlayOneShot(X_Medpack_Get);
 
 			Destroy(obj);
 			int ret = stats.MEDPACKS.increment();
@@ -863,29 +863,31 @@ public class Player : MonoBehaviour {
 		// Energy Core
 		else if (obj.tag == "core") {
 			// Shine effect
-			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
-			CameraRunner.gAudio.PlayOneShot( X_Core_Get );
+			CameraRunner.gAudio.PlayOneShot(X_Core_Get);
 
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 			score.ecores_collected++;
 			stats.change_ecores(1);
 
-		// Scrap
+			// Scrap
 		} else if (obj.tag == "scrap") {
 			// Shine effect
-			Instantiate (shine, trigger.transform.position, Quaternion.Euler (0, 0, 0));
+			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
-			CameraRunner.gAudio.PlayOneShot( X_Scrap_Get );
+			CameraRunner.gAudio.PlayOneShot(X_Scrap_Get);
 
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 			score.scrap_collected++;
 			stats.change_scrap(1);
-		} else if(obj.tag == "weapon_pack") {
+		} else if (obj.tag == "weapon_pack") {
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
+		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
+			GetHurt(trigger.gameObject.GetComponent<Explosion>().getDamage());
 		}
 	}
 

@@ -204,7 +204,7 @@ public abstract class Baseenemy : MonoBehaviour
 
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			health -= trigger.gameObject.GetComponent<Explosion>().damage;
+			health -= trigger.gameObject.GetComponent<Explosion>().getDamage();
 
 			// Flash
 			flash = 0.3f;

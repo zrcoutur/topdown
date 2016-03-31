@@ -29,7 +29,7 @@ public class SpiderDrone : Baseenemy
 			Maxhealth = health;
 		}
 
-		if (speed < 16f) {
+		if (speed < 15f) {
 			speed = speed + (0.1f * speed * time / timeScale);
 		}
 

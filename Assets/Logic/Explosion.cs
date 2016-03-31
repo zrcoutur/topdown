@@ -1,37 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Explosion : MonoBehaviour {
-	public int damage = 0;
-	float animDone = 0.45f;
-	private float timer;
-	public bool triggerHit = false;
-
+/**
+ * A class designed to hold some values necessary for simulating an explosion.
+ * 
+ * last modified by : Joshua Hooker
+ * 31 March 2016
+ */
+public abstract class Explosion : MonoBehaviour {
 	// Explosion SFX
 	public AudioClip X_Explode;
+	protected float animDone = 0.45f;
 
-	void Start () {
-		// Play explosion SFX
-		CameraRunner.gAudio.PlayOneShot( X_Explode );
-	}
+	private int damage = 0;
 
-	// Update is called once per frame
-	void Update () {
-		animDone -= Time.deltaTime;
-
-		if (animDone <= 0) {
-			Destroy (this.gameObject);
-		}
-	}
-
-	void OnTriggerEnter2D(Collider2D coll) {
-		Player is_player = coll.GetComponent<Player>();
-
-		if (!triggerHit && is_player != null && !triggerHit) {
-			triggerHit = true;
-			//Debug.Log("Explosion: " + damage);
-			is_player.GetHurt(damage);
-		}
-		//Add similar condition for enemy
-	}
+	/* Set the damage of the explosion. */
+	public void setDamage(int dmg) { damage = dmg; }
+	/* Return the damage of the explosion. */
+	public int getDamage() { return damage; }
 }

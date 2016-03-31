@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * A class which maintains the attributes of simple landmine. Mines are only triggered by
+ * the player and other explosions. Although, mines will damages both enemies and boxes
+ * in addition to players.
+ * 
+ * last modified by : Joshua Hooker
+ * 31 March 2016
+ */
 public class BaseMine : MonoBehaviour {
-
-	public Explosion expl;
+	// The mine's explosion
+	public GameObject expl;
+	// The damage of the mine
 	private int damage;
 	// Used to keep track of time segments
 	private float timer;
@@ -11,18 +20,19 @@ public class BaseMine : MonoBehaviour {
 	private bool trigger = false;
 
 	public void Start() {
-		timer = 65f;
-		damage = UnityEngine.Random.Range(8, 12);
+		timer = 105f;
+		damage = UnityEngine.Random.Range(5, 9);
 	}
 
 	public void Update() {
 		if (timer <= 0f) {
 			if (trigger) { // The mine explodes
-				((Explosion)Instantiate(expl, transform.position, transform.rotation)).GetComponent<Explosion>().damage = damage;
+				Explosion exl = ((GameObject)Instantiate(expl, transform.position, transform.rotation)).GetComponent<Explosion>();
+				exl.setDamage(damage);
 				Destroy(this.gameObject);
 			} else { // Updates the damage of the mine overtime
-				timer = 65f;
-				damage += UnityEngine.Random.Range(0, 5);
+				timer = 105f;
+				damage += UnityEngine.Random.Range(10, 35);
 			}
 		} else {
 			timer -= Time.deltaTime;
@@ -37,6 +47,14 @@ public class BaseMine : MonoBehaviour {
 			this.GetComponent<Animator>().SetTrigger("mine_set");
 			// sets delay time between 1/2 ~ 2 seconds
 			timer = UnityEngine.Random.Range(10, 250) / 100f;
+		}
+
+		if (trig.gameObject.GetComponent<Explosion>() != null) {
+			Debug.Log("Explosion");
+			// immediately denote this mine if it is within the range of another explosion
+			trigger = true;
+			this.GetComponent<Animator>().SetTrigger("mine_set");
+			timer = 0f;
 		}
 		//Add similar condition for enemy
 	}

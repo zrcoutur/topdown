@@ -1,9 +1,10 @@
 ﻿using System;
 
 /**
- * This class is designed to define the stat values of any weapon.
+ * This class is designed to define and maintain the stat values of a sepcific weapon. Each weapon has a type, a state,
+ * damage, rate of fire, and ammo cost. The types of weapons are: sword, rifle, shotgun, and grenade launcher.
  * 
- * @author Joshua Hooker
+ * author : Joshua Hooker
  * 23 February 2016
  */
 public class WeaponStats {
