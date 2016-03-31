@@ -13,7 +13,7 @@ public class EnemyBullet : MonoBehaviour {
 	public int damage;
 
 	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
+	float duration = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -41,7 +41,7 @@ public class EnemyBullet : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		
-		if (col.tag == "Block" || col.tag == "sword") {
+		if (col.tag == "Block") {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
 
@@ -68,4 +68,6 @@ public class EnemyBullet : MonoBehaviour {
 	/* Sets the duration of the bullet. */
 	public void set_duration(float d) { duration = d; }
 
+	/* Returns the remaininf duration of the bullet. */
+	public float get_duration() { return duration; }
 }

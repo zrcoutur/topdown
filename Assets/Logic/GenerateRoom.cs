@@ -45,7 +45,7 @@ public class GenerateRoom : MonoBehaviour
 		roomHeight = 9;	//preferably odd
 		hallLength = 6; //preferably even
 		spawnerCap = 2;
-		itemCap = 3;
+		itemCap = 5;
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 

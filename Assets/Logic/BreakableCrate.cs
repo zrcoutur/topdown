@@ -56,7 +56,9 @@ public class BreakableCrate : MonoBehaviour {
 			if (collider.GetComponent<Bullet1>() != null || collider.GetComponent<EnemyBullet>() != null) {
 				durability -= 1;
 				//increment player stat
-				collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
+				if (collider.GetComponent<Bullet1>() != null) {
+					collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
+				}
 			} else if (collider.GetComponent<Bullet2>() != null) {
 				durability -= 6;
 			} else if (collider.GetComponent<Bullet3>() != null) {

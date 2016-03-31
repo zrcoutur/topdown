@@ -36,15 +36,21 @@ public class Slash : PlayerAttack {
 			//print (col.gameObject);
 			col.gameObject.SendMessage("OnHit", (PlayerAttack)this);
 
-		} else if (can_deflect && col.gameObject.GetComponent<EnemyBullet>() != null) {
-			// Delfects an incoming bullet back at an enemy
-			Bullet1 reverse = (Bullet1)Instantiate(bullet_1, col.gameObject.transform.position, Quaternion.identity);
-			// Sets transfomr's parent for indicating, which player deflected the bullet
-			reverse.transform.parent = this.transform.parent;
-			reverse.set_duration(1f);
-			reverse.damage = 2 * col.gameObject.GetComponent<EnemyBullet>().damage;
-			// Sets bullet trajectory
-			reverse.GetComponent<Rigidbody2D>().velocity = -col.gameObject.GetComponent<Rigidbody2D>().velocity;
+		} else if (col.gameObject.GetComponent<EnemyBullet>() != null) {
+			// reflect enemy bullet
+			if (can_deflect) {
+				EnemyBullet eb = col.gameObject.GetComponent<EnemyBullet>();
+				// Delfects an incoming bullet back at an enemy
+				Bullet1 reverse = (Bullet1)Instantiate(bullet_1, eb.gameObject.transform.position, Quaternion.identity);
+				// Sets transfomr's parent for indicating, which player deflected the bullet
+				reverse.transform.parent = this.transform.parent;
+				reverse.set_duration(eb.get_duration() + 0.5f);
+				reverse.damage = col.gameObject.GetComponent<EnemyBullet>().damage;
+				// Sets bullet trajectory
+				reverse.GetComponent<Rigidbody2D>().velocity = -col.gameObject.GetComponent<Rigidbody2D>().velocity;
+			}
+
+			Destroy(col.gameObject);
 		}
 
 	}

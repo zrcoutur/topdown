@@ -555,7 +555,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.damage = (int)(2.5f * damage_for_weapon ());
+				b2.damage = (int)(3.0f * damage_for_weapon ());
 				b2.set_duration (UnityEngine.Random.Range (125, 265) / 100f);
 
 				// Mildly shake camera
@@ -590,7 +590,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.damage = (int)(0.66f * damage_for_weapon());
+				b1.damage = (int)(0.75f * damage_for_weapon());
 				b1.set_duration (UnityEngine.Random.Range (65, 105) / 100f);
 
 				// Mildly shake camera
@@ -883,9 +883,7 @@ public class Player : MonoBehaviour {
 			Destroy(obj);
 			score.scrap_collected++;
 			stats.change_scrap(1);
-		}else if(obj.tag == "weapon_pack")
-		{
-
+		} else if(obj.tag == "weapon_pack") {
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
 		}
