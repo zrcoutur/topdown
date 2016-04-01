@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Threading;
+using UnityEditor;
 
-public class Bullet1 : PlayerAttack {
+public class Bullet3 : PlayerAttack {
 
 	//Poof effect
 	public GameObject poof;
@@ -10,49 +10,59 @@ public class Bullet1 : PlayerAttack {
 	public AudioClip X_Wall_Hit;
 	public AudioClip X_Enemy_Hit;
 
-	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
+	Rigidbody2D body;
 
-	public int twin = 0;
-	public int osc = 0;
-	float otime = 0;
+	public float outset;
+	float rot = 0;
+	float startup = 0.125f;
+	float damageApprox;
+	int damageMax;
 
 	//private int damage;
 
 	// Use this for initialization
 	void Start () {
-	//	damage = 0;
+
+		//	damage = 0;
 		body = GetComponent<Rigidbody2D> ();
 
-		float angle = 270.0f + Tools.Vector2ToAngle (body.velocity);
+		rot = -outset;
 
-		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		damageApprox = damage;
+		damageMax = damage*2;
 
-		base.hitImpulse = body.velocity * 2.0f;
+		base.hitImpulse = body.velocity * 4.0f;
 
 	}
 
-	Rigidbody2D body;
-	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
-		//Twin intertwining
-		if (twin == 1) {
-			otime += Time.deltaTime;
-			body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity)+90.0f,Mathf.Cos(otime*15.0f)*50.0f*osc));
+		// Conflux stuff
+		if (startup < 1.0f) {
+			startup *= 120.0f * Time.deltaTime;
+			damageApprox *= 1.0f + (30.0f * Time.deltaTime);
+			damage = Mathf.Min((int)damageApprox, damageMax);
+		}
+
+		body.AddForce (Tools.AngleToVec2 (Tools.Vector2ToAngle(body.velocity)+Mathf.Clamp(rot*5.0f,-80.0f,80.0f), startup*(40.0f+Mathf.Abs(rot-outset))));
+		if (rot > outset+3.0f) {
+			rot -= Time.deltaTime * 300.0f;
+		} else if (rot < outset-3.0f) {
+			rot += Time.deltaTime * 300.0f;
 		}
 
 		// Remove the bullet after a certain period of time
 		if (duration >= 0.0f) {
 			duration -= Time.deltaTime;
 		} else {
-			Destroy( GameObject.Find("Bullet1(Clone)") );
+			Destroy( GameObject.Find("Bullet3(Clone)") );
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		
+
 		if (col.tag == "Block") {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
@@ -75,8 +85,8 @@ public class Bullet1 : PlayerAttack {
 			// Make poof
 			Instantiate (poof, transform.position, transform.rotation);
 
-			// Destroy self
-			Destroy (gameObject);
+			// Destroy
+			duration = 0f;
 		}
 
 	}

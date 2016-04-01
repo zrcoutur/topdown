@@ -10,14 +10,15 @@ public class DynamicGUI : MonoBehaviour {
 	private Rect window_dimensions;
 	// Dimensions of each of the contents of window
 	private StatDisplay[] displays;
-	
+
 	private static GUIStyle lbl_grn_text;
 
-	public Player p;
+	private Player p;
 
 	public void Start() {
 		show = false;
-
+		// Get a reference to the Player associated with this window
+		p = GetComponentInParent<Player>();
 		window_dimensions = new Rect(100, 100, 100, 100);
 		lbl_grn_text = null;
 	}

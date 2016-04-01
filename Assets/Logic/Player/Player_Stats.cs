@@ -47,7 +47,7 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.5f * idx * idx) + 7 * idx + 5, 0);
+			cost_temp[idx] = new Stat_Cost((int)(2f * idx * idx) + 7 * idx + 5, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
@@ -61,8 +61,8 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 0;
-		energyCores = 0;
+		scrap = 22000;
+		energyCores = 4000;
 		// 11826
 		// 2108
 
@@ -125,7 +125,7 @@ public class Player_Stats {
 		/* Checks all weapon slots for the next weapon owned, then sets held weaon to that
 		 * weapons not owned yet will not be cycled
 		 * the grenade is currently not implemented, so it is skipped. */
-		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 3);
+		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 4);
 	}
 
 	/* Returns the integer representation of the Player's current weapon */
