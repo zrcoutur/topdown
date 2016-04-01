@@ -26,8 +26,8 @@ public class RPG : Grenade {
 		}
 	}
 
-	public void OnTriggerEnter2D(Collider2D trigger) {
-		if (trigger.tag != "med_pack" && trigger.tag != "scrap" && trigger.tag != "ecores") {
+	public void OnCollisionEnter2D(Collision2D trigger) {
+		if (trigger.gameObject.tag != "med_pack" && trigger.gameObject.tag != "scrap" && trigger.gameObject.tag != "core" && trigger.gameObject.tag != "mine") {
 			// explode on contact
 			explode();
 		}
@@ -38,7 +38,7 @@ public class RPG : Grenade {
 		Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
 		Vector3 scale = exp.transform.localScale;
 		// reduce scale of the explosion
-		exp.transform.localScale = new Vector3(0.75f * scale.x, 0.75f * scale.y, scale.z);
+		exp.transform.localScale = new Vector3(0.65f * scale.x, 0.65f * scale.y, scale.z);
 		// set explosion damage
 		exp.setDamage(damage);
 		Destroy(this.gameObject);
