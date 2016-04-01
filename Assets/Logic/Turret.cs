@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 
-    public bullet1 bullet; 
+    public Bullet1 bullet; 
 
 	// Use this for initialization
 	void Start () {
