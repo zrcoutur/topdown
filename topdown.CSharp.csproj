@@ -79,7 +79,6 @@
     <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
     <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
     <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
-    <Compile Include="Assets\Logic\Explosion.cs" />
     <Compile Include="Assets\Logic\Explosions\BaseMine.cs" />
     <Compile Include="Assets\Logic\Explosions\DamageExplosion.cs" />
     <Compile Include="Assets\Logic\Explosions\Explosion.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="Assets\Logic\Player\Projectiles\Bullet3.cs" />
     <Compile Include="Assets\Logic\Player\Projectiles\Grenade.cs" />
     <Compile Include="Assets\Logic\Player\Projectiles\HitSpark.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\RPG.cs" />
     <Compile Include="Assets\Logic\Player\Slash.cs" />
     <Compile Include="Assets\Logic\Player\Stat.cs" />
     <Compile Include="Assets\Logic\Player\StatDisplay.cs" />
