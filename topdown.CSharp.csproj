@@ -69,6 +69,7 @@
     <Compile Include="Assets\Logic\CameraRunner.cs" />
     <Compile Include="Assets\Logic\Door.cs" />
     <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
+    <Compile Include="Assets\Logic\Enemies\BouncingBullet.cs" />
     <Compile Include="Assets\Logic\Enemies\DVBoss.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemyBullet.cs" />
     <Compile Include="Assets\Logic\Enemies\EnemySlash.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\Logic\ScoreBoard.cs" />
     <Compile Include="Assets\Logic\SparkPoof.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
+    <Compile Include="Assets\Logic\Turret.cs" />
     <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer.cs" />
