@@ -209,7 +209,6 @@ public abstract class Baseenemy : MonoBehaviour
 			flash = 0.3f;
             }
         }
-    }
 
 	// Bump into walls/player
     void OnCollisionStay2D(Collision2D col)

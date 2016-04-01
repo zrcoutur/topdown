@@ -69,12 +69,14 @@ public class Bullet1 : PlayerAttack {
 		}
 
 		if (col.tag == "Enemy") {
-            if (col.gameObject.name.Substring(0, 2) == "DV")
-            {
-                GameObject temp=(GameObject)Instantiate(Bounce, gameObject.transform.position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(this.gameObject.transform.rotation) + 180));
-                temp.GetComponent<BouncingBullet>().damage = this.damage;
-                Destroy(gameObject);
-            }
+           //if (col.gameObject.name.Substring(0, 2) == "DV")
+           //{
+           //     GameObject temp=(GameObject)Instantiate(Bounce, gameObject.transform.position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(this.gameObject.transform.rotation)));
+           //      temp.GetComponent<BouncingBullet>().damage = this.damage;
+           //     temp.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 15.0f);
+           //     Destroy(gameObject);
+           //     return;
+           // }
                 // Tell enemy it's been hit!
                 col.gameObject.SendMessage ("OnHit", (PlayerAttack)this);
 
