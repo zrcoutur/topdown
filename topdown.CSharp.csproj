@@ -63,11 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DanTestCode\Scripts\BaseMine.cs" />
     <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
     <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
     <Compile Include="Assets\Logic\Animatable.cs" />
-    <Compile Include="Assets\Logic\BreakableCrate.cs" />
     <Compile Include="Assets\Logic\CameraRunner.cs" />
     <Compile Include="Assets\Logic\Door.cs" />
     <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
@@ -82,21 +80,29 @@
     <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
     <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
     <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
-    <Compile Include="Assets\Logic\Explosion.cs" />
+    <Compile Include="Assets\Logic\Explosions\BaseMine.cs" />
+    <Compile Include="Assets\Logic\Explosions\DamageExplosion.cs" />
+    <Compile Include="Assets\Logic\Explosions\Explosion.cs" />
+    <Compile Include="Assets\Logic\Explosions\SlowArea.cs" />
+    <Compile Include="Assets\Logic\Explosions\SlowExplosion.cs" />
     <Compile Include="Assets\Logic\GenerateRoom.cs" />
-    <Compile Include="Assets\Logic\HitSpark.cs" />
-    <Compile Include="Assets\Logic\Item_Drop.cs" />
+    <Compile Include="Assets\Logic\Item_Logic\BreakableCrate.cs" />
+    <Compile Include="Assets\Logic\Item_Logic\Item_Drop.cs" />
+    <Compile Include="Assets\Logic\Item_Logic\Shine.cs" />
+    <Compile Include="Assets\Logic\Item_Logic\energy_core_script.cs" />
     <Compile Include="Assets\Logic\Maintain_UI.cs" />
     <Compile Include="Assets\Logic\Menus\GameOverLogic.cs" />
     <Compile Include="Assets\Logic\Menus\MainMenuLogic.cs" />
-    <Compile Include="Assets\Logic\Player\Bullet1.cs" />
-    <Compile Include="Assets\Logic\Player\Bullet2.cs" />
-    <Compile Include="Assets\Logic\Player\Bullet3.cs" />
     <Compile Include="Assets\Logic\Player\DynamicGUI.cs" />
     <Compile Include="Assets\Logic\Player\Enumerations.cs" />
     <Compile Include="Assets\Logic\Player\Player.cs" />
     <Compile Include="Assets\Logic\Player\PlayerAttack.cs" />
     <Compile Include="Assets\Logic\Player\Player_Stats.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\Bullet1.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\Bullet2.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\Bullet3.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\Grenade.cs" />
+    <Compile Include="Assets\Logic\Player\Projectiles\HitSpark.cs" />
     <Compile Include="Assets\Logic\Player\Slash.cs" />
     <Compile Include="Assets\Logic\Player\Stat.cs" />
     <Compile Include="Assets\Logic\Player\StatDisplay.cs" />
@@ -106,11 +112,9 @@
     <Compile Include="Assets\Logic\Player\WeaponUpgrade.cs" />
     <Compile Include="Assets\Logic\Poof.cs" />
     <Compile Include="Assets\Logic\ScoreBoard.cs" />
-    <Compile Include="Assets\Logic\Shine.cs" />
     <Compile Include="Assets\Logic\SparkPoof.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Turret.cs" />
-    <Compile Include="Assets\Logic\energy_core_script.cs" />
     <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
     <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer.cs" />
