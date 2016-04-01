@@ -29,9 +29,12 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage = 5;
 
-    //used to add to player score
-    public int pointValue;
-    public GameObject lastPlayerToAttack;
+	private bool slowed;
+	private float slow_duration;
+
+	//used to add to player score
+	public int pointValue;
+	public GameObject lastPlayerToAttack;
 
     public Color[] colors;
     // Use this for initialization
@@ -40,8 +43,10 @@ public abstract class Baseenemy : MonoBehaviour
     public bool isBoss;
     private float timeTillDestroy;
 
-    void Start()
-    {
+    void Start() {
+		slowed = false;
+		slow_duration = 0f;
+
         SearchDelay = 1.0f;
         nearest = null;
 
@@ -53,12 +58,19 @@ public abstract class Baseenemy : MonoBehaviour
         timeTillDestroy = 0.5f;
         infected = false;
 
-		pointValue = 25;
+        pointValue = 25;
     }
 
     // Update is called once per frame
     public void Update()
     {
+		// Slow debuff logic
+		if (slow_duration >= 0f) {
+			slow_duration -= Time.deltaTime;
+		} else if (slowed) {
+			speed *= 3;
+			slowed = false;
+		}
 
 		//Debug.Log((ulong)pointValue);
 
@@ -68,8 +80,8 @@ public abstract class Baseenemy : MonoBehaviour
 		if (dieState == 1 || timeTillDestroy <= 0) {
 			//update score adding one kill to the player giving killing attack, and add pointValue to score
 			if (lastPlayerToAttack != null) {
-			lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
-			lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+				lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
+				lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
 			}
 
 			Destroy(gameObject);
@@ -166,49 +178,58 @@ public abstract class Baseenemy : MonoBehaviour
                 body.AddForce(dir * GetComponent<Baseenemy>().speed);
 
 			}
-        if (infected)
-        {
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
-            int count = 0;
-                foreach (Collider2D coll in hitColliders)
+            if (infected)
             {
-                if (coll.gameObject.tag == "Player")
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
+                int count = 0;
+                foreach (Collider2D coll in hitColliders)
                 {
-                    int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
-                    coll.gameObject.GetComponent<Player>().GetHurt(damage);
-                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                    break;
-                }
-                if (count == 2)
-                {
-                    break;
-                }
+                    if (coll.gameObject.tag == "Player")
+                    {
+                        int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
+                        coll.gameObject.GetComponent<Player>().GetHurt(damage);
+                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                        break;
+                    }
+                    if (count == 2)
+                    {
+                        break;
+                    }
                     if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss)
-                {
-                    coll.gameObject.GetComponent<Baseenemy>().infected = true;
-                    Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                    count++;
+                    {
+                        coll.gameObject.GetComponent<Baseenemy>().infected = true;
+                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+                        count++;
+                    }
                 }
+                timeTillDestroy -= Time.deltaTime;
             }
-            timeTillDestroy -= Time.deltaTime;
-            }
-                // Check if you have completed your path - search sooner if so
-                if (SearchDelay > 0.5f && pf.Path.Count == 0)
-                    SearchDelay = 0.5f;
+            // Check if you have completed your path - search sooner if so
+            if (SearchDelay > 0.5f && pf.Path.Count == 0)
+				SearchDelay = 0.5f;
 
 
 		}
         Change();
     }
-
+	// Enemies take damage from explosions
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			health -= trigger.gameObject.GetComponent<Explosion>().damage;
+			health -= trigger.gameObject.GetComponent<Explosion>().getDamage();
 
 			// Flash
 			flash = 0.3f;
-            }
-        }
+		}
+	}
+	// Enemies are slowed down by slow areas
+	public void OnTriggerStay2D(Collider2D trigger) {
+		if (trigger.gameObject.GetComponent<SlowArea>() != null) {
+			if (!slowed) { speed /= 3; }
+
+			slowed = true;
+			slow_duration = 3f;
+		}
+	}
 
 	// Bump into walls/player
     void OnCollisionStay2D(Collision2D col)
@@ -232,16 +253,16 @@ public abstract class Baseenemy : MonoBehaviour
     {
 		//keep track of last player to attack and update their scores
 		lastPlayerToAttack = hit.transform.parent.gameObject;
+
 		if (hit is Bullet1 || hit is Slash) {
 			hit.transform.parent.gameObject.GetComponent<Player>().score.enemies_hit++;
 		}
-
 
 		// Pushback
 		body.AddForce( hit.hitImpulse );
 
 		// Take damage
-		health -= hit.damage;
+		health -= hit.getDamage();
 
         // Flash
         flash = 0.3f;

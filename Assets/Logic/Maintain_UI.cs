@@ -15,7 +15,7 @@ public class Maintain_UI : MonoBehaviour {
 
 	private Text[] item_counters;
 
-	public Player p;
+	private Player p;
 
 	// Use this for initialization
 	void Start () {

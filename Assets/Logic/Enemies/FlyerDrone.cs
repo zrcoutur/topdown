@@ -12,31 +12,35 @@ public class FlyerDrone : Baseenemy
     void Awake()
     {
 
-		base.Maxhealth = 25;
+		base.Maxhealth = 20;
 		base.health = base.Maxhealth;
-        base.speed = 2.0f;
-        base.rate = 1.2f;
+        base.speed = 8f;
+        base.rate = 3f;
 		base.rateVariance = 0.1f;
         base.range = 10f;
-        base.damage = 8;
+        base.damage = 6;
     }
 
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 75f;
+		var timeScale = 105f;
 
-		if (health < 16000) {
-			health = health + (int)(0.75f * health * time / timeScale);
+		if (health < 32000) {
+			health = health + (int)(1.25f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
-		if (speed < 12f) {
-			speed = speed + (0.08f * speed * time / timeScale);
+		if (speed < 40f) {
+			speed = speed + (0.66f * speed * time / timeScale);
 		}
 
-		if (damage < 650) {
-			damage = damage + (int)(0.65f * damage * time / timeScale);
+		if (rate < 0.5f) {
+			rate = rate + (0.05f * rate * time / timeScale);
+		}
+
+		if (damage < 600) {
+			damage = damage + (int)(0.45f * damage * time / timeScale);
 		}
     }
 
@@ -52,8 +56,17 @@ public class FlyerDrone : Baseenemy
 		// Impart velocity to bullet
 		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 8.0f);
 
-  }
-    public override void Change()
-    { }
+	}
+
+	public override void Change() {
+		// Flyer drones slowdown near player's and speed up otherwise
+		if (nearest != null) {
+			if (Vector3.Distance(transform.position, nearest.position) <= range) {
+				body.drag = 2f;
+			} else {
+				body.drag = 0.3f;
+			}
+		}
+	}
 
 }

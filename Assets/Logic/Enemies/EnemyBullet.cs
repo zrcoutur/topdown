@@ -13,7 +13,7 @@ public class EnemyBullet : MonoBehaviour {
 	public int damage;
 
 	// duration of the bullet (not in seconds)
-	float duration = 1.0f;
+	float duration = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -63,10 +63,11 @@ public class EnemyBullet : MonoBehaviour {
 			// Destroy self
 			Destroy (gameObject);
 		}
-
 	}
 
 	/* Sets the duration of the bullet. */
 	public void set_duration(float d) { duration = d; }
 
+	/* Returns the remaininf duration of the bullet. */
+	public float get_duration() { return duration; }
 }
