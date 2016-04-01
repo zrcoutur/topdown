@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
 	public Bullet3 bullet3;
 	public Grenade grenade;
 	public Grenade s_grenade;
+	public RPG rpg;
 	public CameraRunner cam;
 	public Slider hpSlider;
 	public Slider energySlider;
@@ -875,7 +876,36 @@ public class Player : MonoBehaviour {
 			// RPG
 			case 1:
 
-				// TODO
+				// Ammo Check
+				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 1.2f)) {
+					break;
+				}
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.65f);
+
+				// Play Shoot Sound
+				// TODO replace with grenade shoot sound!
+				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
+
+				// Calculate creation position of grenade (from gun)
+				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
+
+				// Create grenade
+				var rpg = (RPG)Instantiate(this.rpg, gnd_pos, transform.rotation);
+
+				rpg.transform.parent = transform;
+
+				rpg.setDamage( (int)(4f * damage_for_weapon()) );
+				rpg.setDuration(4f);
+				rpg.setAcceleration(5f);
+				// Calculate bullet's velocity
+
+				// Set final velocity based on travel angle
+				rpg.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 5f);
+
+				// Mildly shake camera
+				cam.AddShake(0.2f);
 
 				break;
 			
@@ -952,8 +982,6 @@ public class Player : MonoBehaviour {
 				cam.AddShake(0.2f);
 
 				break;
-
-			break;
 			
 			}
 
