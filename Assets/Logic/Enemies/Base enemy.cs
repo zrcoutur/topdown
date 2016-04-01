@@ -68,7 +68,7 @@ public abstract class Baseenemy : MonoBehaviour
 		if (slow_duration >= 0f) {
 			slow_duration -= Time.deltaTime;
 		} else if (slowed) {
-			speed *= 4;
+			speed *= 3;
 			slowed = false;
 		}
 
@@ -225,7 +225,7 @@ public abstract class Baseenemy : MonoBehaviour
 	// Enemies are slowed down by slow areas
 	public void OnTriggerStay2D(Collider2D trigger) {
 		if (trigger.gameObject.GetComponent<SlowArea>() != null) {
-			if (!slowed) { speed /= 4; }
+			if (!slowed) { speed /= 3; }
 
 			slowed = true;
 			slow_duration = 3f;
