@@ -33,6 +33,7 @@ public class BreakableCrate : MonoBehaviour {
 		initial_durability = UnityEngine.Random.Range(18, 25);
 		durability = initial_durability;
 		collision_tag = false;
+		timer = 245f;
 		damage = 5;
 	}
 	
@@ -52,7 +53,7 @@ public class BreakableCrate : MonoBehaviour {
 			remove_crate();
 		} else if (timer <= 0f) {
 			// scale damage of crate overtime
-			timer = 150f;
+			timer = 245f;
 			damage += Random.Range(8, 12);
 		} else {
 			timer -= Time.deltaTime;
@@ -98,6 +99,7 @@ public class BreakableCrate : MonoBehaviour {
 			// reduce scale of the explosion
 			exl.transform.localScale = new Vector3(0.9f * scale.x, 0.9f * scale.y, scale.z);
 			var dmg = (int)(initial_durability);
+			Debug.Log(dmg);
 			exl.setDamage(dmg);
 		} else if (chance <= 0.15f) {
 			// Drop a med_pack

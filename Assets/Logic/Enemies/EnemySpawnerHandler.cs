@@ -5,7 +5,7 @@ public class EnemySpawnerHandler : MonoBehaviour
 {
     public float rate;
     private float timer;
-    private float totaltime;
+    private static float totaltime;
     public Baseenemy[] enemies;
     public Baseenemy[] bosses;
     private int numToSpawnatOnce;

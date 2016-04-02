@@ -14,7 +14,7 @@ public class GrowBoss : Baseenemy
         health = 900;
 		damage = 36;
         size = transform.lossyScale;
-        speed = 0.5f;
+        speed = 0.45f;
         healRate = 3f;
         healTime = healRate;
 		healAmount = 1;
@@ -44,8 +44,8 @@ public class GrowBoss : Baseenemy
 			Maxhealth = health;
 		}
 
-		if (speed < 5f) {
-			speed = speed + (1.45f * speed * time / timeScale);
+		if (speed < 2.5f) {
+			speed = speed + (0.4f * speed * time / timeScale);
 		}
         
 		if (damage < 400) {

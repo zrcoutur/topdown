@@ -22,27 +22,36 @@ public class DVBoss : Baseenemy
 
     }
 
-    public override void TimeIncrease(float time)
-    {
+    public override void TimeIncrease(float time) {
         Lightning *= (time / 300);
-        var timeScale = 105f;
-        health = health + (int)(0.15f * health * time / timeScale);
-        Maxhealth = health;
-        speed = speed + (0.1f * speed * time / timeScale);
-        damage = damage + (int)(0.1f * damage * time / timeScale);
-    }
+
+        var timeScale = 150f;
+
+		if (Maxhealth < 650000) {
+			health = health + (int)(3f * health * time / timeScale);
+			Maxhealth = health;
+		}
+
+		if (speed < 3f) {
+			speed = speed + (0.43f * speed * time / timeScale);
+		}
+
+		if (damage < 750) {
+			damage = damage + (int)(0.9f * damage * time / timeScale);
+		}
+	}
 
     // Use this for initialization
     void awake()
     {
         isBoss = true;
-        base.health = 10000000;
+		base.Maxhealth = 2000;
+		base.health = Maxhealth;
         base.speed = 0.5f;
-        base.Maxhealth = 10000000;
         base.rate = 2.5f;
         //base.rate = 4f;
         Lightning = 0.01f;
-        damage = 10;
+        damage = 20;
     }
 
     // Update is called once per frame

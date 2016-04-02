@@ -174,7 +174,7 @@ public class Player : MonoBehaviour {
 			// Regen a tick of shield if delay is over
 			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 0.99f) );
+				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 1f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			

@@ -20,7 +20,7 @@ public class BaseMine : MonoBehaviour {
 	private bool trigger = false;
 
 	public void Start() {
-		timer = 185f;
+		timer = 245f;
 		damage = UnityEngine.Random.Range(5, 9);
 	}
 
@@ -34,7 +34,7 @@ public class BaseMine : MonoBehaviour {
 				exl.setDamage(damage);
 				Destroy(this.gameObject);
 			} else { // Updates the damage of the mine overtime
-				timer = 105f;
+				timer = 305f;
 				damage += UnityEngine.Random.Range(10, 35);
 			}
 		} else {
