@@ -14,7 +14,6 @@ public class Grenade : PlayerAttack {
 	// Update is called once per frame
 	public void Update() {
 		if (duration <= 0f) {
-			// TODO explode!
 			Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
 			Vector3 scale = exp.transform.localScale;
 			// reduce scale of the explosion
