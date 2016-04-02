@@ -13,9 +13,6 @@ public class Bullet1 : PlayerAttack {
 
     public GameObject Bounce;
 
-    // duration of the bullet (not in seconds)
-    float duration = 1.0f;
-
 	public int twin = 0;
 	public int osc = 0;
 	float otime = 0;
@@ -91,8 +88,4 @@ public class Bullet1 : PlayerAttack {
 		}
 
 	}
-
-	/* Sets the duration of the bullet. */
-	public void set_duration(float d) { duration = d; }
-
 }

@@ -516,7 +516,7 @@ public class Player : MonoBehaviour {
 				score.bullets_fired++;
 
 				b1.setDamage(damage_for_weapon());
-				b1.set_duration(UnityEngine.Random.Range(75, 115) / 100f);
+				b1.setDuration(UnityEngine.Random.Range(75, 115) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake(0.06f);
@@ -555,7 +555,7 @@ public class Player : MonoBehaviour {
 				score.bullets_fired++;
 
 				b2.setDamage((int)(3.0f * damage_for_weapon()));
-				b2.set_duration(UnityEngine.Random.Range(125, 265) / 100f);
+				b2.setDuration(UnityEngine.Random.Range(125, 265) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake(0.08f);
@@ -590,7 +590,7 @@ public class Player : MonoBehaviour {
 				score.bullets_fired++;
 
 				b1.setDamage((int)(0.75f * damage_for_weapon()));
-				b1.set_duration(UnityEngine.Random.Range(65, 105) / 100f);
+				b1.setDuration(UnityEngine.Random.Range(65, 105) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake(0.04f);
@@ -635,8 +635,8 @@ public class Player : MonoBehaviour {
 				b0.setDamage(dmg);
 
 				var twinDur = UnityEngine.Random.Range(95, 125) / 100f;
-				b1.set_duration(twinDur);
-				b0.set_duration(twinDur);
+				b1.setDuration(twinDur);
+				b0.setDuration(twinDur);
 
 				// Mildly shake camera
 				cam.AddShake(0.09f);
@@ -693,7 +693,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage(damage_for_weapon());
-					b1.set_duration(0.45f);
+					b1.setDuration(0.45f);
 	
 					// Calculate bullet's velocity
 	
@@ -733,7 +733,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage((int)(1.25f * damage_for_weapon()));
-					b1.set_duration(0.5f);
+					b1.setDuration(0.5f);
 	
 					// Calculate bullet's velocity
 	
@@ -773,7 +773,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage((int)(0.66f * damage_for_weapon()));
-					b1.set_duration(0.65f);
+					b1.setDuration(0.65f);
 	
 					// Calculate bullet's velocity
 	
@@ -813,7 +813,7 @@ public class Player : MonoBehaviour {
 					b3.transform.parent = transform;
 					score.bullets_fired++;
 					b3.setDamage(damage_for_weapon()); // Note that damage is increased by the shot behavior.
-					b3.set_duration(0.4f);
+					b3.setDuration(0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
 					// Calculate bullet's velocity

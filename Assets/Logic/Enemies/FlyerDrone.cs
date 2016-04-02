@@ -14,29 +14,29 @@ public class FlyerDrone : Baseenemy
 
 		base.Maxhealth = 20;
 		base.health = base.Maxhealth;
-        base.speed = 8f;
-        base.rate = 3f;
+        base.speed = 6f;
+        base.rate = 3.5f;
 		base.rateVariance = 0.1f;
-        base.range = 10f;
+        base.range = 8f;
         base.damage = 6;
     }
 
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 105f;
+		var timeScale = 150f;
 
-		if (health < 32000) {
-			health = health + (int)(1.25f * health * time / timeScale);
+		if (Maxhealth < 24000) {
+			health = health + (int)(0.65f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
 		if (speed < 40f) {
-			speed = speed + (0.66f * speed * time / timeScale);
+			speed = speed + (0.2f * speed * time / timeScale);
 		}
 
-		if (rate < 0.5f) {
-			rate = rate + (0.05f * rate * time / timeScale);
+		if (rate < 10f) {
+			rate = rate + (0.1f * rate * time / timeScale);
 		}
 
 		if (damage < 600) {
@@ -52,9 +52,9 @@ public class FlyerDrone : Baseenemy
 		// Make Bullet
 		var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
 		b.damage = damage / 2;
-
+		b.set_duration(2f);
 		// Impart velocity to bullet
-		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 8.0f);
+		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 12.0f);
 
 	}
 
@@ -62,7 +62,7 @@ public class FlyerDrone : Baseenemy
 		// Flyer drones slowdown near player's and speed up otherwise
 		if (nearest != null) {
 			if (Vector3.Distance(transform.position, nearest.position) <= range) {
-				body.drag = 2f;
+				body.drag = 2.5f;
 			} else {
 				body.drag = 0.3f;
 			}

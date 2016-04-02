@@ -44,7 +44,7 @@ public class Slash : PlayerAttack {
 				Bullet1 reverse = (Bullet1)Instantiate(bullet_1, eb.gameObject.transform.position, Quaternion.identity);
 				// Sets transfomr's parent for indicating, which player deflected the bullet
 				reverse.transform.parent = this.transform.parent;
-				reverse.set_duration(eb.get_duration() + 0.5f);
+				reverse.setDuration(eb.get_duration() + 0.5f);
 				reverse.setDamage( col.gameObject.GetComponent<EnemyBullet>().damage );
 				// Sets bullet trajectory
 				reverse.GetComponent<Rigidbody2D>().velocity = -col.gameObject.GetComponent<Rigidbody2D>().velocity;
