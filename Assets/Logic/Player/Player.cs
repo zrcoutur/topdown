@@ -834,6 +834,7 @@ public class Player : MonoBehaviour {
 		// Grenade Launcher
 		case (int)WEAPON_TYPE.grenade:
 			Grenade gnd;
+			float gnd_spread;
 			Vector2 gnd_pos;
 
 			switch (stats.weapon_by_type(stats.current_weapon()).upgrade_state()) {
@@ -937,7 +938,7 @@ public class Player : MonoBehaviour {
 
 					// Calculate bullet's velocity
 					// Shot spread range.
-					var gnd_spread = Random.Range(-35f, 35f);
+					gnd_spread = Random.Range(-35f, 35f);
 
 					// Set final velocity based on travel angle
 					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 8f));
@@ -974,12 +975,14 @@ public class Player : MonoBehaviour {
 				gnd.setDuration(1f);
 
 				// Calculate bullet's velocity
+				// Shot spread range.
+				gnd_spread = Random.Range(-10f, 10f);
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(6f, 9f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 9f));
 
 				// Mildly shake camera
-				cam.AddShake(0.2f);
+				cam.AddShake(0.15f);
 
 				break;
 			
