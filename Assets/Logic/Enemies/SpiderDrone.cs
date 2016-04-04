@@ -4,12 +4,11 @@ using System.Collections;
 public class SpiderDrone : Baseenemy
 {
     public GameObject Slash;
+	private float leapDelay = 5f;
     
 
     // Use this for initialization
-    void Awake()
-    {
-
+    void Awake() {
 		base.Maxhealth = 35;
 		base.health = base.Maxhealth;
 		base.speed = 3.2f;
@@ -55,7 +54,23 @@ public class SpiderDrone : Baseenemy
         // Momentum from swing
         gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 270.0f, 60.0f));
     }
-    public override void Change()
-    { }
+
+	// Spider drones will leap at a neraby Player if they are within a certain range
+    public override void Change() {
+		// Check if a Player is nearby
+		if (nearest != null && leapDelay <= 0f) {
+			float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
+
+			// Leap at the closest Player
+			if (Mathf.Abs(dist_near) <= 5f) {
+				Debug.Log("Leap!");
+				leapDelay = 10f; // create a delay between leaps
+				GetComponent<Rigidbody2D>().AddForce( 400f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition) );
+			}
+
+		} else if (leapDelay > 0f) { // leap cooldown
+			leapDelay -= Time.deltaTime;
+		}
+	}
 
 }

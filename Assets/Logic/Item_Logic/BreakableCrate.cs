@@ -98,7 +98,7 @@ public class BreakableCrate : MonoBehaviour {
 			Vector3 scale = exl.transform.localScale;
 			// reduce scale of the explosion
 			exl.transform.localScale = new Vector3(0.9f * scale.x, 0.9f * scale.y, scale.z);
-			var dmg = (int)(initial_durability);
+			var dmg = (int)(damage);
 			Debug.Log(dmg);
 			exl.setDamage(dmg);
 		} else if (chance <= 0.15f) {
