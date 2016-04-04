@@ -49,13 +49,29 @@ public class FlyerDrone : Baseenemy
         // Play Shoot Sound
 		CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
-		// Make Bullet
-		var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
-		b.damage = damage / 2;
-		b.set_duration(2f);
-		// Impart velocity to bullet
-		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 12.0f);
+		float chance = UnityEngine.Random.value;
 
+		if (chance <= 0.5f) {
+			// Make Bullet
+			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 90.0f, 12.0f);
+		} else {
+			// Make Bullet
+			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 70.0f, 12.0f);
+
+			b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 110.0f, 12.0f);
+		}
 	}
 
 	public override void Change() {
