@@ -4,7 +4,7 @@ using System.Collections;
 public class SpiderDrone : Baseenemy
 {
     public GameObject Slash;
-	private float leapDelay = 5f;
+	private float leapDelay = 9f;
     
 
     // Use this for initialization
@@ -59,16 +59,26 @@ public class SpiderDrone : Baseenemy
     public override void Change() {
 		// Check if a Player is nearby
 		if (nearest != null && leapDelay <= 0f) {
-			float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
+			float chance = UnityEngine.Random.value;
+			// Spider Drones do not always leap
+			if (chance <= 0.1f) {
+				Vector2 force = Vector2.zero;
+				float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
 
-			// Leap at the closest Player
-			if (Mathf.Abs(dist_near) <= 5f) {
-				Debug.Log("Leap!");
-				leapDelay = 10f; // create a delay between leaps
-				GetComponent<Rigidbody2D>().AddForce( 400f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition) );
+				if (Mathf.Abs(dist_near) <= 2f) {
+					// Leap backwards
+					force = -600f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
+				} else if (Mathf.Abs(dist_near) <= 6f) {
+					// Leap at the closest Player
+					force = 350f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
+				}
+
+				GetComponent<Rigidbody2D>().AddForce(force);
 			}
-
-		} else if (leapDelay > 0f) { // leap cooldown
+		} else if (leapDelay > 0f) {
+			// Leap cooldown
 			leapDelay -= Time.deltaTime;
 		}
 	}
