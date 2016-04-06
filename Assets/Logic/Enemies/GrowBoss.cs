@@ -21,8 +21,8 @@ public class GrowBoss : Baseenemy
     }
 
     // Update is called once per frame
-    public override void Change()
-    {
+    public override void Change() {
+
         float newSize = Mathf.Min((((float)Maxhealth) / health), 10);
         transform.localScale = new Vector3(size.x * newSize, size.y * newSize);
         if (healTime <= 0)

@@ -17,6 +17,7 @@ public class EnemySpawnerHandler : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		totaltime = 0f;
 		stall = false;
         timer = rate;
         spawnPoints = FindObjectsOfType<EnemySpawner>();
