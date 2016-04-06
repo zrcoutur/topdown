@@ -52,14 +52,14 @@ public class FlyerDrone : Baseenemy
 		float chance = UnityEngine.Random.value;
 
 		if (chance <= 0.5f) {
-			// Make Bullet
+			// Fire a single bullet at the player
 			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
 			b.damage = damage / 2;
 			b.set_duration(2f);
 			// Impart velocity to bullet
 			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 90.0f, 12.0f);
 		} else {
-			// Make Bullet
+			// Fire two bullets at an angle from the direction that the drone is facing
 			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
 			b.damage = damage / 2;
 			b.set_duration(2f);
