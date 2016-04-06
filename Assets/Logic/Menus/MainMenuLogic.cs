@@ -10,7 +10,13 @@ public class MainMenuLogic : MonoBehaviour {
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("test");
 	}
 
+	public void Multiplayer() {
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("multiplayerMenu");
+	}
+
 	public void Quit() {
 		Application.Quit ();
 	}
+
+
 }
