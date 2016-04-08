@@ -897,7 +897,7 @@ public class Player : MonoBehaviour {
 
 				rpg.transform.parent = transform;
 
-				rpg.setDamage( (int)(3f * damage_for_weapon()) );
+				rpg.setDamage( (int)(2.5f * damage_for_weapon()) );
 				rpg.setDuration(3f);
 				rpg.setAcceleration(6f);
 				// Calculate bullet's velocity
@@ -932,7 +932,7 @@ public class Player : MonoBehaviour {
 					Vector3 gnd_scale = gnd.transform.localScale;
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
-					gnd.setDamage( (int)(0.45f * damage_for_weapon()) );
+					gnd.setDamage( (int)(0.75f * damage_for_weapon()) );
 					gnd.setDuration( Random.Range(0.7f, 0.8f) );
 
 					// Calculate bullet's velocity
@@ -1042,7 +1042,8 @@ public class Player : MonoBehaviour {
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
 		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			GetHurt(trigger.gameObject.GetComponent<Explosion>().getDamage());
+			// The player suffers 35% damage from explosions
+			GetHurt( (int)(0.35f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );
 		}
 	}
 

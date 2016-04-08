@@ -33,16 +33,16 @@ public class MeleeBot : Baseenemy {
 		var timeScale = 150f;
 
 		if (Maxhealth < 32000) {
-			health = health + (int)(0.8f * health * time / timeScale);
+			health = health + (int)(1.05f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
 		if (speed < 16f) {
-			o_speed = speed + (0.2f * speed * time / timeScale);
+			o_speed = speed + (0.1f * speed * time / timeScale);
 		}
 
-		if (damage < 550) {
-			damage = damage + (int)(0.55f * damage * time / timeScale);
+		if (damage < 450) {
+			damage = damage + (int)(0.62f * damage * time / timeScale);
 		}
 
 		if (rate > 0.45f) {

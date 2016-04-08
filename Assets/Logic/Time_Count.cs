@@ -11,7 +11,7 @@ using System.Collections;
  */
 public class Time_Count : MonoBehaviour {
 	// Total time since the beginning of the round
-	private float time;
+	public float time;
 
 	// Use this for initialization
 	public void Start () {
