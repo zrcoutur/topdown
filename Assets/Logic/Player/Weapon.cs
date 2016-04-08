@@ -13,6 +13,10 @@ public class Weapon : MonoBehaviour {
 	public Sprite autoShotgunSprite;
 	public Sprite confluxShotSprite;
 	public Sprite omegaSwordSprite;
+	public Sprite grenadeLauncher;
+	public Sprite slowGrenadeLauncher;
+	public Sprite clusterCannon;
+	public Sprite RPGLauncher;
 
 	public Player_Stats stats;
 
@@ -50,7 +54,14 @@ public class Weapon : MonoBehaviour {
 				GetComponent<SpriteRenderer>().sprite = confluxShotSprite;
 			break;
 		case WEAPON_TYPE.grenade:
-			GetComponent<SpriteRenderer>().sprite = rifleSprite;
+			if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 0 )
+				GetComponent<SpriteRenderer>().sprite = grenadeLauncher;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 1 )
+				GetComponent<SpriteRenderer>().sprite = RPGLauncher;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 2 )
+				GetComponent<SpriteRenderer>().sprite = clusterCannon;
+			else
+				GetComponent<SpriteRenderer>().sprite = slowGrenadeLauncher;
 			break;
 		}
 	}

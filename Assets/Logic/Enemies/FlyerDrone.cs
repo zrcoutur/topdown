@@ -31,7 +31,7 @@ public class FlyerDrone : Baseenemy
 			Maxhealth = health;
 		}
 
-		if (speed < 28f) {
+		if (speed < 20f) {
 			speed = speed + (0.15f * speed * time / timeScale);
 		}
 
@@ -49,20 +49,36 @@ public class FlyerDrone : Baseenemy
         // Play Shoot Sound
 		CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
-		// Make Bullet
-		var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
-		b.damage = damage / 2;
-		b.set_duration(2f);
-		// Impart velocity to bullet
-		b.GetComponent<Rigidbody2D> ().velocity = Tools.AngleToVec2 ((body.rotation * transform.forward).z - 90.0f, 12.0f);
+		float chance = UnityEngine.Random.value;
 
+		if (chance <= 0.5f) {
+			// Fire a single bullet at the player
+			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 90.0f, 12.0f);
+		} else {
+			// Fire two bullets at an angle from the direction that the drone is facing
+			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 70.0f, 12.0f);
+
+			b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
+			b.damage = damage / 2;
+			b.set_duration(2f);
+			// Impart velocity to bullet
+			b.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z - 110.0f, 12.0f);
+		}
 	}
 
 	public override void Change() {
 		// Flyer drones slowdown near player's and speed up otherwise
 		if (nearest != null) {
-			if (Vector3.Distance(transform.position, nearest.position) <= range) {
-				body.drag = 1.75f;
+			if (Vector3.Distance(transform.position, nearest.position) <= (4 * range / 5)) {
+				body.drag = 2.5f;
 			} else {
 				body.drag = 0.5f;
 			}

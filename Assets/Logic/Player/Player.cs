@@ -867,7 +867,7 @@ public class Player : MonoBehaviour {
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 11f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 12f));
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -911,7 +911,6 @@ public class Player : MonoBehaviour {
 				break;
 			
 			// Cluster Cannon
-			// TODO add buffs and debuffs
 			case 2:
 				// Ammo Check
 				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 0.85f)) {
@@ -941,7 +940,7 @@ public class Player : MonoBehaviour {
 					gnd_spread = Random.Range(-35f, 35f);
 
 					// Set final velocity based on travel angle
-					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 8f));
+					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(7f, 10f));
 				}
 
 				// Mildly shake camera
@@ -979,7 +978,7 @@ public class Player : MonoBehaviour {
 				gnd_spread = Random.Range(-10f, 10f);
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 9f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(10f, 15f));
 
 				// Mildly shake camera
 				cam.AddShake(0.15f);

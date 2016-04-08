@@ -10,16 +10,20 @@ using System.Collections;
  * 2 April 2016
  */
 public class Time_Count : MonoBehaviour {
+	// Total time since the beginning of the round
+	private float time;
 
 	// Use this for initialization
 	public void Start () {
+		time = 0f;
 		// Center the time display
 		GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
 	}
 	
 	// Update is called once per frame
 	public void Update () {
-		GetComponent<Text>().text = ((int)Time.fixedTime).ToString();
+		GetComponent<Text>().text = ((int)time).ToString();
+		time += Time.deltaTime;
 	}
 
 	private string displayCurrentTime() {
