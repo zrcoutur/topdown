@@ -15,7 +15,7 @@ public class FlyerDrone : Baseenemy
 		base.Maxhealth = 20;
 		base.health = base.Maxhealth;
         base.speed = 4f;
-        base.rate = 2f;
+        base.rate = 1.5f;
 		base.rateVariance = 0.1f;
         base.range = 8f;
         base.damage = 6;
@@ -27,20 +27,20 @@ public class FlyerDrone : Baseenemy
 		var timeScale = 150f;
 
 		if (Maxhealth < 24000) {
-			health = health + (int)(0.65f * health * time / timeScale);
+			health = health + (int)(1.05f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
 		if (speed < 20f) {
-			speed = speed + (0.15f * speed * time / timeScale);
+			speed = speed + (0.18f * speed * time / timeScale);
 		}
 
 		if (rate > 0.35f) {
-			rate = rate - (0.05f * rate * time / timeScale);
+			rate = rate - (0.14f * rate * time / timeScale);
 		}
 
-		if (damage < 600) {
-			damage = damage + (int)(0.45f * damage * time / timeScale);
+		if (damage < 400) {
+			damage = damage + (int)(0.52f * damage * time / timeScale);
 		}
     }
 

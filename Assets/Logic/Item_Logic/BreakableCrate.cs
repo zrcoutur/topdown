@@ -34,7 +34,7 @@ public class BreakableCrate : MonoBehaviour {
 		durability = initial_durability;
 		collision_tag = false;
 		timer = 245f;
-		damage = 5;
+		damage = 20;
 	}
 	
 	// Update is called once per frame
