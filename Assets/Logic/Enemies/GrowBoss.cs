@@ -7,43 +7,54 @@ public class GrowBoss : Baseenemy
     private float healTime;
     int healAmount;
     Vector3 size;
-    void Awake()
-    {
+
+    void Awake() {
         isBoss = true;
-        Maxhealth = 100;
-        health = 100;
+        Maxhealth = 1200;
+        health = 1200;
+		damage = 36;
         size = transform.lossyScale;
-        speed = .5f;
-        healRate = 5f;
+        speed = 0.45f;
+        healRate = 3f;
         healTime = healRate;
+		healAmount = 1;
     }
 
     // Update is called once per frame
-    public override void Change()
-    {
+    public override void Change() {
+
         float newSize = Mathf.Min((((float)Maxhealth) / health), 10);
         transform.localScale = new Vector3(size.x * newSize, size.y * newSize);
         if (healTime <= 0)
         {
-            if (health < 200)
-            {
+			if (health < (Maxhealth / 2)) {
                 health += healAmount;
             }
             healTime += healRate;
         }
         healTime -= Time.deltaTime;
     }
-    public override void TimeIncrease(float time)
-    {
-        // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-        var timeScale = 105f;
-        health = health + (int)(0.15f * health * time / timeScale);
-        Maxhealth = health;
-        speed = speed + (0.1f * speed * time / timeScale);
-        damage = damage + (int)(0.1f * damage * time / timeScale);
-        healRate *= (3 / 4 * Mathf.Pow(2,time));
-        healAmount += (int)(time / timeScale);
-    }
-    public override void attack() { }
 
+    public override void TimeIncrease(float time) {
+        // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
+        var timeScale = 600f;
+
+		if (Maxhealth < 2000000) {
+			health = health + (int)(4f * health * time / timeScale);
+			Maxhealth = health;
+		}
+
+		if (speed < 2.5f) {
+			speed = speed + (0.4f * speed * time / timeScale);
+		}
+        
+		if (damage < 400) {
+			damage = damage + (int)(1.6f * damage * time / timeScale);
+		}
+
+		//healRate *= (3 / 4 * Mathf.Pow(2,time));
+       	//healAmount += (int)(time / timeScale);
+    }
+
+    public override void attack() { }
 }

@@ -174,7 +174,7 @@ public class Player : MonoBehaviour {
 			// Regen a tick of shield if delay is over
 			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
 				
-				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 0.99f) );
+				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 1f) );
 				stats.Shield_raised = true;
 				shieldRecoverTime += shieldMaxRecoverTime;
 			
@@ -555,7 +555,7 @@ public class Player : MonoBehaviour {
 				score.bullets_fired++;
 
 				b2.setDamage((int)(3.0f * damage_for_weapon()));
-				b2.set_duration(UnityEngine.Random.Range(125, 265) / 100f);
+				b2.setDuration(UnityEngine.Random.Range(125, 265) / 100f);
 
 				// Mildly shake camera
 				cam.AddShake(0.08f);
@@ -813,7 +813,7 @@ public class Player : MonoBehaviour {
 					b3.transform.parent = transform;
 					score.bullets_fired++;
 					b3.setDamage(damage_for_weapon()); // Note that damage is increased by the shot behavior.
-					b3.set_duration(0.4f);
+					b3.setDuration(0.4f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
 					// Calculate bullet's velocity
@@ -834,6 +834,7 @@ public class Player : MonoBehaviour {
 		// Grenade Launcher
 		case (int)WEAPON_TYPE.grenade:
 			Grenade gnd;
+			float gnd_spread;
 			Vector2 gnd_pos;
 
 			switch (stats.weapon_by_type(stats.current_weapon()).upgrade_state()) {
@@ -866,7 +867,7 @@ public class Player : MonoBehaviour {
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 11f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 12f));
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -910,7 +911,6 @@ public class Player : MonoBehaviour {
 				break;
 			
 			// Cluster Cannon
-			// TODO add buffs and debuffs
 			case 2:
 				// Ammo Check
 				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 0.85f)) {
@@ -937,10 +937,10 @@ public class Player : MonoBehaviour {
 
 					// Calculate bullet's velocity
 					// Shot spread range.
-					var gnd_spread = Random.Range(-35f, 35f);
+					gnd_spread = Random.Range(-35f, 35f);
 
 					// Set final velocity based on travel angle
-					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 8f));
+					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(7f, 10f));
 				}
 
 				// Mildly shake camera
@@ -974,12 +974,14 @@ public class Player : MonoBehaviour {
 				gnd.setDuration(1f);
 
 				// Calculate bullet's velocity
+				// Shot spread range.
+				gnd_spread = Random.Range(-10f, 10f);
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(6f, 9f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(10f, 15f));
 
 				// Mildly shake camera
-				cam.AddShake(0.2f);
+				cam.AddShake(0.15f);
 
 				break;
 			

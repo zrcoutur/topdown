@@ -23,12 +23,18 @@ public class BreakableCrate : MonoBehaviour {
 	private int initial_durability;
 	// The amount of damage a crate can sustain until it breaks
 	private float durability;
+	// Used to scale damage for the box
+	private float timer;
+	// damage done by an explosive crate
+	private int damage;
 
 	// Use this for initialization
 	void Start () {
 		initial_durability = UnityEngine.Random.Range(18, 25);
 		durability = initial_durability;
 		collision_tag = false;
+		timer = 245f;
+		damage = 5;
 	}
 	
 	// Update is called once per frame
@@ -39,12 +45,18 @@ public class BreakableCrate : MonoBehaviour {
 
 		hp_len.localScale = new Vector3(x_scale, hp_len.localScale.y, hp_len.localScale.y);
 
-		/* remove the crate when its durability reaches zero */
 		if (durability <= 0) {
+			/* remove the crate when its durability reaches zero */
 			// Play break sfx
-			CameraRunner.gAudio.PlayOneShot( X_break, 0.5f );
-			Instantiate (pf, transform.position, transform.rotation);
+			CameraRunner.gAudio.PlayOneShot(X_break, 0.5f);
+			Instantiate(pf, transform.position, transform.rotation);
 			remove_crate();
+		} else if (timer <= 0f) {
+			// scale damage of crate overtime
+			timer = 245f;
+			damage += Random.Range(8, 12);
+		} else {
+			timer -= Time.deltaTime;
 		}
 	}
 		
@@ -80,7 +92,16 @@ public class BreakableCrate : MonoBehaviour {
 	private void remove_crate() {
 		float chance = UnityEngine.Random.value;
 
-		if (chance > 0.05f && chance <= 0.15f) {
+		if (chance <= 0.05f) {
+			// Create explodes
+			Explosion exl = ((GameObject)Instantiate(item_drops[3], transform.position, Quaternion.identity)).GetComponent<Explosion>();
+			Vector3 scale = exl.transform.localScale;
+			// reduce scale of the explosion
+			exl.transform.localScale = new Vector3(0.9f * scale.x, 0.9f * scale.y, scale.z);
+			var dmg = (int)(damage);
+			Debug.Log(dmg);
+			exl.setDamage(dmg);
+		} else if (chance <= 0.15f) {
 			// Drop a med_pack
 			var d = (GameObject)Instantiate(item_drops[2], transform.localPosition, Quaternion.identity);
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)));

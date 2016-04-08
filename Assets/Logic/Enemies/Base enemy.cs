@@ -27,7 +27,7 @@ public abstract class Baseenemy : MonoBehaviour
 	public float rateVariance = 0f;
     public float range = 10f;
     public float timer;
-	public int damage = 5;
+	public int damage;
 
 	private bool slowed;
 	private float slow_duration;

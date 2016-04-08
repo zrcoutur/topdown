@@ -13,54 +13,16 @@ public class Weapon : MonoBehaviour {
 	public Sprite autoShotgunSprite;
 	public Sprite confluxShotSprite;
 	public Sprite omegaSwordSprite;
+	public Sprite grenadeLauncher;
+	public Sprite slowGrenadeLauncher;
+	public Sprite clusterCannon;
+	public Sprite RPGLauncher;
 
 	public Player_Stats stats;
 
 	// Use this for initialization
 	void Start () {
 		updateWeapon();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-		/*if (updateWeapon >= 0) {
-			
-			switch (updateWeapon) {
-
-			case WEAPON_TYPE.rifle:
-				if ( stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state() == 0 )
-					GetComponent<SpriteRenderer>().sprite = swordSprite;
-				else
-					GetComponent<SpriteRenderer>().sprite = omegaSwordSprite;
-					break;
-
-				case weapons.PlasmaRifle:
-				if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 0 )
-					GetComponent<SpriteRenderer>().sprite = rifleSprite;
-				else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()  == 1 )
-					GetComponent<SpriteRenderer>().sprite = lancerRifleSprite;
-				else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()  == 2 )
-					GetComponent<SpriteRenderer>().sprite = plasmaGatlingSprite;
-				else
-					GetComponent<SpriteRenderer>().sprite = twinBlasterSprite;
-					break;
-
-				case weapons.Shotgun:
-				if ( stats.weapon_by_type(WEAPON_TYPE.shotgun).upgrade_state() == 0 )
-					GetComponent<SpriteRenderer>().sprite = shotgunSprite;
-				else if ( stats.weapon_by_type(WEAPON_TYPE.shotgun).upgrade_state() == 1 )
-					GetComponent<SpriteRenderer>().sprite = armageddonSprite;
-				else if ( stats.weapon_by_type(WEAPON_TYPE.shotgun).upgrade_state() == 2 )
-					GetComponent<SpriteRenderer>().sprite = autoShotgunSprite;
-				else
-					GetComponent<SpriteRenderer>().sprite = confluxShotSprite;
-					break;
-			}
-
-			updateWeapon = -1;
-		}*/
-
 	}
 
 	public void updateWeapon() {
@@ -92,7 +54,14 @@ public class Weapon : MonoBehaviour {
 				GetComponent<SpriteRenderer>().sprite = confluxShotSprite;
 			break;
 		case WEAPON_TYPE.grenade:
-			GetComponent<SpriteRenderer>().sprite = rifleSprite;
+			if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 0 )
+				GetComponent<SpriteRenderer>().sprite = grenadeLauncher;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 1 )
+				GetComponent<SpriteRenderer>().sprite = RPGLauncher;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.grenade).upgrade_state() == 2 )
+				GetComponent<SpriteRenderer>().sprite = clusterCannon;
+			else
+				GetComponent<SpriteRenderer>().sprite = slowGrenadeLauncher;
 			break;
 		}
 	}
