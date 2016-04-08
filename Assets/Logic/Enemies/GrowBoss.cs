@@ -10,8 +10,8 @@ public class GrowBoss : Baseenemy
 
     void Awake() {
         isBoss = true;
-        Maxhealth = 900;
-        health = 900;
+        Maxhealth = 1200;
+        health = 1200;
 		damage = 36;
         size = transform.lossyScale;
         speed = 0.45f;

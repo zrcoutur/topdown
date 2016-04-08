@@ -3,16 +3,28 @@ using System.Collections;
 
 public class MeleeBot : Baseenemy {
 	public GameObject Slash;
+	// holds the original values of the meleebots speed and attack cooldown
+	private float o_speed, o_rate, o_range;
+	// determines if the meleebot is currently dashing
+	private bool dashing;
+	// used to keep track of the delay between dashes
+	private float dashDelay;
 
 	// Use this for initialization
 	void Awake() {
 		base.Maxhealth = 25;
 		base.health = base.Maxhealth;
 		base.speed = 6f;
+		o_speed = speed;
 		base.rate = 1.2f;
+		o_rate = rate;
 		base.rateVariance = 0f;
 		base.range = 4.5f;
-		base.damage = 5;
+		o_range = range;
+		base.damage = 3;
+
+		dashing = false;
+		dashDelay = 0f;
 	}
 
 
@@ -25,12 +37,16 @@ public class MeleeBot : Baseenemy {
 			Maxhealth = health;
 		}
 
-		if (speed < 32f) {
-			speed = speed + (0.25f * speed * time / timeScale);
+		if (speed < 16f) {
+			o_speed = speed + (0.2f * speed * time / timeScale);
 		}
 
-		if (damage < 650) {
+		if (damage < 550) {
 			damage = damage + (int)(0.55f * damage * time / timeScale);
+		}
+
+		if (rate > 0.45f) {
+			o_rate = o_rate + (0.05f * rate * time / timeScale);
 		}
 	}
 
@@ -52,9 +68,36 @@ public class MeleeBot : Baseenemy {
 		gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 270.0f, 60.0f));
 	}
 
-	// Spider drones will leap at a neraby Player if they are within a certain range
+	// Meleebot's will dash at a nearby player, increasing their speed and attack rate for a short period of time
 	public override void Change() {
-		
+		// Check if a Player is nearby
+		if (nearest != null && dashDelay <= 0f) {
+			
+			Vector2 force = Vector2.zero;
+			float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
+			// If the Player is close enough, dash at them
+			if (!dashing && Mathf.Abs(dist_near) <= 6.5f) {
+				// while dashing speed is increaseing by 80%
+				speed = 1.8f * o_speed;
+				// while dashing rate of attack cooldown is reducced by 20%
+				rate = 0.8f * o_rate;
+
+				dashing = true;
+				dashDelay = 10f;
+			}
+
+		} else if (dashDelay > 0f) {
+			// Stop dashing after 1 second
+			if (dashing && dashDelay <= 9f) {
+				speed = o_speed;
+				rate = o_rate;
+
+				dashing = false;
+			}
+
+			// Leap cooldown
+			dashDelay -= Time.deltaTime;
+		}
 	}
 
 }

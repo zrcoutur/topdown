@@ -45,7 +45,7 @@ public class DVBoss : Baseenemy
     void Start()
     {
         isBoss = true;
-		base.Maxhealth = 2000;
+		base.Maxhealth = 8000;
 		base.health = Maxhealth;
         base.speed = 0.5f;
         base.rate = 2.5f;

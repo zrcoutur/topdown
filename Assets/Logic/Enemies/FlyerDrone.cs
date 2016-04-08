@@ -31,7 +31,7 @@ public class FlyerDrone : Baseenemy
 			Maxhealth = health;
 		}
 
-		if (speed < 28f) {
+		if (speed < 20f) {
 			speed = speed + (0.15f * speed * time / timeScale);
 		}
 
@@ -77,8 +77,8 @@ public class FlyerDrone : Baseenemy
 	public override void Change() {
 		// Flyer drones slowdown near player's and speed up otherwise
 		if (nearest != null) {
-			if (Vector3.Distance(transform.position, nearest.position) <= range) {
-				body.drag = 1.75f;
+			if (Vector3.Distance(transform.position, nearest.position) <= (4 * range / 5)) {
+				body.drag = 2.5f;
 			} else {
 				body.drag = 0.5f;
 			}

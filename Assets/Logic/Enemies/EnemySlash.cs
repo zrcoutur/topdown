@@ -30,14 +30,16 @@ public class EnemySlash : MonoBehaviour {
 
     }
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
+    void OnTriggerEnter2D(Collider2D col) {
 
-        if (col.tag == "Player")
-        {
+        if (col.tag == "Player") {
             col.gameObject.GetComponent<Player>().GetHurt(damage);
             //col.gameObject.SendMessage("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f));
         }
+		// Enemy slashes block normal and shotgun bullets
+		if (col.gameObject.GetComponent<Bullet1>() != null || col.GetComponent<Bullet3>() != null) {
+			Destroy(col.gameObject);
+		}
 
     }
 }
