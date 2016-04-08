@@ -239,8 +239,8 @@ public abstract class Baseenemy : MonoBehaviour
         if (col.gameObject.tag == "Player" && recollideTimer <= 0)
         {
 			recollideTimer = 1.0f;
-            var p = col.gameObject.GetComponent<Player>();
-            p.GetHurt(damage);
+            var p = col.gameObject;
+            p.SendMessage("GetHurt", damage);
             col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(
                 (p.transform.position.x - transform.position.x) * 380.0f,
                 (p.transform.position.y - transform.position.y) * 380.0f)
