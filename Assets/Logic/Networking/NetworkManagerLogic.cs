@@ -17,7 +17,7 @@ public class NetworkManagerLogic : NetworkManager {
 	}
 
 	void SetIPAddress() {
-		string ipAddress = GameObject.Find ("InputFieldIPAddress").transform.FindChild ("Text").GetComponent<Text> ().text;
+		string ipAddress = GameObject.Find("InputFieldIPAddress").transform.FindChild("Text").GetComponent<Text>().text;
 		NetworkManager.singleton.networkAddress = ipAddress;
 	}
 
@@ -26,16 +26,21 @@ public class NetworkManagerLogic : NetworkManager {
 	}
 
 	void OnLevelWasLoaded(int level) {
-		if (level == 0) {
-			SetupMenuSceneButtons ();
+		if (level == 1) {
+			StartCoroutine(SetupMenuSceneButtons());
 		} 
 	}
 
-	void SetupMenuSceneButtons() {
+	IEnumerator SetupMenuSceneButtons() {
+		yield return new WaitForSeconds (0.5f);
 		GameObject.Find ("StartHostButton").GetComponent<Button> ().onClick.RemoveAllListeners ();
 		GameObject.Find ("StartHostButton").GetComponent<Button> ().onClick.AddListener (StartupHost);
 
 		GameObject.Find ("JoinHostButton").GetComponent<Button> ().onClick.RemoveAllListeners ();
 		GameObject.Find ("JoinHostButton").GetComponent<Button> ().onClick.AddListener (JoinGame);
+	}
+
+	public void MainMenu() {
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("mainMenu");
 	}
 }
