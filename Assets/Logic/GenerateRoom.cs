@@ -252,7 +252,7 @@ public class GenerateRoom : MonoBehaviour
 	//0x0000 = no doors, 0x0001 means one door on the north (up) direction , 0x0010 means one door on the east (left) direction , and so forth clockwise
 	int[,] makeRoomMatrix(int height, int width, int door, int roomType)
 	{
-
+		spawnersPlaced = 0;
 		int[,] returnMatrix = new int[width, height];
 		int[,] prefab = choosePrefabRoom(height, width,roomType);
 
@@ -289,10 +289,11 @@ public class GenerateRoom : MonoBehaviour
 							returnMatrix[x, y] = 1;
 						}
 					}
-					/*
-					if ((x == 0 && !(y == 0 || y == height - 1)) || (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
+
+					if ((x == 0 && !(y == 0 || y == height - 1)) || (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 1)) || (y == height - 1 && !(x == 0 || x == width - 1)))
 					{
-						int chance = UnityEngine.Random.Range(0, 10);
+						
+						int chance = UnityEngine.Random.Range(0, 5);
 						if (chance == 0 && spawnerCap > spawnersPlaced)
 						{
 							returnMatrix[x, y] = 2;
@@ -300,7 +301,7 @@ public class GenerateRoom : MonoBehaviour
 						}
 
 					}
-					*/
+					
 				}
 
 			}
