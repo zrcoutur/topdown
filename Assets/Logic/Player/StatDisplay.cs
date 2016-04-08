@@ -14,7 +14,7 @@ public class StatDisplay {
 	public readonly string name;
 	public readonly Stat stat;
 	public Rect[] labels;
-	public Rect button;
+	public Rect[] buttons;
 
 	/**
 	 * Creates a stat display for the given stat, with the given name.
@@ -24,7 +24,7 @@ public class StatDisplay {
 		stat = s;
 		// initialize the dimensions of the label fields and button field
 		labels = new Rect[5];
-		button = new Rect(0, 0, 0, 0);
+		buttons = new Rect[2];
 	}
 
 	/* Changes the positions of all the rectangles based on the rectangle given. */
@@ -34,7 +34,9 @@ public class StatDisplay {
 		// Stat name
 		labels[0] = relativeRect(origin, 2, 15, 25, 90, 22);
 		// Increment button
-		button = relativeRect(labels[0], 0, 10, 2, 18, 18);
+		buttons[0] = relativeRect(labels[0], 0, 10, 2, 18, 18);
+		// Decrement button
+		buttons[1] = relativeRect(buttons[0], 0, 5, 0, 18, 18);
 		// next stat cost
 		labels[1] = relativeRect(labels[0], 2, 0, 0, 200, 22);
 		// current stat value

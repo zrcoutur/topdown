@@ -27,7 +27,10 @@ public abstract class Baseenemy : MonoBehaviour
 	public float rateVariance = 0f;
     public float range = 10f;
     public float timer;
-	public int damage = 5;
+	public int damage;
+
+	private bool slowed;
+	private float slow_duration;
 
 	//used to add to player score
 	public int pointValue;
@@ -40,8 +43,10 @@ public abstract class Baseenemy : MonoBehaviour
     public bool isBoss;
     private float timeTillDestroy;
 
-    void Start()
-    {
+    void Start() {
+		slowed = false;
+		slow_duration = 0f;
+
         SearchDelay = 1.0f;
         nearest = null;
 
@@ -59,6 +64,13 @@ public abstract class Baseenemy : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+		// Slow debuff logic
+		if (slow_duration >= 0f) {
+			slow_duration -= Time.deltaTime;
+		} else if (slowed) {
+			speed *= 3;
+			slowed = false;
+		}
 
 		//Debug.Log((ulong)pointValue);
 
@@ -80,20 +92,20 @@ public abstract class Baseenemy : MonoBehaviour
         {
 			dieState = 1;
 
-			Instantiate (poof, gameObject.transform.position, Quaternion.Euler (0, 0, 0));
+            Instantiate(poof, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
 
 			// Get powerups
 
 			// Iterate through yields list
 			for (int j = 0; j < numYielded.GetLength(0); j++) {
 				// Number of items to give
-				for (int i = 0; i < numYielded [j]; i++) {
+                for (int i = 0; i < numYielded[j]; i++) {
 					// Percentage chance to give this item
 					if (Random.value <= chanceYield[j]) {
 						// Create item
-						var s = (GameObject) Instantiate (yields [j], transform.position, Quaternion.Euler (0, 0, 0));
+                        var s = (GameObject)Instantiate(yields[j], transform.position, Quaternion.Euler(0, 0, 0));
 						// Fly out randomly
-						s.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.Range (-250f, 250f), Random.Range (-250f, 250f)));
+                        s.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250f, 250f), Random.Range(-250f, 250f)));
 					}
 				}
 			}
@@ -120,28 +132,28 @@ public abstract class Baseenemy : MonoBehaviour
 			nearest = Tools.findNearest(transform.position, "Player");
 
 			// Pathfind to player
-			pf.FindPath (transform.position, nearest.transform.position);
+            pf.FindPath(transform.position, nearest.transform.position);
 
 			// Long re-track timer
 			SearchDelay = 5.0f;
 
 			// Much more accurate re-tracking at point-blank
-			if ( Vector3.Distance( transform.position, nearest.transform.position ) < 10f)
+            if (Vector3.Distance(transform.position, nearest.transform.position) < 10f)
 				SearchDelay -= 4.0f;
 
         }
 
-		if (nearest != null )
+        if (nearest != null)
 		{
 
 			// Attack check - within range and you attack
-			if (Vector3.Distance( transform.position, nearest.position) <= range 
-				&& rate != -1f )
+            if (Vector3.Distance(transform.position, nearest.position) <= range
+                && rate != -1f)
 			{
 				if (timer <= 0)
 				{
 					attack();
-					timer += rate + Random.Range (-rateVariance, rateVariance);
+                    timer += rate + Random.Range(-rateVariance, rateVariance);
 				}
 				timer -= Time.deltaTime;
 			}
@@ -149,8 +161,8 @@ public abstract class Baseenemy : MonoBehaviour
 			// Move towards target
 
 			// Check if something obstructs your movement to the target
-			if (Vector2.Distance( transform.position, nearest.position ) > 10.0f ) {
-				pf.Move ();
+            if (Vector2.Distance(transform.position, nearest.position) > 10.0f) {
+                pf.Move();
 			}
 			// Otherwise, move straight to the target
 			else {
@@ -163,7 +175,7 @@ public abstract class Baseenemy : MonoBehaviour
 				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
 
 				// Move at target
-				body.AddForce (dir * GetComponent<Baseenemy>().speed);
+                body.AddForce(dir * GetComponent<Baseenemy>().speed);
 
 			}
             if (infected)
@@ -189,7 +201,6 @@ public abstract class Baseenemy : MonoBehaviour
                         Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
                         count++;
                     }
-                    timeTillDestroy -= Time.deltaTime;
                 }
                 timeTillDestroy -= Time.deltaTime;
             }
@@ -201,27 +212,38 @@ public abstract class Baseenemy : MonoBehaviour
 		}
         Change();
     }
-
+	// Enemies take damage from explosions
 	public void OnTriggerEnter2D(Collider2D trigger) {
 		if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			health -= trigger.gameObject.GetComponent<Explosion>().damage;
+			health -= trigger.gameObject.GetComponent<Explosion>().getDamage();
 
 			// Flash
 			flash = 0.3f;
 		}
 	}
+	// Enemies are slowed down by slow areas
+	public void OnTriggerStay2D(Collider2D trigger) {
+		if (trigger.gameObject.GetComponent<SlowArea>() != null) {
+			if (!slowed) { speed /= 3; }
+
+			slowed = true;
+			slow_duration = 3f;
+		}
+	}
 
 	// Bump into walls/player
-	void OnCollisionStay2D( Collision2D col ) {
+    void OnCollisionStay2D(Collision2D col)
+    {
 
 		// Hurt player by contact
-		if (col.gameObject.tag == "Player" && recollideTimer <= 0) {
+        if (col.gameObject.tag == "Player" && recollideTimer <= 0)
+        {
 			recollideTimer = 1.0f;
-			var p = col.gameObject.GetComponent<Player> ();
-			p.GetHurt ( damage );
-			col.gameObject.GetComponent<Rigidbody2D> ().AddForce ( new Vector2 (
-				( p.transform.position.x - transform.position.x ) * 380.0f,
-				( p.transform.position.y - transform.position.y ) * 380.0f)
+            var p = col.gameObject.GetComponent<Player>();
+            p.GetHurt(damage);
+            col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(
+                (p.transform.position.x - transform.position.x) * 380.0f,
+                (p.transform.position.y - transform.position.y) * 380.0f)
 			);
 		}
 	}
@@ -231,16 +253,16 @@ public abstract class Baseenemy : MonoBehaviour
     {
 		//keep track of last player to attack and update their scores
 		lastPlayerToAttack = hit.transform.parent.gameObject;
+
 		if (hit is Bullet1 || hit is Slash) {
 			hit.transform.parent.gameObject.GetComponent<Player>().score.enemies_hit++;
 		}
-
 
 		// Pushback
 		body.AddForce( hit.hitImpulse );
 
 		// Take damage
-		health -= hit.damage;
+		health -= hit.getDamage();
 
         // Flash
         flash = 0.3f;

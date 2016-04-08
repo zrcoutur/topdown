@@ -4,37 +4,36 @@ using System.Collections;
 public class SpiderDrone : Baseenemy
 {
     public GameObject Slash;
+	private float leapDelay = 9f;
     
 
     // Use this for initialization
-    void Awake()
-    {
-
+    void Awake() {
 		base.Maxhealth = 35;
 		base.health = base.Maxhealth;
-        base.speed = 1.6f;
+		base.speed = 3.2f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
-        base.damage = 5;
+        base.damage = 8;
     }
 
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 75f;
+		var timeScale = 150f;
 
-		if (health < 12000) {
-			health = health + (int)(health * time / timeScale);
+		if (Maxhealth < 40000) {
+			health = health + (int)(0.8f * health * time / timeScale);
 			Maxhealth = health;
 		}
 
 		if (speed < 16f) {
-			speed = speed + (0.065f * speed * time / timeScale);
+			speed = speed + (0.12f * speed * time / timeScale);
 		}
 
-		if (damage < 500) {
-			damage = damage + (int)(0.5f * damage * time / timeScale);
+		if (damage < 650) {
+			damage = damage + (int)(0.55f * damage * time / timeScale);
 		}
     }
 
@@ -55,7 +54,33 @@ public class SpiderDrone : Baseenemy
         // Momentum from swing
         gameObject.GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2((gameObject.GetComponent<Rigidbody2D>().rotation * transform.forward).z + 270.0f, 60.0f));
     }
-    public override void Change()
-    { }
+
+	// Spider drones will leap at a neraby Player if they are within a certain range
+    public override void Change() {
+		// Check if a Player is nearby
+		if (nearest != null && leapDelay <= 0f) {
+			float chance = UnityEngine.Random.value;
+			// Spider Drones do not always leap
+			if (chance <= 0.1f) {
+				Vector2 force = Vector2.zero;
+				float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
+
+				if (Mathf.Abs(dist_near) <= 2f) {
+					// Leap backwards
+					force = -600f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
+				} else if (Mathf.Abs(dist_near) <= 6f) {
+					// Leap at the closest Player
+					force = 350f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
+				}
+
+				GetComponent<Rigidbody2D>().AddForce(force);
+			}
+		} else if (leapDelay > 0f) {
+			// Leap cooldown
+			leapDelay -= Time.deltaTime;
+		}
+	}
 
 }

@@ -22,15 +22,15 @@ public class Player_Stats {
 	private int scrap;
 
 	public Player_Stats() {
-		int[] val_temp = new int[10];
-		Stat_Cost[] cost_temp = new Stat_Cost[9];
+		int[] val_temp = new int[11];
+		Stat_Cost[] cost_temp = new Stat_Cost[10];
 		// initialize health values
 		for (int idx = 0; idx < val_temp.Length; ++idx) {
-			val_temp[idx] = (idx * idx) + 2 * idx + 6;
+			val_temp[idx] = (3 * idx * idx) + 11 * idx + 5;
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost(0, (int)(1f * idx * idx * idx) + (int)(1.5f * idx * idx) + 6 * idx + 8);
+			cost_temp[idx] = new Stat_Cost(0, (idx * idx * idx) + (int)(2.2f * idx * idx) + 9 * idx + 9);
 
 		}
 
@@ -38,16 +38,16 @@ public class Player_Stats {
 		health = (int)MAX_HEALTH.current();
 		HP_raised = true;
 
-		val_temp = new int[14];
-		cost_temp = new Stat_Cost[13];
+		val_temp = new int[11];
+		cost_temp = new Stat_Cost[10];
 		// initialize shield values
 		for (int idx = 0; idx < val_temp.Length; ++idx) {
-			val_temp[idx] = (int)(2.6f * idx * idx) + 3 * idx + 8;
+			val_temp[idx] = (int)(0.8f * idx * idx * idx) + (int)(1.6f * idx * idx) + 12 * idx + 8;
 		}
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.4f * idx * idx) + 6 * idx + 3, 0);
+			cost_temp[idx] = new Stat_Cost((int)(2f * idx * idx) + 7 * idx + 5, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
@@ -61,10 +61,8 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 22000;
-		energyCores = 4000;
-		// 21253
-		// 3652
+		scrap = 10000;
+		energyCores = 8000;
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
 											 new Stat_Cost[] { new Stat_Cost(6, 45), new Stat_Cost(11, 98), new Stat_Cost(23, 189) } );
@@ -125,7 +123,7 @@ public class Player_Stats {
 		/* Checks all weapon slots for the next weapon owned, then sets held weaon to that
 		 * weapons not owned yet will not be cycled
 		 * the grenade is currently not implemented, so it is skipped. */
-		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 3);
+		held_weapon = (WEAPON_TYPE)(((byte)held_weapon + 1) % 4);
 	}
 
 	/* Returns the integer representation of the Player's current weapon */

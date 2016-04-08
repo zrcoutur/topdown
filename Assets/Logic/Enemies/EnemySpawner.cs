@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using System;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -85,5 +86,5 @@ public class EnemySpawner : MonoBehaviour
 				}
 			}
 		}
-	}
+    }
 }
