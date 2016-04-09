@@ -17,7 +17,7 @@ public class Grenade : PlayerAttack {
 			Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
 			Vector3 scale = exp.transform.localScale;
 			// reduce scale of the explosion
-			exp.transform.localScale = new Vector3(0.5f * scale.x, 0.5f * scale.y, scale.z);
+			exp.transform.localScale = new Vector3(1.15f * scale.x, 1.15f * scale.y, scale.z);
 			// set explosion damage
 			exp.setDamage(damage);
 			Destroy(this.gameObject);

@@ -563,7 +563,7 @@ public class Player : MonoBehaviour {
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				b2.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 18.0f);
+				b2.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 20.0f);
 
 				break;
 			
@@ -601,7 +601,7 @@ public class Player : MonoBehaviour {
 				spread = Random.Range(-12.0f, 12.0f);
 
 				// Set final velocity based on travel angle
-				b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + spread + 90.0f, 16.0f);
+				b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + spread + 90.0f, 18.0f);
 
 				break;
 
@@ -693,7 +693,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage(damage_for_weapon());
-					b1.setDuration(0.45f);
+					b1.setDuration(0.1f);
 	
 					// Calculate bullet's velocity
 	
@@ -701,7 +701,7 @@ public class Player : MonoBehaviour {
 					var spread = Random.Range(-15.0f, 15.0f);
 	
 					// Set final velocity based on travel angle
-					b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f + spread, 15.0f);
+					b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f + spread, 13.0f);
 				}
 	
 				// Mildly shake camera
@@ -732,8 +732,8 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.setDamage((int)(1.25f * damage_for_weapon()));
-					b1.setDuration(0.5f);
+					b1.setDamage((int)(1.15f * damage_for_weapon()));
+					b1.setDuration(0.15f);
 	
 					// Calculate bullet's velocity
 	
@@ -741,7 +741,7 @@ public class Player : MonoBehaviour {
 					var spread = Random.Range(-30.0f, 30.0f);
 	
 					// Set final velocity based on travel angle
-					b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f + spread, Random.Range(13.0f, 17.0f));
+					b1.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f + spread, 12f);
 				}
 	
 				// Moderately shake camera
@@ -773,7 +773,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage((int)(0.66f * damage_for_weapon()));
-					b1.setDuration(0.65f);
+					b1.setDuration(0.18f);
 	
 					// Calculate bullet's velocity
 	
@@ -813,7 +813,7 @@ public class Player : MonoBehaviour {
 					b3.transform.parent = transform;
 					score.bullets_fired++;
 					b3.setDamage(damage_for_weapon()); // Note that damage is increased by the shot behavior.
-					b3.setDuration(0.4f);
+					b3.setDuration(0.23f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
 					// Calculate bullet's velocity
@@ -821,7 +821,7 @@ public class Player : MonoBehaviour {
 					// Shot spread range.
 	
 					// Set final velocity based on travel angle
-					b3.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 30.0f + bullet * 30.0f, 15.0f);
+					b3.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 30.0f + bullet * 30.0f, 13.0f);
 				}
 
 				// Mildly shake camera
@@ -862,12 +862,12 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(1.25f);
+				gnd.setDuration(1.15f);
 
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 12f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(6f, 10f));
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -898,12 +898,12 @@ public class Player : MonoBehaviour {
 				rpg.transform.parent = transform;
 
 				rpg.setDamage( (int)(2.5f * damage_for_weapon()) );
-				rpg.setDuration(3f);
+				rpg.setDuration(5f);
 				rpg.setAcceleration(6f);
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				rpg.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 6f);
+				rpg.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 4f);
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -933,14 +933,14 @@ public class Player : MonoBehaviour {
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
 					gnd.setDamage( (int)(0.75f * damage_for_weapon()) );
-					gnd.setDuration( Random.Range(0.7f, 0.8f) );
+					gnd.setDuration(0.75f);
 
 					// Calculate bullet's velocity
 					// Shot spread range.
 					gnd_spread = Random.Range(-35f, 35f);
 
 					// Set final velocity based on travel angle
-					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(7f, 10f));
+					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 9f));
 				}
 
 				// Mildly shake camera
@@ -971,14 +971,14 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(1f);
+				gnd.setDuration(0.8f);
 
 				// Calculate bullet's velocity
 				// Shot spread range.
 				gnd_spread = Random.Range(-10f, 10f);
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(10f, 15f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(9f, 13f));
 
 				// Mildly shake camera
 				cam.AddShake(0.15f);

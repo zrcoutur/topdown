@@ -41,8 +41,8 @@ public class MeleeBot : Baseenemy {
 			o_speed = speed + (0.1f * speed * time / timeScale);
 		}
 
-		if (damage < 450) {
-			damage = damage + (int)(0.62f * damage * time / timeScale);
+		if (damage < 265) {
+			damage = damage + (int)(0.58f * damage * time / timeScale);
 		}
 
 		if (rate > 0.45f) {
@@ -58,7 +58,8 @@ public class MeleeBot : Baseenemy {
 
 		// Make Slash Effect, Quaternions are dumb
 		var sl = (GameObject)Instantiate(Slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
-		sl.GetComponent<EnemySlash>().damage = base.damage;
+		// Meleebot's slash deals more damahe then simply running into the player.
+		sl.GetComponent<EnemySlash>().damage = (int)(1.6f * base.damage);
 		sl.transform.parent = transform;
 		//sl.transform.localScale = gameObject.transform.localScale;
 		// Shake camera
