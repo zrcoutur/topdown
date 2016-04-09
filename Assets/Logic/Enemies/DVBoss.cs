@@ -42,7 +42,7 @@ public class DVBoss : Baseenemy
 	}
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         isBoss = true;
 		base.Maxhealth = 8000;

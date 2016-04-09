@@ -77,7 +77,7 @@ public abstract class Baseenemy : MonoBehaviour
 		recollideTimer -= Time.deltaTime;
 		flash -= Time.deltaTime;
 
-		if (dieState == 1 || timeTillDestroy <= 0) {
+		if (dieState == 1) {
 			//update score adding one kill to the player giving killing attack, and add pointValue to score
 			if (lastPlayerToAttack != null) {
 				lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
