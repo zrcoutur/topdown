@@ -27,22 +27,12 @@ public class FlyerDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = 150f;
 
-		if (Maxhealth < 24000) {
-			health = health + (int)(1.05f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(1.05f * Maxhealth * time / timeScale));
+		health = Maxhealth;
 
-		if (speed < 20f) {
-			speed = speed + (0.18f * speed * time / timeScale);
-		}
-
-		if (rate > 0.35f) {
-			rate = rate - (0.14f * rate * time / timeScale);
-		}
-
-		if (damage < 400) {
-			damage = damage + (int)(0.52f * damage * time / timeScale);
-		}
+		speed = Mathf.Min(20f, speed + (0.18f * speed * time / timeScale));
+		rate = Mathf.Max(0.35f, rate - (0.05f * rate * time / timeScale));
+		damage = System.Math.Min(400, damage + (int)(0.52f * damage * time / timeScale));
     }
 
     public override void attack()

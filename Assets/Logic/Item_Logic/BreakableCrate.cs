@@ -104,13 +104,17 @@ public class BreakableCrate : MonoBehaviour {
 			// Drop a med_pack
 			var d = (GameObject)Instantiate(item_drops[2], transform.localPosition, Quaternion.identity);
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)));
-		} else if (chance > 0.15f && chance <= 0.45f) {
-			// Drop an e. core
-			var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
-			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-80f, 80f), Random.Range(-80f, 80f)));
-		} else if (chance > 0.45f) {
+		} else if (chance > 0.15f && chance <= 0.5f) {
+			// Drop between 1 and 3 e. cores
+			int drops = UnityEngine.Random.Range(1, 3);
+
+			for (int i = 0; i < drops; ++i) {
+				var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
+				d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-80f, 80f), Random.Range(-80f, 80f)));
+			}
+		} else if (chance > 0.5f) {
 			// Drop between 3 and 8 scrap pieces
-			int drops = UnityEngine.Random.Range(2, 5);
+			int drops = UnityEngine.Random.Range(3, 8);
 
 			for (int i = 0; i < drops; ++i) {
 				var d = (GameObject)Instantiate(item_drops[0], transform.localPosition, Quaternion.identity);

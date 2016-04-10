@@ -27,18 +27,11 @@ public class DVBoss : Baseenemy
 
         var timeScale = 270;
 
-		if (Maxhealth < 650000) {
-			health = health + (int)(3f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(650000, Maxhealth + (int)(3f * Maxhealth * time / timeScale));
+		health = Maxhealth;
 
-		if (speed < 3f) {
-			speed = speed + (0.43f * speed * time / timeScale);
-		}
-
-		if (damage < 750) {
-			damage = damage + (int)(0.9f * damage * time / timeScale);
-		}
+		speed = Mathf.Min(3f, speed + (0.43f * speed * time / timeScale));
+		damage = System.Math.Min(750, damage + (int)(0.9f * damage * time / timeScale));
 	}
 
     // Use this for initialization

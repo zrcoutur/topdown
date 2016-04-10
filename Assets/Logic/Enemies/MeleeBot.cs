@@ -4,7 +4,7 @@ using System.Collections;
 public class MeleeBot : Baseenemy {
 	public GameObject Slash;
 	// holds the original values of the meleebots speed and attack cooldown
-	private float o_speed, o_rate, o_range;
+	private float o_speed, o_rate;
 	// determines if the meleebot is currently dashing
 	private bool dashing;
 	// used to keep track of the delay between dashes
@@ -20,7 +20,6 @@ public class MeleeBot : Baseenemy {
 		o_rate = rate;
 		base.rateVariance = 0f;
 		base.range = 4.5f;
-		o_range = range;
 		base.damage = 3;
 		base.pointValue = 30;
 
@@ -33,22 +32,12 @@ public class MeleeBot : Baseenemy {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = 150f;
 
-		if (Maxhealth < 32000) {
-			health = health + (int)(1.05f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(1.05f * Maxhealth * time / timeScale));
+		health = Maxhealth;
 
-		if (speed < 16f) {
-			o_speed = speed + (0.1f * speed * time / timeScale);
-		}
-
-		if (damage < 265) {
-			damage = damage + (int)(0.58f * damage * time / timeScale);
-		}
-
-		if (rate > 0.45f) {
-			o_rate = o_rate + (0.05f * rate * time / timeScale);
-		}
+		o_speed = Mathf.Min(16f, o_speed + (0.1f * o_speed * time / timeScale));
+		o_rate = Mathf.Max(0.45f, o_rate - (0.05f * o_rate * time / timeScale));
+		damage = System.Math.Min(265, damage + (int)(0.58f * damage * time / timeScale));
 	}
 
 	public override void attack()
