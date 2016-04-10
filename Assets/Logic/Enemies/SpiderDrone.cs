@@ -9,13 +9,14 @@ public class SpiderDrone : Baseenemy
 
     // Use this for initialization
     void Awake() {
-		base.Maxhealth = 35;
+		base.Maxhealth = 40;
 		base.health = base.Maxhealth;
 		base.speed = 3.2f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
         base.damage = 8;
+		base.pointValue = 20;
     }
 
 
@@ -67,11 +68,11 @@ public class SpiderDrone : Baseenemy
 
 				if (Mathf.Abs(dist_near) <= 2f) {
 					// Leap backwards
-					force = -600f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = -500f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
 				} else if (Mathf.Abs(dist_near) <= 6f) {
 					// Leap at the closest Player
-					force = 350f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = 320f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
 				}
 

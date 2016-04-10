@@ -38,7 +38,7 @@ public class WeaponStats {
 
 		// Initializes stats and stat costs based on the weapon type
 		if (type.CompareTo(WEAPON_TYPE.sword) == 0) {
-			dmg = new int[] { 45, 85, 157, 291, 539, 997, 1844, 3412, 6311, 11676, 21601 };
+			dmg = new int[] { 32, 85, 157, 291, 539, 997, 1844, 3412, 6311, 11676, 21601 };
 			rof = new float[] { 4 };
 			amo = new float[] { 0 };
 
