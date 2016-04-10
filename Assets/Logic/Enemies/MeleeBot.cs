@@ -21,7 +21,8 @@ public class MeleeBot : Baseenemy {
 		base.rateVariance = 0f;
 		base.range = 4.5f;
 		o_range = range;
-		base.damage = 2;
+		base.damage = 3;
+		base.pointValue = 30;
 
 		dashing = false;
 		dashDelay = 0f;

@@ -191,22 +191,22 @@ public class Player : MonoBehaviour {
 
 		// Move Up
 		if (Input.GetKey( M_MoveUp )) {
-			body.AddForce (new Vector2 (0, 26));
+			body.AddForce (new Vector2 (0, 22));
 		}
 
 		// Move Down
 		if (Input.GetKey( M_MoveDown )) {
-			body.AddForce (new Vector2 (0, -26));
+			body.AddForce (new Vector2 (0, -22));
 		}
 
 		// Move Left
 		if (Input.GetKey( M_MoveLeft )) {
-			body.AddForce (new Vector2 (-26, 0));
+			body.AddForce (new Vector2 (-22, 0));
 		}
 
 		// Move Right
 		if (Input.GetKey( M_MoveRight )) {
-			body.AddForce (new Vector2 (26, 0));
+			body.AddForce (new Vector2 (22, 0));
 		}
 
 		// Strafe Input
@@ -854,7 +854,7 @@ public class Player : MonoBehaviour {
 				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 				// Calculate creation position of grenade (from gun)
-				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
+				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 0.5f);
 
 				// Create grenade
 				gnd = (Grenade)Instantiate(grenade, gnd_pos, transform.rotation);
@@ -867,7 +867,7 @@ public class Player : MonoBehaviour {
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(6f, 10f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 10f));
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -890,7 +890,7 @@ public class Player : MonoBehaviour {
 				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 				// Calculate creation position of grenade (from gun)
-				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.5f);
+				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1f);
 
 				// Create grenade
 				var rpg = (RPG)Instantiate(this.rpg, gnd_pos, transform.rotation);
@@ -922,7 +922,7 @@ public class Player : MonoBehaviour {
 				// spawn multiple clusters
 				for (int idx = 0; idx < 5; ++idx) {
 					// Calculate creation position of grenade (from gun)
-					gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
+					gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 0.5f);
 
 					// Create grenade
 					gnd = (Grenade)Instantiate(grenade, gnd_pos, transform.rotation);
@@ -963,7 +963,7 @@ public class Player : MonoBehaviour {
 				CameraRunner.gAudio.PlayOneShot(X_Bullet_Shoot, 1.0f);
 
 				// Calculate creation position of grenade (from gun)
-				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 1.0f);
+				gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 0.5f);
 
 				// Create grenade
 				gnd = (Grenade)Instantiate(s_grenade, gnd_pos, transform.rotation);
@@ -1002,8 +1002,6 @@ public class Player : MonoBehaviour {
 		GameObject obj = trigger.gameObject;
 		// Med pack
 		if (obj.tag == "med_pack") {
-			// Shine effect
-			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Medpack_Get);
 
@@ -1017,8 +1015,6 @@ public class Player : MonoBehaviour {
 		}
 		// Energy Core
 		else if (obj.tag == "core") {
-			// Shine effect
-			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Core_Get);
 
@@ -1029,8 +1025,6 @@ public class Player : MonoBehaviour {
 
 			// Scrap
 		} else if (obj.tag == "scrap") {
-			// Shine effect
-			Instantiate(shine, trigger.transform.position, Quaternion.Euler(0, 0, 0));
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Scrap_Get);
 

@@ -30,10 +30,10 @@ public class BreakableCrate : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		initial_durability = UnityEngine.Random.Range(18, 25);
+		initial_durability = UnityEngine.Random.Range(12, 28);
 		durability = initial_durability;
 		collision_tag = false;
-		timer = 245f;
+		timer = 180f;
 		damage = 20;
 	}
 	
@@ -53,7 +53,7 @@ public class BreakableCrate : MonoBehaviour {
 			remove_crate();
 		} else if (timer <= 0f) {
 			// scale damage of crate overtime
-			timer = 245f;
+			timer = 180f;
 			damage += Random.Range(8, 12);
 		} else {
 			timer -= Time.deltaTime;
@@ -72,13 +72,13 @@ public class BreakableCrate : MonoBehaviour {
 					collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
 				}
 			} else if (collider.GetComponent<Bullet2>() != null) {
-				durability -= 6;
+				durability -= 5;
 			} else if (collider.GetComponent<Bullet3>() != null) {
 				durability -= 3;
-			} else if (collider.GetComponent<Slash>() != null) {
-				durability -= 8;
+			} else if (collider.GetComponent<Slash>() != null || collider.gameObject.GetComponent<EnemySlash>() != null) {
+				durability -= 6;
 			} else if (collider.GetComponent<Explosion>() != null) {
-				durability -= 13;
+				durability -= 10;
 			}
 		}
 	}

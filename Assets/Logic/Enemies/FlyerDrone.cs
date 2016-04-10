@@ -19,6 +19,7 @@ public class FlyerDrone : Baseenemy
 		base.rateVariance = 0.1f;
         base.range = 8f;
         base.damage = 6;
+		base.pointValue = 25;
     }
 
 
