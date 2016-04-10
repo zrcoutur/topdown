@@ -57,8 +57,6 @@ public abstract class Baseenemy : MonoBehaviour
 
         timeTillDestroy = 0.5f;
         infected = false;
-
-        pointValue = 25;
     }
 
     // Update is called once per frame

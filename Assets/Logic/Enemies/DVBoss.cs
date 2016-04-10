@@ -25,7 +25,7 @@ public class DVBoss : Baseenemy
     public override void TimeIncrease(float time) {
         Lightning *= (time / 300);
 
-        var timeScale = 150f;
+        var timeScale = 270;
 
 		if (Maxhealth < 650000) {
 			health = health + (int)(3f * health * time / timeScale);

@@ -47,7 +47,7 @@ public class GrowBoss : Baseenemy
 
     public override void TimeIncrease(float time) {
         // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-        var timeScale = 600f;
+        var timeScale = 270;
 
 		if (Maxhealth < 2000000) {
 			Maxhealth = health + (int)(4f * health * time / timeScale);

@@ -1005,6 +1005,10 @@ public class Player : MonoBehaviour {
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Medpack_Get);
 
+			// Shine effect
+			Instantiate(shine, transform.position, Quaternion.Euler(0, 0, 0));
+			Destroy(trigger.gameObject);
+
 			Destroy(obj);
 			int ret = stats.MEDPACKS.increment();
 			// If you cannot hold anymore med_packs
@@ -1018,6 +1022,10 @@ public class Player : MonoBehaviour {
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Core_Get);
 
+			// Shine effect
+			Instantiate(shine, transform.position, Quaternion.Euler(0, 0, 0));
+			Destroy(trigger.gameObject);
+
 			//Debug.Log("Cores: " + stats.get_ecores() + "\n");
 			Destroy(obj);
 			score.ecores_collected++;
@@ -1028,11 +1036,16 @@ public class Player : MonoBehaviour {
 			// SFX
 			CameraRunner.gAudio.PlayOneShot(X_Scrap_Get);
 
+			// Shine effect
+			Instantiate(shine, transform.position, Quaternion.Euler(0, 0, 0));
+			Destroy(trigger.gameObject);
+
 			//Debug.Log("Scrap: " + stats.get_scrap() + "\n");
 			Destroy(obj);
 			score.scrap_collected++;
 			stats.change_scrap(1);
 		} else if (obj.tag == "weapon_pack") {
+
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
 		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
