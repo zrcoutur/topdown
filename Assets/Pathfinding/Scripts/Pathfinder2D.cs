@@ -145,7 +145,7 @@ public class Pathfinder2D : MonoBehaviour
 
                 foreach (Collider2D h in hit)
                 {
-                    if (DisallowedTags.Contains(h.transform.tag))
+					if (DisallowedTags.Contains(h.transform.tag) && h.gameObject.name != "breakable_crate(Clone)")
                     {
                             //It is a disallowed walking tile, make it false
                             Map[j, i] = new Node(j, i, y, ID, x, 0, false); //Non walkable tile!

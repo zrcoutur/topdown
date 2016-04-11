@@ -159,7 +159,7 @@ public abstract class Baseenemy : MonoBehaviour
 			// Move towards target
 
 			// Check if something obstructs your movement to the target
-            if (Vector2.Distance(transform.position, nearest.position) > 10.0f) {
+            if (Vector2.Distance(transform.position, nearest.position) > 5.0f) {
                 pf.Move();
 			}
 			// Otherwise, move straight to the target
