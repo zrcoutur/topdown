@@ -32,7 +32,7 @@ public class StatDisplay {
 		//Debug.Log(origin + "\n");
 
 		// Stat name
-		labels[0] = relativeRect(origin, 2, 15, 25, 90, 22);
+		labels[0] = relativeRect(origin, 2, 15, 10, 90, 22);
 		// Increment button
 		buttons[0] = relativeRect(labels[0], 0, 10, 2, 18, 18);
 		// Decrement button

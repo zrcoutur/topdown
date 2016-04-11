@@ -32,7 +32,7 @@ public class MeleeBot : Baseenemy {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(0.16f * Maxhealth * Mathf.Pow(timeScale, 3f)));
+		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(3.2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
 		o_speed = Mathf.Min(16f, o_speed + (0.085f * o_speed * timeScale));

@@ -24,7 +24,7 @@ public class SpiderDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(40000, Maxhealth + (int)(0.125f * Maxhealth * Mathf.Pow(timeScale, 3f)));
+		Maxhealth = System.Math.Min(40000, Maxhealth + (int)(2.5f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
 		speed = Mathf.Min(16f, speed + (0.2f * speed * timeScale));
@@ -60,12 +60,14 @@ public class SpiderDrone : Baseenemy
 				float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
 
 				if (Mathf.Abs(dist_near) <= 2f) {
+					body.velocity = Vector2.zero;
 					// Leap backwards
 					force = -600f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
 				} else if (Mathf.Abs(dist_near) <= 6f) {
+					body.velocity = Vector2.zero;
 					// Leap at the closest Player
-					force = 285f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = 300f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
 				}
 

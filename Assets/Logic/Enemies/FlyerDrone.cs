@@ -27,7 +27,7 @@ public class FlyerDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(0.15f * Maxhealth * Mathf.Pow(timeScale, 3f)));
+		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(3f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
 		speed = Mathf.Min(20f, speed + (0.2f * speed * timeScale));
