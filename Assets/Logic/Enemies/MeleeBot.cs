@@ -30,14 +30,14 @@ public class MeleeBot : Baseenemy {
 
 	public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = time / 150f;
+		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(0.16f * Maxhealth * Mathf.Pow(timeScale, 3f)));
 		health = Maxhealth;
 
-		o_speed = Mathf.Min(16f, o_speed + (0.075f * o_speed * timeScale));
-		o_rate = Mathf.Max(0.45f, o_rate - (0.025f * o_rate * timeScale));
-		damage = System.Math.Min(265, damage + (int)(0.15f * damage * Mathf.Pow(timeScale, 2f)));
+		o_speed = Mathf.Min(16f, o_speed + (0.085f * o_speed * timeScale));
+		o_rate = Mathf.Max(0.45f, o_rate - (0.03f * o_rate * timeScale));
+		damage = System.Math.Min(280, damage + (int)(0.235f * damage * Mathf.Pow(timeScale, 2f)));
 	}
 
 	public override void attack()

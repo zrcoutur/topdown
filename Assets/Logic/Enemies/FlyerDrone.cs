@@ -25,14 +25,14 @@ public class FlyerDrone : Baseenemy
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = time / 150f;
+		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(0.15f * Maxhealth * Mathf.Pow(timeScale, 3f)));
 		health = Maxhealth;
 
-		speed = Mathf.Min(20f, speed + (0.16f * speed * timeScale));
-		rate = Mathf.Max(0.35f, rate - (0.032f * rate * timeScale));
-		damage = System.Math.Min(400, damage + (int)(0.115f * damage * Mathf.Pow(timeScale, 2f)));
+		speed = Mathf.Min(20f, speed + (0.2f * speed * timeScale));
+		rate = Mathf.Max(0.35f, rate - (0.038f * rate * timeScale));
+		damage = System.Math.Min(450, damage + (int)(0.185f * damage * Mathf.Pow(timeScale, 2f)));
     }
 
     public override void attack()

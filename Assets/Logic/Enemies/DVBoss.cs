@@ -25,20 +25,20 @@ public class DVBoss : Baseenemy
     public override void TimeIncrease(float time) {
         Lightning *= (time / 300);
 
-        var timeScale = 270;
+        var timeScale = time / 270f;
 
-		Maxhealth = System.Math.Min(650000, Maxhealth + (int)(3f * Maxhealth * time / timeScale));
+		Maxhealth = System.Math.Min(850000, Maxhealth + (int)(0.62f * Maxhealth * Mathf.Pow(timeScale, 3f)));
 		health = Maxhealth;
 
-		speed = Mathf.Min(3f, speed + (0.43f * speed * time / timeScale));
-		damage = System.Math.Min(750, damage + (int)(0.9f * damage * time / timeScale));
+		speed = Mathf.Min(3f, speed + (0.3f * speed * timeScale));
+		damage = System.Math.Min(750, damage + (int)(0.16f * damage * Mathf.Pow(timeScale, 2f)));
 	}
 
     // Use this for initialization
     void Awake()
     {
         isBoss = true;
-		base.Maxhealth = 8000;
+		base.Maxhealth = 3000;
 		base.health = Maxhealth;
         base.speed = 0.5f;
         base.rate = 2.5f;
