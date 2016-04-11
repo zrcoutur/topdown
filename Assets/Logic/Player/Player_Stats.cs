@@ -61,11 +61,13 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 0;
-		energyCores = 0;
+		// 15599
+		scrap = 16000;
+		// 3030
+		energyCores = 3100;
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
-											 new Stat_Cost[] { new Stat_Cost(6, 45), new Stat_Cost(11, 98), new Stat_Cost(23, 189) } );
+											 new Stat_Cost[] { new Stat_Cost(4, 23), new Stat_Cost(7, 48), new Stat_Cost(11, 83) } );
 
 	}
 

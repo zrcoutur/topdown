@@ -34,7 +34,7 @@ public class BreakableCrate : MonoBehaviour {
 		durability = initial_durability;
 		collision_tag = false;
 		timer = 180f;
-		damage = 20;
+		damage = 125;
 	}
 	
 	// Update is called once per frame
@@ -53,9 +53,9 @@ public class BreakableCrate : MonoBehaviour {
 			remove_crate();
 		} else if (timer <= 0f) {
 			// scale damage of crate overtime
-			timer = 180f;
-			damage += Random.Range(8, 12);
-		} else {
+			timer = 210f;
+			damage += Random.Range(15, 89);
+		} else if (damage <= 12000) {
 			timer -= Time.deltaTime;
 		}
 	}

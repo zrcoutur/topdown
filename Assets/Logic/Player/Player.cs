@@ -554,7 +554,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.setDamage((int)(3.0f * damage_for_weapon()));
+				b2.setDamage((int)(3f * damage_for_weapon()));
 				b2.setDuration(UnityEngine.Random.Range(125, 265) / 100f);
 
 				// Mildly shake camera
@@ -1049,8 +1049,8 @@ public class Player : MonoBehaviour {
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
 		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			// The player suffers 35% damage from explosions
-			GetHurt( (int)(0.35f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );
+			// The player suffers 10% damage from explosions
+			GetHurt( (int)(0.1f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );
 		}
 	}
 
