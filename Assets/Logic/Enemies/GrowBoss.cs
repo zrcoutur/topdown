@@ -49,11 +49,11 @@ public class GrowBoss : Baseenemy
         // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
         var timeScale = 270;
 
-		Maxhealth = System.Math.Min(2000000, Maxhealth + (int)(4f * Maxhealth * time / timeScale));
+		Maxhealth = System.Math.Min(2000000, Maxhealth + (int)(0.8f * Maxhealth * Mathf.Pow(timeScale, 3f)));
 		health = Maxhealth;
 
-		max_speed = Mathf.Min(400f, max_speed + (0.06f * max_speed * time / timeScale));
-		max_dmg = System.Math.Min(600, max_dmg + (int)(0.85f * max_dmg * time / timeScale));
+		max_speed = Mathf.Min(400f, max_speed + (0.02f * max_speed * timeScale));
+		max_dmg = System.Math.Min(600, max_dmg + (int)(0.09f * max_dmg * Mathf.Pow(timeScale, 2f)));
 
 		//healRate *= (3 / 4 * Mathf.Pow(2,time));
        	//healAmount += (int)(time / timeScale);

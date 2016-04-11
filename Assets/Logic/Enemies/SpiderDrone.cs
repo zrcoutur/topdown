@@ -22,13 +22,13 @@ public class SpiderDrone : Baseenemy
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 150f;
+		var timeScale = time / 150f;
 
-		Maxhealth = System.Math.Min(40000, Maxhealth + (int)(1f * Maxhealth * time / timeScale));
+		Maxhealth = System.Math.Min(40000, Maxhealth + (int)(1.8f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
-		speed = Mathf.Min(16f, speed + (0.18f * speed * time / timeScale));
-		damage = System.Math.Min(600, damage + (int)(0.55f * damage * time / timeScale));
+		speed = Mathf.Min(16f, speed + (0.16f * speed * timeScale));
+		damage = System.Math.Min(600, damage + (int)(0.12f * damage * Mathf.Pow(timeScale, 2f)));
     }
 
     public override void attack()
