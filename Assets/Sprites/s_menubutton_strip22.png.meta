@@ -1,9 +1,31 @@
 fileFormatVersion: 2
 guid: fb3bad44b8d35b14ba415c68ddd88d03
-timeCreated: 1459223485
+timeCreated: 1460394901
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: s_menubutton_strip22_0
+    21300002: s_menubutton_strip22_1
+    21300004: s_menubutton_strip22_2
+    21300006: s_menubutton_strip22_3
+    21300008: s_menubutton_strip22_4
+    21300010: s_menubutton_strip22_5
+    21300012: s_menubutton_strip22_6
+    21300014: s_menubutton_strip22_7
+    21300016: s_menubutton_strip22_8
+    21300018: s_menubutton_strip22_9
+    21300020: s_menubutton_strip22_10
+    21300022: s_menubutton_strip22_11
+    21300024: s_menubutton_strip22_12
+    21300026: s_menubutton_strip22_13
+    21300028: s_menubutton_strip22_14
+    21300030: s_menubutton_strip22_15
+    21300032: s_menubutton_strip22_16
+    21300034: s_menubutton_strip22_17
+    21300036: s_menubutton_strip22_18
+    21300038: s_menubutton_strip22_19
+    21300040: s_menubutton_strip22_20
+    21300042: s_menubutton_strip22_21
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -26,11 +48,11 @@ TextureImporter:
   cubemapConvolutionSteps: 7
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +60,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +71,249 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: s_menubutton_strip22_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_1
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_2
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_4
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_6
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_7
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_8
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_9
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_10
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_11
+      rect:
+        serializedVersion: 2
+        x: 1760
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_12
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_13
+      rect:
+        serializedVersion: 2
+        x: 2080
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_14
+      rect:
+        serializedVersion: 2
+        x: 2240
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_15
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_16
+      rect:
+        serializedVersion: 2
+        x: 2560
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_17
+      rect:
+        serializedVersion: 2
+        x: 2720
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_18
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_19
+      rect:
+        serializedVersion: 2
+        x: 3040
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: s_menubutton_strip22_21
+      rect:
+        serializedVersion: 2
+        x: 3338
+        y: 0
+        width: 159
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 
