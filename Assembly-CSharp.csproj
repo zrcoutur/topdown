@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_1;UNITY_5_3;UNITY_5;UNITY_64;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_3;UNITY_5_3;UNITY_5;UNITY_64;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -45,14 +45,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\DanTestCode\Scripts\BaseMine.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\GrenadeProjectile.cs" />
      <Compile Include="Assets\DanTestCode\Scripts\Laser.cs" />
      <Compile Include="Assets\Logic\Animatable.cs" />
-     <Compile Include="Assets\Logic\BreakableCrate.cs" />
      <Compile Include="Assets\Logic\CameraRunner.cs" />
      <Compile Include="Assets\Logic\Door.cs" />
      <Compile Include="Assets\Logic\Enemies\Base enemy.cs" />
+     <Compile Include="Assets\Logic\Enemies\BouncingBullet.cs" />
      <Compile Include="Assets\Logic\Enemies\DVBoss.cs" />
      <Compile Include="Assets\Logic\Enemies\EnemyBullet.cs" />
      <Compile Include="Assets\Logic\Enemies\EnemySlash.cs" />
@@ -62,22 +61,32 @@
      <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
      <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
      <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
+     <Compile Include="Assets\Logic\Enemies\MeleeBot.cs" />
      <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
-     <Compile Include="Assets\Logic\Explosion.cs" />
+     <Compile Include="Assets\Logic\Explosions\BaseMine.cs" />
+     <Compile Include="Assets\Logic\Explosions\DamageExplosion.cs" />
+     <Compile Include="Assets\Logic\Explosions\Explosion.cs" />
+     <Compile Include="Assets\Logic\Explosions\SlowArea.cs" />
+     <Compile Include="Assets\Logic\Explosions\SlowExplosion.cs" />
      <Compile Include="Assets\Logic\GenerateRoom.cs" />
-     <Compile Include="Assets\Logic\HitSpark.cs" />
-     <Compile Include="Assets\Logic\Item_Drop.cs" />
+     <Compile Include="Assets\Logic\Item_Logic\BreakableCrate.cs" />
+     <Compile Include="Assets\Logic\Item_Logic\Item_Drop.cs" />
+     <Compile Include="Assets\Logic\Item_Logic\Shine.cs" />
+     <Compile Include="Assets\Logic\Item_Logic\energy_core_script.cs" />
      <Compile Include="Assets\Logic\Maintain_UI.cs" />
      <Compile Include="Assets\Logic\Menus\GameOverLogic.cs" />
      <Compile Include="Assets\Logic\Menus\MainMenuLogic.cs" />
-     <Compile Include="Assets\Logic\Player\Bullet1.cs" />
-     <Compile Include="Assets\Logic\Player\Bullet2.cs" />
-     <Compile Include="Assets\Logic\Player\Bullet3.cs" />
      <Compile Include="Assets\Logic\Player\DynamicGUI.cs" />
      <Compile Include="Assets\Logic\Player\Enumerations.cs" />
      <Compile Include="Assets\Logic\Player\Player.cs" />
      <Compile Include="Assets\Logic\Player\PlayerAttack.cs" />
      <Compile Include="Assets\Logic\Player\Player_Stats.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\Bullet1.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\Bullet2.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\Bullet3.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\Grenade.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\HitSpark.cs" />
+     <Compile Include="Assets\Logic\Player\Projectiles\RPG.cs" />
      <Compile Include="Assets\Logic\Player\Slash.cs" />
      <Compile Include="Assets\Logic\Player\Stat.cs" />
      <Compile Include="Assets\Logic\Player\StatDisplay.cs" />
@@ -87,10 +96,10 @@
      <Compile Include="Assets\Logic\Player\WeaponUpgrade.cs" />
      <Compile Include="Assets\Logic\Poof.cs" />
      <Compile Include="Assets\Logic\ScoreBoard.cs" />
-     <Compile Include="Assets\Logic\Shine.cs" />
      <Compile Include="Assets\Logic\SparkPoof.cs" />
+     <Compile Include="Assets\Logic\Time_Count.cs" />
      <Compile Include="Assets\Logic\Tools.cs" />
-     <Compile Include="Assets\Logic\energy_core_script.cs" />
+     <Compile Include="Assets\Logic\Turret.cs" />
      <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />
      <Compile Include="Assets\Pathfinding\Scenes\Scripts\AI.cs" />
      <Compile Include="Assets\Pathfinding\Scenes\Scripts\GridPlayer.cs" />
