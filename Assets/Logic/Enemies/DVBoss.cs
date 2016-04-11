@@ -25,7 +25,7 @@ public class DVBoss : Baseenemy
     public override void TimeIncrease(float time) {
         Lightning *= (time / 300);
 
-        var timeScale = time / 270f;
+        var timeScale = time / 360f;
 
 		Maxhealth = System.Math.Min(850000, Maxhealth + (int)(0.62f * Maxhealth * Mathf.Pow(timeScale, 3f)));
 		health = Maxhealth;
