@@ -33,7 +33,7 @@ public class Item_Drop : MonoBehaviour {
 			float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
 			// draw item closer to the player
 			if (System.Math.Abs(dist_x) <= 3f && System.Math.Abs(dist_y) <= 3f) {
-				GetComponent<Rigidbody2D>().AddForce( new Vector2(-25f * dist_x, -25f * dist_y) );
+				GetComponent<Rigidbody2D>().AddForce( new Vector2(- 0.5f / dist_x, - 0.5f / dist_y) );
 			}
 		}
 

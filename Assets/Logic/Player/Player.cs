@@ -554,7 +554,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.setDamage((int)(3f * damage_for_weapon()));
+				b2.setDamage((int)(3.5f * damage_for_weapon()));
 				b2.setDuration(UnityEngine.Random.Range(125, 265) / 100f);
 
 				// Mildly shake camera
@@ -589,7 +589,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.setDamage((int)(0.75f * damage_for_weapon()));
+				b1.setDamage((int)(0.66f * damage_for_weapon()));
 				b1.setDuration(UnityEngine.Random.Range(65, 105) / 100f);
 
 				// Mildly shake camera
@@ -772,7 +772,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.setDamage((int)(0.66f * damage_for_weapon()));
+					b1.setDamage((int)(0.7f * damage_for_weapon()));
 					b1.setDuration(0.18f);
 	
 					// Calculate bullet's velocity
