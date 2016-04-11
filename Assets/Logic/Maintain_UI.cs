@@ -49,11 +49,13 @@ public class Maintain_UI : MonoBehaviour {
 			// Sync health slider's max value to the Player's current max health
 			if (p.stats.HP_raised) {
 				health.maxValue = p.stats.MAX_HEALTH.current();
+				health.value = p.stats.get_health();
 				p.stats.HP_raised = false;
 			}
 			// Sync shield slider's max value to Player's current max shield
 			if (p.stats.Shield_raised) {
 				shield.maxValue = p.stats.MAX_SHIELD.current();
+				shield.value = p.stats.get_shield();
 				p.stats.Shield_raised = false;
 			}
 

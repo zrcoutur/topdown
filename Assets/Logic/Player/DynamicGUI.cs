@@ -112,6 +112,12 @@ public class DynamicGUI : MonoBehaviour {
 		GUI.enabled = !is_last && can_buy;
 		// Create button to increment the pointer
 		if ( GUI.Button(display.buttons[0], "+") && GUI.enabled ) {
+			int origin = 0;
+			// Store the original value of the player's health
+			if (display.stat.type == STAT_TYPE.health) {
+				origin = (int)p.stats.MAX_HEALTH.current();
+			}
+
 			display.stat.increment();
 
 			// Subtract cost from player stats
@@ -122,8 +128,12 @@ public class DynamicGUI : MonoBehaviour {
 
 			// Indicate that the max values of either health or shield changed, so that sliders will update
 			if (display.stat.type == STAT_TYPE.health) {
+				// Restore health equal to the change in health
+				p.stats.change_health( (int)p.stats.MAX_HEALTH.current() - origin );
 				p.stats.HP_raised = true;
 			} else if (display.stat.type == STAT_TYPE.shield) {
+				// Fully restore shield
+				p.stats.change_shield( (int)p.stats.MAX_SHIELD.current() );
 				p.stats.Shield_raised = true;
 			} else {
 				// Updates the player's weapon if necessary
@@ -131,6 +141,8 @@ public class DynamicGUI : MonoBehaviour {
 			}
 		}
 
+		/* Do NOT uncomment!!
+		 
 		GUI.enabled = display.stat.pointer_value() > 0;
 		// Decrement a stat value and return the cost of the upgrade
 		if (GUI.Button(display.buttons[1], "-") && GUI.enabled) {
@@ -148,7 +160,7 @@ public class DynamicGUI : MonoBehaviour {
 			} else if (display.stat.type == STAT_TYPE.shield) {
 				p.stats.Shield_raised = true;
 			}
-		}
+		}*/
 
 		GUI.enabled = true;
 		// show cost for next upgrade
