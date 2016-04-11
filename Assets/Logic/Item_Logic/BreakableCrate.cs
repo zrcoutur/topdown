@@ -30,11 +30,11 @@ public class BreakableCrate : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		initial_durability = UnityEngine.Random.Range(18, 25);
+		initial_durability = UnityEngine.Random.Range(12, 28);
 		durability = initial_durability;
 		collision_tag = false;
-		timer = 245f;
-		damage = 5;
+		timer = 180f;
+		damage = 115;
 	}
 	
 	// Update is called once per frame
@@ -53,9 +53,9 @@ public class BreakableCrate : MonoBehaviour {
 			remove_crate();
 		} else if (timer <= 0f) {
 			// scale damage of crate overtime
-			timer = 245f;
-			damage += Random.Range(8, 12);
-		} else {
+			timer = 210f;
+			damage += Random.Range(15, 89);
+		} else if (damage <= 12000) {
 			timer -= Time.deltaTime;
 		}
 	}
@@ -72,13 +72,13 @@ public class BreakableCrate : MonoBehaviour {
 					collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
 				}
 			} else if (collider.GetComponent<Bullet2>() != null) {
-				durability -= 6;
+				durability -= 5;
 			} else if (collider.GetComponent<Bullet3>() != null) {
 				durability -= 3;
-			} else if (collider.GetComponent<Slash>() != null) {
-				durability -= 8;
+			} else if (collider.GetComponent<Slash>() != null || collider.gameObject.GetComponent<EnemySlash>() != null) {
+				durability -= 6;
 			} else if (collider.GetComponent<Explosion>() != null) {
-				durability -= 13;
+				durability -= 10;
 			}
 		}
 	}
@@ -92,30 +92,33 @@ public class BreakableCrate : MonoBehaviour {
 	private void remove_crate() {
 		float chance = UnityEngine.Random.value;
 
-		if (chance <= 0.05f) {
+		if (chance <= 0.1f) {
 			// Create explodes
 			Explosion exl = ((GameObject)Instantiate(item_drops[3], transform.position, Quaternion.identity)).GetComponent<Explosion>();
 			Vector3 scale = exl.transform.localScale;
 			// reduce scale of the explosion
-			exl.transform.localScale = new Vector3(0.9f * scale.x, 0.9f * scale.y, scale.z);
+			exl.transform.localScale = new Vector3(2f * scale.x, 2f * scale.y, scale.z);
 			var dmg = (int)(damage);
-			Debug.Log(dmg);
 			exl.setDamage(dmg);
-		} else if (chance <= 0.15f) {
+		} else if (chance <= 0.2f) {
 			// Drop a med_pack
 			var d = (GameObject)Instantiate(item_drops[2], transform.localPosition, Quaternion.identity);
 			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-50f, 50f), Random.Range(-50f, 50f)));
-		} else if (chance > 0.15f && chance <= 0.45f) {
-			// Drop an e. core
-			var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
-			d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
-		} else if (chance > 0.45f) {
+		} else if (chance <= 0.5f) {
+			// Drop between 1 and 2 e. cores
+			int drops = UnityEngine.Random.Range(1, 2);
+
+			for (int i = 0; i < drops; ++i) {
+				var d = (GameObject)Instantiate(item_drops[1], transform.localPosition, Quaternion.identity);
+				d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-80f, 80f), Random.Range(-80f, 80f)));
+			}
+		} else {
 			// Drop between 3 and 8 scrap pieces
-			int drops = UnityEngine.Random.Range(2, 5);
+			int drops = UnityEngine.Random.Range(3, 8);
 
 			for (int i = 0; i < drops; ++i) {
 				var d = (GameObject)Instantiate(item_drops[0], transform.localPosition, Quaternion.identity);
-					d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-350f, 350f), Random.Range(-350f, 350f)));
+				d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-80f, 80f), Random.Range(-80f, 80f)));
 			}
 		}
 

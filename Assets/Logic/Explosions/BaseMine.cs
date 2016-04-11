@@ -20,8 +20,8 @@ public class BaseMine : MonoBehaviour {
 	private bool trigger = false;
 
 	public void Start() {
-		timer = 245f;
-		damage = UnityEngine.Random.Range(5, 9);
+		timer = 180f;
+		damage = UnityEngine.Random.Range(56, 123);
 	}
 
 	public void Update() {
@@ -30,14 +30,14 @@ public class BaseMine : MonoBehaviour {
 				Explosion exl = ((GameObject)Instantiate(expl, transform.position, transform.rotation)).GetComponent<Explosion>();
 				Vector3 scale = exl.transform.localScale;
 				// reduce scale of the explosion
-				exl.transform.localScale = new Vector3(0.85f * scale.x, 0.85f * scale.y, scale.z);
+				exl.transform.localScale = new Vector3(1.75f * scale.x, 1.75f * scale.y, scale.z);
 				exl.setDamage(damage);
 				Destroy(this.gameObject);
 			} else { // Updates the damage of the mine overtime
-				timer = 305f;
-				damage += UnityEngine.Random.Range(10, 35);
+				timer = 120f;
+				damage += UnityEngine.Random.Range(53, 89);
 			}
-		} else {
+		} else if (damage <= 18000) {
 			timer -= Time.deltaTime;
 		}
 	}

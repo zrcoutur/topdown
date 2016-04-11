@@ -38,7 +38,7 @@ public class WeaponStats {
 
 		// Initializes stats and stat costs based on the weapon type
 		if (type.CompareTo(WEAPON_TYPE.sword) == 0) {
-			dmg = new int[] { 45, 85, 157, 291, 539, 997, 1844, 3412, 6311, 11676, 21601 };
+			dmg = new int[] { 32, 85, 157, 291, 539, 997, 1844, 3412, 6311, 11676, 21601 };
 			rof = new float[] { 4 };
 			amo = new float[] { 0 };
 
@@ -50,7 +50,7 @@ public class WeaponStats {
 			rof_c = new Stat_Cost[0];
 			amo_c = new Stat_Cost[0];
 		} else if (type.CompareTo(WEAPON_TYPE.rifle) == 0) {
-			dmg = new int[] { 8, 13, 19, 27, 38, 56, 79, 125, 233, 378, 521 };
+			dmg = new int[] { 12, 25, 43, 98, 137, 191, 254, 326, 413, 523, 789 };
 			rof = new float[] { 4, 6, 9, 13, 18, 23 };
 			amo = new float[] { 13f, 10f, 7f, 5f, 3f, 1f };
 
@@ -59,7 +59,7 @@ public class WeaponStats {
 			rof_c = new Stat_Cost[] { new Stat_Cost(3, 0), new Stat_Cost(9, 0), new Stat_Cost(18, 0), new Stat_Cost(34, 86),	new Stat_Cost(55, 234) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(2, 11), new Stat_Cost(8, 31), new Stat_Cost(19, 67), new Stat_Cost(35, 123), new Stat_Cost(58, 330) };
 		} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
-			dmg = new int[] { 5, 12, 23, 39, 61, 111, 152, 208, 267, 331, 413 };
+			dmg = new int[] { 6, 11, 23, 45, 79, 121, 174, 235, 318, 409, 563 };
 			rof = new float[] { 2, 3, 4, 5, 7, 9 };
 			amo = new float[] { 21f, 17f, 13f, 10f, 7f, 5f };
 
@@ -68,7 +68,7 @@ public class WeaponStats {
 			rof_c = new Stat_Cost[] { new Stat_Cost(5, 0), new Stat_Cost(13, 0), new Stat_Cost(28, 0), new Stat_Cost(43, 113), new Stat_Cost(63, 289) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(4, 16), new Stat_Cost(11, 39), new Stat_Cost(23, 81), new Stat_Cost(38, 153), new Stat_Cost(62, 304) };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
-			dmg = new int[] { 24, 30, 38, 50, 67, 100, 139, 189, 243, 313, 394 };
+			dmg = new int[] { 50, 68, 93, 131, 186, 273, 391, 523, 671, 912, 1356 };
 			rof = new float[] { 1.2f, 1.3f, 1.5f, 1.85f, 2.1f, 2.5f };
 			amo = new float[] { 56f, 52f, 48f, 45f, 42f, 39f };
 

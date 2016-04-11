@@ -12,6 +12,7 @@ public class GenerateRoom : MonoBehaviour
 	public GameObject spawnerHandler;
 	public GameObject Spaceman;
 	public GameObject breakableBox;
+	public GameObject unbreakableBox;
 	public GameObject mine;
 	public GameObject innerDoor;
 	public GameObject outerDoor;
@@ -30,8 +31,7 @@ public class GenerateRoom : MonoBehaviour
 	int roomHeight;
 	int hallLength;
 	int spawnerCap;
-	int itemCap;
-
+	int spawnersPlaced;
 	float tileSize;
 
 	// Use this for initializations
@@ -39,13 +39,13 @@ public class GenerateRoom : MonoBehaviour
 	{
 		instantiate = true;
 		teleportedPlayer = false;
-		dungeonSize = 5;
+		dungeonSize = 10;
 		tileSize = 1.6f;
-		roomWidth = 9;	//preferably odd
-		roomHeight = 9;	//preferably odd
+		roomWidth = 9;  //preferably odd
+		roomHeight = 9; //preferably odd
 		hallLength = 6; //preferably even
-		spawnerCap = 2;
-		itemCap = 5;
+		spawnerCap = 3;
+		
 
 		floor = makeFloorMatrix(dungeonSize, dungeonSize, 2, 4);
 
@@ -54,7 +54,7 @@ public class GenerateRoom : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		
+
 		if (instantiate) // create level when instatiate is true
 		{
 			GameObject handler = (GameObject)Instantiate(spawnerHandler, new Vector3(0, 0, 0), Quaternion.identity);
@@ -63,53 +63,41 @@ public class GenerateRoom : MonoBehaviour
 			{
 				for (int j = 0; j < dungeonSize; j++)
 				{
-					array += floor[i, j];
-					if (floor[i, j] != 0 && floor[i, j] != 2)
+					array += floor[i, j] + ",";
+					int type = 0;
+					if (floor[i, j] != 0 && floor[i, j] != 32)
 					{
-						Byte doors = 0;
-						if (j - 1 >= 0)
-						{
-							if (floor[i, j - 1] != 0 && floor[i, j - 1] != 2)
-							{
-								doors += 8;
-							}
-						}
-						if (j + 1 < dungeonSize)
-						{
-							if (floor[i, j + 1] != 0 && floor[i, j + 1] != 2)
-							{
-								doors += 2;
-							}
-						}
-						if (i - 1 >= 0)
-						{
+						//find the type of door code by searching through room types 
 
-							if (floor[i - 1, j] != 0 && floor[i - 1, j] != 2)
-							{
-								doors += 4;
-							}
-						}
-						if (i + 1 < dungeonSize)
+						int doors = (floor[i, j] - 48);
+						
+						if (doors < 0)
 						{
-
-							if (floor[i + 1, j] != 0 && floor[i + 1, j] != 2)
-
+							doors += 16;
+							if (doors < 0)
 							{
-								doors += 1;
+								type = 1;
 							}
+							else
+							{
+								type = 2;
+							}
+							
 						}
-						int[,] room = makeRoomMatrix(roomHeight, roomWidth, doors);
 
-						makeRoom(i * (roomHeight + hallLength) , j * (roomWidth + hallLength), room, doors);
+						int[,] room = makeRoomMatrix(roomHeight, roomWidth, doors,type);
+
+						makeRoom(i * (roomHeight + hallLength), j * (roomWidth + hallLength), room, doors);
 						if (doors != 0)
 						{
 							makeHall(doors, i * (roomHeight + hallLength), j * (roomWidth + hallLength));
 						}
-						if ( floor[i,j] == 1)
+						if (floor[i, j] < 32 && floor[i,j] > 16 )
 						{
 
 							//teleport player to first special room, all other special rooms in map get doors
-							if (!teleportedPlayer ) {
+							if (!teleportedPlayer)
+							{
 								Spaceman.transform.position = new Vector3(((j * (roomWidth + hallLength)) + (roomWidth / 2)) * tileSize, (i * (roomHeight + hallLength) + (roomHeight / 2)) * tileSize, 0);
 								teleportedPlayer = true;
 							}
@@ -121,24 +109,23 @@ public class GenerateRoom : MonoBehaviour
 								}
 								if ((doors & 2) == 2)
 								{
-									makeDoor((j * (roomWidth + hallLength) + roomWidth - 1), (i * (roomHeight + hallLength) + (roomHeight/2) - 1), false);
+									makeDoor((j * (roomWidth + hallLength) + roomWidth - 1), (i * (roomHeight + hallLength) + (roomHeight / 2) - 1), false);
 								}
 								if ((doors & 4) == 4)
 								{
-									makeDoor((j * (roomWidth + hallLength) + (roomWidth / 2) - 1), (i * (roomHeight + hallLength) ), true);
+									makeDoor((j * (roomWidth + hallLength) + (roomWidth / 2) - 1), (i * (roomHeight + hallLength)), true);
 								}
 								if ((doors & 8) == 8)
 								{
-									makeDoor((j * (roomWidth + hallLength) ), (i * (roomHeight + hallLength) + (roomHeight / 2) - 1), false);
+									makeDoor((j * (roomWidth + hallLength)), (i * (roomHeight + hallLength) + (roomHeight / 2) - 1), false);
 								}
 								if (doors != 0)
 								{
-									GameObject block = (GameObject)Instantiate(doorHandler, new Vector3(tileSize * (j * (roomWidth + hallLength) + (roomWidth / 2)), tileSize * (i * (roomHeight + hallLength) + (roomHeight / 2) ), 0), Quaternion.identity);
+									GameObject block = (GameObject)Instantiate(doorHandler, new Vector3(tileSize * (j * (roomWidth + hallLength) + (roomWidth / 2)), tileSize * (i * (roomHeight + hallLength) + (roomHeight / 2)), 0), Quaternion.identity);
 
 								}
 							}
 						}
-
 					}
 				}
 				//Debug.Log(array);
@@ -150,20 +137,20 @@ public class GenerateRoom : MonoBehaviour
 
 	}
 
-	void makeHall(byte doors, int y , int x)
+	void makeHall(int doors, int y, int x)
 	{
-		
+
 
 		//make hallway up
-		if ( (doors & 1) == 1)
+		if ((doors & 1) == 1)
 		{
-			
+
 			int tempx = x + (roomWidth / 2) - 2;
 			int tempy = y + roomHeight;
-			GameObject floor = (GameObject)Instantiate(hallFloorVertical, new Vector3(tileSize * (x + (roomWidth/2)), tileSize * (y + (roomHeight + hallLength/2))-.8f, 0) , Quaternion.identity);
-			for (int j = tempy; j < tempy + hallLength/2 ; j++)
+			GameObject floor = (GameObject)Instantiate(hallFloorVertical, new Vector3(tileSize * (x + (roomWidth / 2)), tileSize * (y + (roomHeight + hallLength / 2)) - .8f, 0), Quaternion.identity);
+			for (int j = tempy; j < tempy + hallLength / 2; j++)
 			{
-				for (int i = tempx; i < tempx + 5 ; i+=4)
+				for (int i = tempx; i < tempx + 5; i += 4)
 				{
 					if (i == tempx)
 					{
@@ -177,20 +164,20 @@ public class GenerateRoom : MonoBehaviour
 						block.transform.Rotate(Vector3.forward * 90);
 						block.AddComponent<BoxCollider2D>();
 					}
-					
+
 				}
 			}
 		}
 		//make hallway right
 		if ((doors & 2) == 2)
 		{
-			GameObject floor = (GameObject)Instantiate(hallFloorHorizontile, new Vector3(tileSize * (x + roomWidth + hallLength/2) - .8f, tileSize * (y + (roomHeight/2 )), 0), Quaternion.identity);
-			
+			GameObject floor = (GameObject)Instantiate(hallFloorHorizontile, new Vector3(tileSize * (x + roomWidth + hallLength / 2) - .8f, tileSize * (y + (roomHeight / 2)), 0), Quaternion.identity);
+
 			int tempx = x + roomWidth;
-			int tempy = y  + (roomHeight / 2) - 2;
+			int tempy = y + (roomHeight / 2) - 2;
 			for (int j = tempy; j < tempy + 5; j += 4)
 			{
-				for (int i = tempx; i < tempx + hallLength/2; i ++)
+				for (int i = tempx; i < tempx + hallLength / 2; i++)
 				{
 					if (j == tempy)
 					{
@@ -203,14 +190,14 @@ public class GenerateRoom : MonoBehaviour
 						block.transform.Rotate(Vector3.forward * 180);
 						block.AddComponent<BoxCollider2D>();
 					}
-				
+
 				}
 			}
 		}
 		//make hallway down
 		if ((doors & 4) == 4)
 		{
-			
+
 			int tempx = x + (roomWidth / 2) - 2;
 			int tempy = y - 1;
 			for (int j = tempy; j >= tempy - hallLength / 2; j--)
@@ -231,7 +218,7 @@ public class GenerateRoom : MonoBehaviour
 					}
 				}
 			}
-			
+
 		}
 		//make hallway left
 		if ((doors & 8) == 8)
@@ -240,7 +227,7 @@ public class GenerateRoom : MonoBehaviour
 			int tempy = y + (roomHeight / 2) - 2;
 			for (int j = tempy; j < tempy + 5; j += 4)
 			{
-				for (int i = tempx; i >= tempx - hallLength / 2 ; i--)
+				for (int i = tempx; i >= tempx - hallLength / 2; i--)
 				{
 					if (j == tempy)
 					{
@@ -250,7 +237,7 @@ public class GenerateRoom : MonoBehaviour
 					else
 					{
 						GameObject block = (GameObject)Instantiate(regularWall, new Vector3(i * tileSize, j * tileSize, 0), Quaternion.identity);
-						block.transform.Rotate(Vector3.forward * 180 );
+						block.transform.Rotate(Vector3.forward * 180);
 						block.AddComponent<BoxCollider2D>();
 					}
 				}
@@ -259,78 +246,205 @@ public class GenerateRoom : MonoBehaviour
 		}
 
 	}
+	
 
 	//byte for determining doors; Byte is a boolean string for determining which walls have doors starting 
 	//0x0000 = no doors, 0x0001 means one door on the north (up) direction , 0x0010 means one door on the east (left) direction , and so forth clockwise
-	int[,] makeRoomMatrix(int height, int width, byte door)
+	int[,] makeRoomMatrix(int height, int width, int door, int roomType)
 	{
+		spawnersPlaced = 0;
 		int[,] returnMatrix = new int[width, height];
-		int spawnersPlaced = 0;
-		int boxesPlaced = 0;
-		int minesPlaced = 0;
+		int[,] prefab = choosePrefabRoom(height, width,roomType);
+
+
+		for (int i = 0; i < 9; i++)
+		{
+
+			for (int j = 0; j < 9; j++)
+			{
+				returnMatrix[i, j] = prefab[i, j];
+			}
+		}
 
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
 				// create openings on edge of room where there are doors
-				if (y == height - 1 && ( x == width / 2 || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 1) == 1) //make north ( up ) direction door if it should exist
+				if ((x == (width / 2) || x == (width / 2) + 1 || x == (width / 2) - 1) && (((door & 4) == 4 && y == 0)||((door & 1) == 1 &&(y == height - 1)))) //make south ( down ) and north (up) directions open if opening should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else if (y == 0 && (x == (width / 2) || x == (width / 2) + 1 || x == (width / 2) - 1 ) && (door & 4) == 4) //make south ( down ) direction door if it should exist
+				else if ((y == height / 2 || y == (height / 2) + 1 || y == (height / 2) - 1) && ((x == width - 1 && (door & 2) == 2) || (x == 0 && (door & 8) == 8) )) //make east ( left ) and west (left) directions open if opening should exist
 				{
 					returnMatrix[x, y] = 0;
 				}
-				else if ((y == height / 2 || y == (height / 2) + 1 || y == (height / 2) - 1) && x == width - 1 && (door & 2) == 2) //make east ( left ) direction door if it should exist
-				{
-					returnMatrix[x, y] = 0;
-				}
-				else if ((y == height / 2 || y == (height / 2) + 1 || y == (height / 2) - 1) && x == 0 && (door & 8) == 8) //make east ( left ) direction door if it should exist
-				{
-					returnMatrix[x, y] = 0;
-				}
-				else 
-				{	// create walls on edge of room where there are no doors
+
+				else
+				{   // create walls on edge of room where there are no doors and space is empty
 					if ((x == 0 || x == width - 1) || (y == 0 || y == height - 1))
 					{
-						returnMatrix[x, y] = 1;
-					}
-					else // put stuff in the middle of the room
-					{
-						int chance = UnityEngine.Random.Range(0, 100);
-						if (chance <= 8 && itemCap > (boxesPlaced + minesPlaced)) {
-							returnMatrix [x, y] = 3;
-							boxesPlaced++;
-						} else if (chance <= 13 && itemCap > (boxesPlaced + minesPlaced)) {
-							returnMatrix [x, y] = 4;
-							minesPlaced++;
+						if (returnMatrix[x, y] == 0)
+						{
+							returnMatrix[x, y] = 1;
 						}
 					}
-					//
-					if ( (x == 0 && !(y == 0 || y == height - 1)) ||  (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 11)) || (y == height - 1 && !(x == 0 || x == width - 11)))
+
+					if ((x == 0 && !(y == 0 || y == height - 1)) || (x == width - 1 && !(y == 0 || y == height - 1)) || (y == 0 && !(x == 0 || x == width - 1)) || (y == height - 1 && !(x == 0 || x == width - 1)))
 					{
-						int chance = UnityEngine.Random.Range(0, 10);
+						
+						int chance = UnityEngine.Random.Range(0, 5);
 						if (chance == 0 && spawnerCap > spawnersPlaced)
 						{
 							returnMatrix[x, y] = 2;
 							spawnersPlaced++;
 						}
-						
+
 					}
 					
 				}
+
 			}
 		}
 		return returnMatrix;
+	}
+
+	private int[,] choosePrefabRoom(int height, int width,int roomType)
+	{
+		int b = 5;//code for boxes
+		int m = 4;//code for mines
+		int x = 3; // code for breakable boxes
+		int s = 2; // spawner code
+		int[,,] prefabs = {
+			{ //prefab 1 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+			{ //prefab 2 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,m,0,0,0,0, },
+				{0,0,0,b,b,b,0,0,0, },
+				{0,0,m,b,0,b,m,0,0, },
+				{0,0,0,b,b,b,0,0,0, },
+				{0,0,0,0,m,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+			{ //prefab 3 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,b,b,0,m,0,b,b,0, },
+				{0,b,b,0,0,0,b,b,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,m,0,0,0,0,0,m,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,b,b,0,0,0,b,b,0, },
+				{0,b,b,0,m,0,b,b,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			}, 
+			{ //prefab 4 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,x,x,0,0,0,0,m,0, },
+				{0,x,0,0,0,0,b,0,0, },
+				{0,0,0,0,0,b,0,0,0, },
+				{0,0,0,0,b,0,0,0,0, },
+				{0,0,0,b,0,0,0,0,0, },
+				{0,0,b,0,0,0,0,x,0, },
+				{0,m,0,0,0,0,x,x,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+			{ //prefab 5 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,m,0,0,0,0,0,m,0, },
+				{0,0,0,b,0,b,0,0,0, },
+				{0,0,b,b,x,b,b,0,0, },
+				{0,0,0,x,0,x,0,0,0, },
+				{0,0,b,b,x,b,b,0,0, },
+				{0,0,0,b,0,b,0,0,0, },
+				{0,m,0,0,0,0,0,m,0, },
+				{0,0,0,0,s,0,0,0,0, },	//8
+			},
+				{ //prefab 6 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,x,0,0,0,x,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+				{ //prefab 7 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,m,0,0,0,0,0,m,0, },
+				{0,0,b,b,0,b,b,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,0,0,m,0,0,0,0, },
+				{0,0,b,0,0,0,b,0,0, },
+				{0,0,b,b,0,b,b,0,0, },
+				{0,m,0,0,0,0,0,m,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+				{ //prefab 8 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,x,x,x,0,0,0, },
+				{0,0,0,x,x,x,0,0,0, },
+				{0,0,0,x,x,x,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			},
+				{ //prefab 9 for 9X9
+				{0,0,0,0,0,0,0,0,0, },	//0
+				{0,0,0,0,0,0,0,0,0, },
+				{0,b,b,b,x,b,b,b,0, },  
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,b,b,b,x,b,b,b,0, },
+				{0,0,0,0,0,0,0,0,0, },
+				{0,0,0,0,0,0,0,0,0, },	//8
+			}
+
+
+		};
+		int[,] returnArray = new int[9, 9];
+		int prefabchoice = 0;
+		if (roomType != 1)
+		{
+			prefabchoice = UnityEngine.Random.Range(0, 8);
+			
+		}
+
+
+		for (int i = 0; i < 9; i++)
+		{
+
+			for (int j = 0; j < 9; j++)
+			{
+				returnArray[i, j] = prefabs[prefabchoice, j, i];
+			}
+		}
+		return returnArray;
 	}
 
 	//orientationVertical = true, means door is meant for vertical hallways
 	void makeDoor(float x, float y, bool orientationVertical)
 	{
 		GameObject door;
-		if (orientationVertical) {
-			
+		if (orientationVertical)
+		{
+
 			door = (GameObject)Instantiate(outerDoor, new Vector3(x * tileSize, y * tileSize, 0), Quaternion.identity);
 			door.GetComponent<Door>().hinge = 8;
 			door.GetComponent<Door>().delay = true;
@@ -369,18 +483,18 @@ public class GenerateRoom : MonoBehaviour
 	//Places sprites into level to create a room
 	//y and x are the position of the bottom left corner of the room
 	// roomMatrix comes from the makeRoomMatrix method
-	private void makeRoom(int y, int x, int[,] roomMatrix, byte door)
+	private void makeRoom(int y, int x, int[,] roomMatrix, int door)
 	{
-		GameObject floor = (GameObject)Instantiate(roomFloor, new Vector3(tileSize* (x  + (roomWidth / 2)), tileSize* (y + (roomHeight / 2)),0), Quaternion.identity);
+		GameObject floor = (GameObject)Instantiate(roomFloor, new Vector3(tileSize * (x + (roomWidth / 2)), tileSize * (y + (roomHeight / 2)), 0), Quaternion.identity);
 		for (int i = y; i < roomHeight + y; i++)
 		{
 
 			for (int j = x; j < roomWidth + x; j++)
 			{
-			
+
 				if (roomMatrix[j - x, i - y] != 0)
 				{
-					
+
 
 					//check if sprite is in corner
 					if ((j - x == 0 && i - y == 0) || (j - x == roomHeight - 1 && i - y == 0) || (j - x == 0 && i - y == roomWidth - 1) || (j - x == roomHeight - 1 && i - y == roomWidth - 1))
@@ -405,387 +519,387 @@ public class GenerateRoom : MonoBehaviour
 					}
 					else // if sprite coordinates are not in corner
 					{
-						if (roomMatrix [j - x, i - y] == 1) { //wall
-							// corner for top halls
-							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1) {
+						if (roomMatrix[j - x, i - y] == 1)
+						{ //wall
+						  // corner for top halls
+							if ((door & 1) == 1 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == roomWidth - 1)
+							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
 
-								if (j - x == roomWidth / 2 - 2) {
+								if (j - x == roomWidth / 2 - 2)
+								{
 									corner.transform.Rotate(Vector3.forward * 90);
-								} else {
+								}
+								else {
 
 								}
 
 
 							}// corner for bottom halls
-							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0) {
+							else if ((door & 4) == 4 && (j - x == roomWidth / 2 - 2 || j - x == roomWidth / 2 + 2) && i - y == 0)
+							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
 								//rotate left and right walls for appearence
-								if (j - x == roomWidth / 2 - 2) {
+								if (j - x == roomWidth / 2 - 2)
+								{
 									corner.transform.Rotate(Vector3.forward * 180);
-								} else {
+								}
+								else {
 									corner.transform.Rotate(Vector3.forward * -90);
 								}
 							}// corner for left/east halls
-							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == roomWidth - 1) {
+							else if ((door & 2) == 2 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == roomWidth - 1)
+							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
 								//rotate left and right walls for appearence
-								if (i - y == roomHeight / 2 - 2) {
+								if (i - y == roomHeight / 2 - 2)
+								{
 									corner.transform.Rotate(Vector3.forward * -90);
-								} else {
-									
+								}
+								else {
+
 								}
 							}// corner for left/east halls
-							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0) {
+							else if ((door & 8) == 8 && (i - y == roomHeight / 2 - 2 || i - y == roomHeight / 2 + 2) && j - x == 0)
+							{
 								GameObject corner = (GameObject)Instantiate(cornerWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								corner.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = corner.GetComponent<Rigidbody2D>();
 								//rotate left and right walls for appearence
-								if (i - y == roomHeight / 2 - 2) {
+								if (i - y == roomHeight / 2 - 2)
+								{
 									corner.transform.Rotate(Vector3.forward * 180);
-								} else {
+								}
+								else {
 									corner.transform.Rotate(Vector3.forward * 90);
 								}
-							} else {
+							}
+							else {
 								GameObject block = (GameObject)Instantiate(regularWall, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 								block.AddComponent<BoxCollider2D>();
 								Rigidbody2D body = block.GetComponent<Rigidbody2D>();
 								//rotate left walls for appearence
-								if (j - x == 0) {
+								if (j - x == 0)
+								{
 									block.transform.Rotate(Vector3.forward * -90);
 
 								}//rotate right walls for appearence
-								else if (j - x == roomHeight - 1) {
+								else if (j - x == roomHeight - 1)
+								{
 									block.transform.Rotate(Vector3.forward * 90);
-								} else if (i - y == roomWidth - 1) {
+								}
+								else if (i - y == roomWidth - 1)
+								{
 									block.transform.Rotate(Vector3.forward * 180);
 								}
 							}
 
-						
-						} else if (roomMatrix [j - x, i - y] == 2) { //spawner
-							
+
+						}
+						else if (roomMatrix[j - x, i - y] == 2)
+						{ //spawner
+
 							GameObject spawnerBlock = (GameObject)Instantiate(spawner, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 							spawnerBlock.AddComponent<BoxCollider2D>();
 
-							if (j - x == 0) {
+							if (j - x == 0)
+							{
 								spawnerBlock.GetComponent<EnemySpawner>().east = true;
-							} else if (j - x == roomWidth - 1) {
+							}
+							else if (j - x == roomWidth - 1)
+							{
 								spawnerBlock.GetComponent<EnemySpawner>().west = true;
-							} else if (i - y == 0) {
+							}
+							else if (i - y == 0)
+							{
 								spawnerBlock.GetComponent<EnemySpawner>().north = true;
-							} else if (i - y == roomHeight - 1) {
+							}
+							else if (i - y == roomHeight - 1)
+							{
 								spawnerBlock.GetComponent<EnemySpawner>().south = true;
 							}
 
-						} else if (roomMatrix [j - x, i - y] == 3) { // breakable box
+						}
+						else if (roomMatrix[j - x, i - y] == 3)
+						{ // breakable box
 							GameObject boxBlock = (GameObject)Instantiate(breakableBox, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
-						} else if (roomMatrix [j - x, i - y] == 4) {
+						}
+						else if (roomMatrix[j - x, i - y] == 4)
+						{
 							GameObject mineObject = (GameObject)Instantiate(mine, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
+						}
+						else if (roomMatrix[j - x, i - y] == 5)
+						{
+							GameObject block = (GameObject)Instantiate(unbreakableBox, new Vector3(j * tileSize, i * tileSize, 0), Quaternion.identity);
 						}
 					}
 				}
 			}
 		}
 	}
-	int[,] makeFloorMatrix(int floorWidth, int floorHeight, int numberOfCircles , int numberOfSpecialRooms)
+	int[,] makeFloorMatrix(int floorWidth, int floorHeight, int numberOfCircles, int numberOfSpecialRooms)
 
 	{
 		//matrix codes
 		//nothing = 0
-		//special room = 1
-		//circle rooms center = 2
-		//circle rooms edge = 3
-		//normal room = 4
+		//special room = 16+*
+		//circle rooms = 32+*
+		//cooridor room = 48+*
+		//* = door code in ones place
+
 
 		int[,] returnMatrix = new int[floorWidth, floorHeight];
-		ArrayList listOfSpecialRooms = new ArrayList();
-		ArrayList listOfCircleEdgeRooms = new ArrayList();
+		ArrayList listOfCircleEdgeRoomsX = new ArrayList();
+		ArrayList listOfCircleEdgeRoomsY = new ArrayList();
 
-		//insert special rooms into matrix
-		//expects nothing in returnMatrix besides special rooms
-		for (int i = 0; i < numberOfSpecialRooms; i++)
+
+		//pick center of circle formation
+		int curCenterRoomX = UnityEngine.Random.Range(1, floorWidth - 2);
+		int curCenterRoomY = UnityEngine.Random.Range(1, floorHeight - 2); ;
+
+		//create rooms around center
+		for (int x = curCenterRoomX - 1; x < curCenterRoomX + 2; x++)
 		{
-			int x = UnityEngine.Random.Range(0, floorWidth - 1);
-			int y = UnityEngine.Random.Range(0, floorHeight - 1);
-
-			//test code
-			if (returnMatrix[y, x] != 1)
-			{ 
-				returnMatrix[y, x] = 1;
-				
-
-				//Add the coordinates of special rooms to connect later
-				listOfSpecialRooms.Add(y);
-				listOfSpecialRooms.Add(x);
-
-			}
-			else //if the matrix indices were already filled , retry
-			{
-				x = UnityEngine.Random.Range(0, floorWidth - 1);
-				y = UnityEngine.Random.Range(0, floorHeight - 1);
-				i--;
-			}
-
-		}
-
-		//insert circle center for primary circle
-		for (int i = 0; i < 1; i++)
-		{
-
-			int x = UnityEngine.Random.Range(0, floorWidth - 1 );
-			int y = UnityEngine.Random.Range(0, floorHeight - 1);
-			if (returnMatrix[y, x] != 1 && returnMatrix[y, x] != 2 )
-
-			{
-				returnMatrix[y, x] = 2;
-
-			}
-			else //if the matrix indices were already filled , retry
-			{
-				x = UnityEngine.Random.Range(0, floorWidth - 1);
-				y = UnityEngine.Random.Range(0, floorHeight - 1);
-				i--;
-			}
-			
-		}
-		
-		//expande circle centers into circles
-		for (int i = 0; i < floorWidth; i++)
-		{
-			
-			for (int j = 0; j < floorHeight; j++)
+			for (int y = curCenterRoomY - 1; y < curCenterRoomY + 2; y++)
 			{
 
-				if (returnMatrix[j,i] == 2)
-				{ 
-					
-					//create rooms around center
-					for (int x = i-1; x < i+2 ; x++)
+				//check to make sure circle-edge room being added are in the domain and range of floorMatrix
+				if ((x >= 0 && y >= 0) && (x < floorWidth && y < floorHeight))
+				{
+					returnMatrix[y, x] = 32;
+					//Add coordinates for pathing to special rooms later
+					listOfCircleEdgeRoomsX.Add(y);
+					listOfCircleEdgeRoomsY.Add(x);
+
+					//create doors codes for doors
+					if (x == curCenterRoomX - 1 && y == curCenterRoomY - 1)
 					{
-						for (int y = j-1; y < j+2; y++)
-						{
-							
-
-							//check to make sure circle-edge room being added is in domain and range of floorMatrix
-							if ( (x >= 0 && y >= 0) && (x < floorWidth  && y < floorHeight ))
-							{
-
-								//check if room is already made there
-								if (returnMatrix[y, x] == 0)
-								{
-									returnMatrix[y, x] = 3;
-
-									//Add coordinates for pathing to special rooms later
-									listOfCircleEdgeRooms.Add(x);
-									listOfCircleEdgeRooms.Add(y);
-								}
-							}
-						}
+						returnMatrix[y, x] += 3;
 					}
+					if (x == curCenterRoomX - 1 && y == curCenterRoomY)
+					{
+						returnMatrix[y, x] += 5;
+					}
+					if (x == curCenterRoomX - 1 && y == curCenterRoomY + 1)
+					{
+						returnMatrix[y, x] += 6;
+					}
+					if (x == curCenterRoomX && y == curCenterRoomY - 1)
+					{
+						returnMatrix[y, x] += 10;
+					}
+					///middle room
+					if (x == curCenterRoomX && y == curCenterRoomY)
+					{
+
+					}
+					if (x == curCenterRoomX && y == curCenterRoomY + 1)
+					{
+						returnMatrix[y, x] += 10;
+					}
+					if (x == curCenterRoomX + 1 && y == curCenterRoomY - 1)
+					{
+						returnMatrix[y, x] += 9;
+					}
+					if (x == curCenterRoomX + 1 && y == curCenterRoomY)
+					{
+						returnMatrix[y, x] += 5;
+					}
+					if (x == curCenterRoomX + 1 && y == curCenterRoomY + 1)
+					{
+						returnMatrix[y, x] += 12;
+					}
+
+
 				}
 			}
 		}
 
-	
+
 		//start pathing for each of the special rooms
 		//defines position as index in numberOfSpecialRooms
-		for (int i = 0; i < numberOfSpecialRooms ; i++)
+		for (int curSpecialRoom = 0; curSpecialRoom < numberOfSpecialRooms; curSpecialRoom++)
 		{
-			//pick a circle-edge to aim towards 
-			//defines position as index in listOfCircleEdgeRooms
+			//Debug.Log("starting iteration :" + curSpecialRoom);
+			//pick a circle-edge room
+			int curEdgeRoom = UnityEngine.Random.Range(0, listOfCircleEdgeRoomsX.Count);
+			int curX = (int)listOfCircleEdgeRoomsY[curEdgeRoom];
+			int curY = (int)listOfCircleEdgeRoomsX[curEdgeRoom];
 
+			//make sure edge room cannot be choosen again for special room
+			listOfCircleEdgeRoomsY.RemoveAt(curEdgeRoom);
+			listOfCircleEdgeRoomsX.RemoveAt(curEdgeRoom);
 
-			int circleEdgeTarget = UnityEngine.Random.Range(0, listOfCircleEdgeRooms.Count/2);
-			bool foundPath = false;
-			int x = (int)listOfSpecialRooms[2*i + 1];
-			int y = (int)listOfSpecialRooms[2*i];
-
-			//start building x towards a circle
-			for (; x != (int)listOfCircleEdgeRooms[ circleEdgeTarget*2];)
+			int lastPath = 0;
+			bool madeFirstStep = false;
+			//branch from special room
+			for (int pathLength = 0; pathLength < 6; pathLength++)
 			{
+				int paths = 0;
 				
-				if ( x < (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 ])
 
+				//check available moves
+				//edge of level check
+				//not occupied room check
+				if (curX + 1 < floorWidth)
 				{
-					x++;
+					if (returnMatrix[curY, curX + 1] == 0)
+					{
+						//add right direction from path options
+						paths += 2;
+					}
+
+				}
+				if ((curX - 1 > -1))
+				{
+					if (returnMatrix[curY, curX - 1] == 0)
+					{
+						//add left direction from path options
+						paths += 8;
+					}
+
+				}
+				if ((curY + 1 < floorHeight))
+				{
+					if (returnMatrix[curY + 1, curX] == 0)
+					{
+						//add up direction from path options
+						paths += 1;
+					}
+				}
+				if ((curY - 1 > -1))
+				{
+					if (returnMatrix[curY - 1, curX] == 0)
+					{
+						//add down direction from path options
+						paths += 4;
+					}
+				}
+
+
+
+				//pick move from available moves
+				//picks a code of a door, or code of end of path
+				if (paths != 0)
+				{
+					int randPath = UnityEngine.Random.Range(0, 4);
+					randPath = (int)Math.Pow(2, randPath);
+
+					//find random possible path
+					//try 50 times
+					for (int i = 0; i < 50; i++)
+					{
+						if (madeFirstStep)
+						{
+							randPath = UnityEngine.Random.Range(0, 5);
+							randPath = (int)Math.Pow(2, randPath);
+						}
+						else
+						{
+							randPath = UnityEngine.Random.Range(0, 3);
+							randPath = (int)Math.Pow(2, randPath);
+						}
+						if ((randPath & paths) == 0 && randPath < 16)
+						{
+							break;
+						}
+						//set paths to the choosen path i.e. randpath
+						paths = randPath;
+					}
 				}
 				else
 				{
-					x--;
+
 				}
-				//if room hasnt been pathed to closer room 
-				if (returnMatrix[y, x] == 0 )
-				{
-					//adds new normal room into to create path
-					returnMatrix[y, x] = 4;
-				}else
+				madeFirstStep = true;
 
-				{
 
-					foundPath = true;
+				//define room
+				//room is cooridor
+				if ((paths & 1) == 1)
+				{
+					//add path to current room to next room: up
+					returnMatrix[curY, curX] += 1;
+					curY += 1;
+					returnMatrix[curY, curX] = 52;
+					lastPath = 1;
+				}
+				else if ((paths & 2) == 2)
+				{
+					//add path to current room to next room: right
+					returnMatrix[curY, curX] += 2;
+					curX += 1;
+					returnMatrix[curY, curX] = 56;
+					lastPath = 2;
+				}
+				else if ((paths & 4) == 4)
+				{
+					//add path to current room to next room: down
+					returnMatrix[curY, curX] += 4;
+					curY -= 1;
+					returnMatrix[curY, curX] = 49;
+					lastPath = 4;
+				}
+				else if ((paths & 8) == 8)
+				{
+					//add path to current room to next room: left
+					returnMatrix[curY, curX] += 8;
+					curX -= 1;
+					returnMatrix[curY, curX] = 50;
+					lastPath = 8;
+				}
+
+				if (paths >= 16 || pathLength == 5)
+				{
+					if (lastPath == 0)
+					{
+						returnMatrix[curY, curX] -= 16;
+						if (returnMatrix[curY, curX] == 16)
+						{
+							//pick a random direction to join middle special room to circle formation
+							int randPath = UnityEngine.Random.Range(0, 3);
+							randPath = (int)Math.Pow(2, randPath);
+							returnMatrix[curY, curX] += randPath;
+
+							//join circle formation to the middle special room
+							if (randPath == 1)
+							{
+								returnMatrix[curY + 1, curX] += 4;
+							}
+							else if (randPath == 2)
+							{
+								returnMatrix[curY, curX + 1] += 8;
+							}
+							else if (randPath == 4)
+							{
+								returnMatrix[curY - 1, curX] += 1;
+							}
+							else if (randPath == 8)
+							{
+								returnMatrix[curY, curX - 1] += 2;
+							}
+						}
+					}
+					else
+					{
+						//transform temp cooridor into special room
+						if (returnMatrix[curY, curX] > 32)
+						{
+							returnMatrix[curY, curX] -= 32;
+						}
+					}
+					//Debug.Log("Y,X:" + curY + "," + curX);
 					break;
 				}
-			}
-						
-			if (!foundPath)
-			{
-				for (; y != (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 + 1] ;)
-				{
-					if (y < (int)listOfCircleEdgeRooms[ circleEdgeTarget*2 + 1])
-
-					{
-						y++;
-					}
-					else
-					{
-						y--;
-					}
-
-					if (returnMatrix[y, x] == 0)
-					{
-						//adds new normal room into to create path
-						returnMatrix[y, x] = 4;
-					}
-					else
-					{
-						foundPath = true;
-					}
-				}
+				
 			}
 		}
-
-		//insert circle centers for the rest of circles
-		for (int i = 0; i < numberOfCircles - 1; i++)
-		{
-
-			int x = UnityEngine.Random.Range(0, floorWidth - 1);
-			int y = UnityEngine.Random.Range(0, floorHeight - 1);
-			if (returnMatrix[y, x] == 1)
-			{
-				int targetx = UnityEngine.Random.Range(0, floorWidth - 1);
-				int targety = UnityEngine.Random.Range(0, floorHeight - 1);
-				//start pathing for each of the special rooms
-				//defines position as index in numberOfSpecialRooms
-				for (int j = 0; j < numberOfSpecialRooms; j++)
-				{
-					//pick a circle-edge to aim towards 
-					//defines position as index in listOfCircleEdgeRooms
-
-
-					int circleEdgeTarget = UnityEngine.Random.Range(0, listOfCircleEdgeRooms.Count / 2);
-					bool foundPath = false;
-
-					//start building x towards a circle
-					for (; x != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2];)
-					{
-
-						if (x < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2])
-
-						{
-							x++;
-						}
-						else
-						{
-							x--;
-						}
-						//if room hasnt been pathed to closer room 
-						if (returnMatrix[y, x] == 0)
-						{
-							//adds new normal room into to create path
-							returnMatrix[y, x] = 4;
-						}
-						else
-
-						{
-
-							foundPath = true;
-							for (int tempx = i - 1; tempx < i + 2; tempx++)
-							{
-								for (int tempy = j - 1; tempy < j + 2; tempy++)
-								{
-									//check to make sure circle-edge room being added is in domain and range of floorMatrix
-									if ((tempx >= 0 && tempy >= 0) && (tempx < floorWidth && tempy < floorHeight))
-									{
-
-										//check if room is already made there
-										if (returnMatrix[tempy, tempx] == 0)
-										{
-											returnMatrix[tempy, tempx] = 3;
-
-										}
-									}
-								}
-							}
-							break;
-						}
-					}
-
-					if (!foundPath)
-					{
-						for (; y != (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1];)
-						{
-							if (y < (int)listOfCircleEdgeRooms[circleEdgeTarget * 2 + 1])
-
-							{
-								y++;
-							}
-							else
-							{
-								y--;
-							}
-
-							if (returnMatrix[y, x] == 0)
-							{
-								//adds new normal room into to create path
-								returnMatrix[y, x] = 4;
-							}
-							else
-							{
-								foundPath = true;
-
-								//create rooms around center
-								for (int tempx = i - 1; tempx < i + 2; tempx++)
-								{
-									for (int tempy = j - 1; tempy < j + 2; tempy++)
-									{
-										//check to make sure circle-edge room being added is in domain and range of floorMatrix
-										if ((tempx >= 0 && tempy >= 0) && (tempx < floorWidth && tempy < floorHeight))
-										{
-
-											//check if room is already made there
-											if (returnMatrix[tempy, tempx] == 0)
-											{
-												returnMatrix[tempy, tempx] = 3;
-
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-
-			}
-			else //if the matrix indices were already filled , retry
-			{
-				x = UnityEngine.Random.Range(0, floorWidth - 1);
-				y = UnityEngine.Random.Range(0, floorHeight - 1);
-				i--;
-			}
-
-		}
-		
-
 		return returnMatrix;
 	}
-
 }

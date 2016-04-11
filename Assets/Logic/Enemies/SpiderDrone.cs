@@ -9,32 +9,26 @@ public class SpiderDrone : Baseenemy
 
     // Use this for initialization
     void Awake() {
-		base.Maxhealth = 35;
+		base.Maxhealth = 40;
 		base.health = base.Maxhealth;
 		base.speed = 3.2f;
         base.rate = -1f;
 		base.rateVariance = 0f;
         base.range = 0f;
         base.damage = 8;
+		base.pointValue = 20;
     }
 
 
     public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 150f;
+		var timeScale = time / 180f;
 
-		if (Maxhealth < 40000) {
-			health = health + (int)(0.8f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(40000, Maxhealth + (int)(2.5f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		health = Maxhealth;
 
-		if (speed < 16f) {
-			speed = speed + (0.12f * speed * time / timeScale);
-		}
-
-		if (damage < 650) {
-			damage = damage + (int)(0.55f * damage * time / timeScale);
-		}
+		speed = Mathf.Min(16f, speed + (0.2f * speed * timeScale));
+		damage = System.Math.Min(500, damage + (int)(0.153f * damage * Mathf.Pow(timeScale, 2f)));
     }
 
     public override void attack()
@@ -71,7 +65,7 @@ public class SpiderDrone : Baseenemy
 					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
 				} else if (Mathf.Abs(dist_near) <= 6f) {
 					// Leap at the closest Player
-					force = 350f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = 285f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
 				}
 

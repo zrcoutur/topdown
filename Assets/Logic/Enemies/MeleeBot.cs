@@ -4,7 +4,7 @@ using System.Collections;
 public class MeleeBot : Baseenemy {
 	public GameObject Slash;
 	// holds the original values of the meleebots speed and attack cooldown
-	private float o_speed, o_rate, o_range;
+	private float o_speed, o_rate;
 	// determines if the meleebot is currently dashing
 	private bool dashing;
 	// used to keep track of the delay between dashes
@@ -20,8 +20,8 @@ public class MeleeBot : Baseenemy {
 		o_rate = rate;
 		base.rateVariance = 0f;
 		base.range = 4.5f;
-		o_range = range;
 		base.damage = 3;
+		base.pointValue = 30;
 
 		dashing = false;
 		dashDelay = 0f;
@@ -30,24 +30,14 @@ public class MeleeBot : Baseenemy {
 
 	public override void TimeIncrease(float time) {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-		var timeScale = 150f;
+		var timeScale = time / 180f;
 
-		if (Maxhealth < 32000) {
-			health = health + (int)(0.8f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(3.2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		health = Maxhealth;
 
-		if (speed < 16f) {
-			o_speed = speed + (0.2f * speed * time / timeScale);
-		}
-
-		if (damage < 550) {
-			damage = damage + (int)(0.55f * damage * time / timeScale);
-		}
-
-		if (rate > 0.45f) {
-			o_rate = o_rate + (0.05f * rate * time / timeScale);
-		}
+		o_speed = Mathf.Min(16f, o_speed + (0.085f * o_speed * timeScale));
+		o_rate = Mathf.Max(0.45f, o_rate - (0.03f * o_rate * timeScale));
+		damage = System.Math.Min(280, damage + (int)(0.235f * damage * Mathf.Pow(timeScale, 2f)));
 	}
 
 	public override void attack()
@@ -58,7 +48,8 @@ public class MeleeBot : Baseenemy {
 
 		// Make Slash Effect, Quaternions are dumb
 		var sl = (GameObject)Instantiate(Slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
-		sl.GetComponent<EnemySlash>().damage = base.damage;
+		// Meleebot's slash deals more damahe then simply running into the player.
+		sl.GetComponent<EnemySlash>().damage = (int)(1.6f * base.damage);
 		sl.transform.parent = transform;
 		//sl.transform.localScale = gameObject.transform.localScale;
 		// Shake camera

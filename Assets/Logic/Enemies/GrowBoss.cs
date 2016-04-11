@@ -5,19 +5,25 @@ public class GrowBoss : Baseenemy
 {
     private float healRate;
     private float healTime;
-    int healAmount;
+	private int max_dmg;
+	private float max_speed;
+    
+	int healAmount;
     Vector3 size;
 
     void Awake() {
         isBoss = true;
         Maxhealth = 1200;
-        health = 1200;
-		damage = 36;
+		health = Maxhealth;
+		damage = 32;
+		max_dmg = damage;
         size = transform.lossyScale;
-        speed = 0.45f;
+        speed = 300f;
+		max_speed = speed;
         healRate = 3f;
         healTime = healRate;
 		healAmount = 1;
+		base.pointValue = 100;
     }
 
     // Update is called once per frame
@@ -25,8 +31,12 @@ public class GrowBoss : Baseenemy
 
         float newSize = Mathf.Min((((float)Maxhealth) / health), 10);
         transform.localScale = new Vector3(size.x * newSize, size.y * newSize);
-        if (healTime <= 0)
-        {
+        // damage and speed scale with health reduction
+		damage = (int)( max_dmg * (1f - (3f * (float)health / Maxhealth) / 4f) );
+		speed = max_speed * (1f - (9f * (float)health / Maxhealth) / 10f);
+
+		if (healTime <= 0) {
+			
 			if (health < (Maxhealth / 2)) {
                 health += healAmount;
             }
@@ -37,20 +47,13 @@ public class GrowBoss : Baseenemy
 
     public override void TimeIncrease(float time) {
         // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
-        var timeScale = 600f;
+        var timeScale = time / 360f;
 
-		if (Maxhealth < 2000000) {
-			health = health + (int)(4f * health * time / timeScale);
-			Maxhealth = health;
-		}
+		Maxhealth = System.Math.Min(2000000, Maxhealth + (int)(0.5f * Maxhealth * Mathf.Pow(timeScale, 3f)));
+		health = Maxhealth;
 
-		if (speed < 2.5f) {
-			speed = speed + (0.4f * speed * time / timeScale);
-		}
-        
-		if (damage < 400) {
-			damage = damage + (int)(1.6f * damage * time / timeScale);
-		}
+		max_speed = Mathf.Min(400f, max_speed + (0.0175f * max_speed * timeScale));
+		max_dmg = System.Math.Min(600, max_dmg + (int)(0.08f * max_dmg * Mathf.Pow(timeScale, 2f)));
 
 		//healRate *= (3 / 4 * Mathf.Pow(2,time));
        	//healAmount += (int)(time / timeScale);
