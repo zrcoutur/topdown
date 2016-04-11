@@ -79,6 +79,7 @@
     <Compile Include="Assets\Logic\Enemies\GrowBoss.cs" />
     <Compile Include="Assets\Logic\Enemies\LightningNode.cs" />
     <Compile Include="Assets\Logic\Enemies\LightningTree.cs" />
+    <Compile Include="Assets\Logic\Enemies\MeleeBot.cs" />
     <Compile Include="Assets\Logic\Enemies\SpiderDrone.cs" />
     <Compile Include="Assets\Logic\Explosions\BaseMine.cs" />
     <Compile Include="Assets\Logic\Explosions\DamageExplosion.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\Logic\Poof.cs" />
     <Compile Include="Assets\Logic\ScoreBoard.cs" />
     <Compile Include="Assets\Logic\SparkPoof.cs" />
+    <Compile Include="Assets\Logic\Time_Count.cs" />
     <Compile Include="Assets\Logic\Tools.cs" />
     <Compile Include="Assets\Logic\Turret.cs" />
     <Compile Include="Assets\Logic\roomDoorHandlerScript.cs" />

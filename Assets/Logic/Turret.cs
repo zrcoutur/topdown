@@ -38,8 +38,8 @@ public class Turret : MonoBehaviour {
             var currentAng = GetComponent<Rigidbody2D>().rotation;
             var look = target.transform.position - gameObject.transform.position;
             var targetAng =270+Tools.Vector2ToAngle(look);
-            Debug.Log(targetAng);
-            Debug.Log(currentAng);
+            //Debug.Log(targetAng);
+            //Debug.Log(currentAng);
             GetComponent<Rigidbody2D>().MoveRotation(Mathf.MoveTowardsAngle(currentAng, targetAng, 360));
             if (attackrate >= 2.5)
             {
