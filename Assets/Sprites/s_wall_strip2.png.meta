@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 8f260baa83f6a8542a93487940e09021
-timeCreated: 1460396543
+guid: 9c8c143f87f549d47afc2b3248eee24e
+timeCreated: 1460396260
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: slowfield_strip2_0
-    21300002: slowfield_strip2_1
+    21300000: s_wall_strip2_0
+    21300002: s_wall_strip2_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -52,44 +52,36 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: slowfield_strip2_0
+    - name: s_wall_strip2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -26, y: 32}
-        - {x: -32, y: 23}
-        - {x: -32, y: -18}
-        - {x: -18, y: -32}
-        - {x: 19, y: -32}
-        - {x: 32, y: -18}
-        - {x: 32, y: 29}
-        - {x: 20, y: 32}
-    - name: slowfield_strip2_1
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
+    - name: s_wall_strip2_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 32
         y: 0
-        width: 64
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -26, y: 32}
-        - {x: -32, y: 23}
-        - {x: -32, y: -18}
-        - {x: -18, y: -32}
-        - {x: 19, y: -32}
-        - {x: 32, y: -18}
-        - {x: 32, y: 29}
-        - {x: 20, y: 32}
+      - - {x: -16, y: 16}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 16}
     outline: []
   spritePackingTag: 
   userData: 

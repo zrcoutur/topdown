@@ -76,7 +76,7 @@ public class DynamicGUI : MonoBehaviour {
 			Rect previous;
 
 			if (idx == 0) { // position based on the window display
-				previous = new Rect(0, 0, 0, 0);
+				previous = new Rect(0, 0, 0, 10);
 			} else if (idx == 3) {
 				previous = new Rect(0, 0, 0, displays[idx - 1].labels[3].y + displays[idx - 1].labels[3].height + 30);
 			} else { // position a stat display based on the previous stat display
