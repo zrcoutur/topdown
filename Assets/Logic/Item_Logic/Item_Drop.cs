@@ -16,25 +16,43 @@ public class Item_Drop : MonoBehaviour {
 	public AudioClip getSound;
 	// List of players
 	private Player[] players;
+	// Used to accelerate the item overtime
+	private float time_near;
 	/* How long the item will stay in the game before disappearing */
 	private float duration;
 
 	public void Start() {
 		// Find all players
 		players = FindObjectsOfType<Player>();
+		time_near = 0f;
 		// Initialize timer
-		duration = 8f * (UnityEngine.Random.Range(50, 150) / 100f);
+		duration = 8f * (UnityEngine.Random.Range(75, 250) / 100f);
 	}
 
 	public void Update() {
+		Player closest = null;
+
 		/* Finds the closest player and moves the item nearer to that player. */
 		for (int idx = 0; idx < players.Length; ++idx) {
 			float dist_x = transform.localPosition.x - players[idx].transform.localPosition.x;
 			float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
 			// draw item closer to the player
 			if (System.Math.Abs(dist_x) <= 3f && System.Math.Abs(dist_y) <= 3f) {
-				GetComponent<Rigidbody2D>().AddForce( new Vector2(- 0.5f / dist_x, - 0.5f / dist_y) );
+				closest = players[idx];
+				break;
 			}
+		}
+
+		// Accelerate item to nearby player
+		if (closest != null) {
+			float dist_x = transform.localPosition.x - closest.transform.localPosition.x;
+			float dist_y = transform.localPosition.y - closest.transform.localPosition.y;
+
+			time_near += Time.deltaTime;
+			GetComponent<Rigidbody2D>().AddForce(40f * time_near * (new Vector2(-dist_x, -dist_y)));
+		} else {
+			//  Reset acceleration
+			time_near = 0f;
 		}
 
 		if (duration >= 0) { // Decrement timer
@@ -45,4 +63,7 @@ public class Item_Drop : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+	/* Sets the duration of this item to the given value. */
+	public void set_duration(float value) { duration = value; }
 }
