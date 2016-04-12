@@ -13,7 +13,7 @@ public class GrowBoss : Baseenemy
 
     void Awake() {
         isBoss = true;
-        Maxhealth = 2500;
+        Maxhealth = 8500;
 		health = Maxhealth;
 		damage = 32;
 		max_dmg = damage;
@@ -49,7 +49,7 @@ public class GrowBoss : Baseenemy
         // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
         var timeScale = time / 360f;
 
-		Maxhealth = System.Math.Min(2000000, Maxhealth + (int)(2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		Maxhealth = System.Math.Min(2000000, Maxhealth + (int)(1f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
 		max_speed = Mathf.Min(400f, max_speed + (0.0175f * max_speed * timeScale));
