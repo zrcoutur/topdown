@@ -14,7 +14,7 @@ public class MeleeBot : Baseenemy {
 	void Awake() {
 		base.Maxhealth = 25;
 		base.health = base.Maxhealth;
-		base.speed = 6f;
+		base.speed = 4.5f;
 		o_speed = speed;
 		base.rate = 1.2f;
 		o_rate = rate;
@@ -35,7 +35,7 @@ public class MeleeBot : Baseenemy {
 		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(3.2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
 		health = Maxhealth;
 
-		o_speed = Mathf.Min(16f, o_speed + (0.085f * o_speed * timeScale));
+		o_speed = Mathf.Min(15f, o_speed + (0.085f * o_speed * timeScale));
 		o_rate = Mathf.Max(0.45f, o_rate - (0.03f * o_rate * timeScale));
 		damage = System.Math.Min(280, damage + (int)(0.235f * damage * Mathf.Pow(timeScale, 2f)));
 	}
