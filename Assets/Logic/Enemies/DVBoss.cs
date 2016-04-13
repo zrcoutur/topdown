@@ -27,24 +27,24 @@ public class DVBoss : Baseenemy
 
         var timeScale = time / 360f;
 
-		Maxhealth = System.Math.Min(850000, Maxhealth + (int)(0.62f * Maxhealth * Mathf.Pow(timeScale, 3f)));
+		Maxhealth = System.Math.Min(850000, 17500 + (int)(3200f * Mathf.Pow(timeScale, 3f) + 7500f * timeScale));
 		health = Maxhealth;
 
-		speed = Mathf.Min(3f, speed + (0.3f * speed * timeScale));
-		damage = System.Math.Min(750, damage + (int)(0.16f * damage * Mathf.Pow(timeScale, 2f)));
+		speed = Mathf.Min(5f, 1f + (0.27f * timeScale));
+		damage = System.Math.Min(700, 40 + (int)(3.16f * Mathf.Pow(timeScale, 2f)));
 	}
 
     // Use this for initialization
     void Awake()
     {
         isBoss = true;
-		base.Maxhealth = 3000;
+		base.Maxhealth = 17500;
 		base.health = Maxhealth;
-        base.speed = 0.5f;
+        base.speed = 1f;
         base.rate = 2.5f;
         //base.rate = 4f;
         Lightning = 0.01f;
-        damage = 20;
+        damage = 40;
     }
 
     // Update is called once per frame

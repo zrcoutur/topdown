@@ -27,12 +27,12 @@ public class FlyerDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(24000, Maxhealth + (int)(3f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		Maxhealth = System.Math.Min(24000, 20 + (int)(56.7f * Mathf.Pow(timeScale, 2f) + 65f * timeScale));
 		health = Maxhealth;
 
-		speed = Mathf.Min(20f, speed + (0.2f * speed * timeScale));
-		rate = Mathf.Max(0.35f, rate - (0.038f * rate * timeScale));
-		damage = System.Math.Min(450, damage + (int)(0.185f * damage * Mathf.Pow(timeScale, 2f)));
+		speed = Mathf.Min(20f, 4f + (0.8f * timeScale));
+		rate = Mathf.Max(0.35f, 1.5f - (0.0575f * timeScale));
+		damage = System.Math.Min(450, 6 + (int)(1.11f * Mathf.Pow(timeScale, 2f)));
     }
 
     public override void attack()
@@ -42,7 +42,7 @@ public class FlyerDrone : Baseenemy
 
 		float chance = UnityEngine.Random.value;
 
-		if (chance <= 0.5f) {
+		if (chance <= 0.66f) {
 			// Fire a single bullet at the player
 			var b = (EnemyBullet)Instantiate(bullet, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation) + 180));
 			b.damage = damage / 2;

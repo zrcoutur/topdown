@@ -693,7 +693,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage(damage_for_weapon());
-					b1.setDuration(0.1f);
+					b1.setDuration(0.16f);
 	
 					// Calculate bullet's velocity
 	
@@ -732,8 +732,8 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.setDamage((int)(1.15f * damage_for_weapon()));
-					b1.setDuration(0.15f);
+					b1.setDamage((int)(1.6f * damage_for_weapon()));
+					b1.setDuration(0.14f);
 	
 					// Calculate bullet's velocity
 	
@@ -773,7 +773,7 @@ public class Player : MonoBehaviour {
 					b1.transform.parent = transform;
 					score.bullets_fired++;
 					b1.setDamage((int)(0.7f * damage_for_weapon()));
-					b1.setDuration(0.18f);
+					b1.setDuration(0.2f);
 	
 					// Calculate bullet's velocity
 	
@@ -813,7 +813,7 @@ public class Player : MonoBehaviour {
 					b3.transform.parent = transform;
 					score.bullets_fired++;
 					b3.setDamage(damage_for_weapon()); // Note that damage is increased by the shot behavior.
-					b3.setDuration(0.23f);
+					b3.setDuration(0.25f);
 					b3.outset = -60.0f + 30.0f * bullet;
 	
 					// Calculate bullet's velocity
@@ -862,12 +862,12 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(1.15f);
+				gnd.setDuration(1.1f);
 
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(8f, 10f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(7.5f, 9.5f));
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -933,7 +933,7 @@ public class Player : MonoBehaviour {
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
 					gnd.setDamage( (int)(0.75f * damage_for_weapon()) );
-					gnd.setDuration(0.75f);
+					gnd.setDuration(0.8f);
 
 					// Calculate bullet's velocity
 					// Shot spread range.
@@ -971,7 +971,7 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(0.8f);
+				gnd.setDuration(0.9f);
 
 				// Calculate bullet's velocity
 				// Shot spread range.
@@ -1060,7 +1060,7 @@ public class Player : MonoBehaviour {
 	 * The sum of a weapon's levels for damage, rate of fire, and ammo consumption must
 	 * be greater than or equal to 7 (or 6 in the case of the sword).
 	 * For the damage upgrade, the damage level must be greater than or equal to 4 and greater than the rate of fire level,
-	 * for the speed upgrade the rate of fire level must be greater than or equal to 3 and greater than the damage level,
+	 * for the speed upgrade the rate of fire level must be greater than or equal to 3 and greater than or equal to the damage level,
 	 * for any other case, the non focus upgrade is reached after a total of 7 levels. */
 	public void updateWeapons() {
 		/* Loop through all weapons. */
@@ -1081,9 +1081,9 @@ public class Player : MonoBehaviour {
 					// the sum of all three levels must greater than 5
 					if ((dmg_lvl + rof_lvl + ac_lvl) >= 7) {
 
-						if (dmg_lvl >= 4 && dmg_lvl > rof_lvl) { // damage focus upgrade
+						if (dmg_lvl >= 4) { // damage focus upgrade
 							weapon.setUgrade(1);
-						} else if (rof_lvl >= 3 && rof_lvl > dmg_lvl) { // speed focus upgrade
+						} else if (rof_lvl >= 3 && rof_lvl >= dmg_lvl) { // speed focus upgrade
 							weapon.setUgrade(2);
 						} else { // no focus upgrade
 							weapon.setUgrade(3);

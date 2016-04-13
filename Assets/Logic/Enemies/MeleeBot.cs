@@ -14,7 +14,7 @@ public class MeleeBot : Baseenemy {
 	void Awake() {
 		base.Maxhealth = 25;
 		base.health = base.Maxhealth;
-		base.speed = 4.5f;
+		base.speed = 4f;
 		o_speed = speed;
 		base.rate = 1.2f;
 		o_rate = rate;
@@ -32,12 +32,12 @@ public class MeleeBot : Baseenemy {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(32000, Maxhealth + (int)(3.2f * Maxhealth * Mathf.Pow(timeScale, 2f)));
+		Maxhealth = System.Math.Min(32000, 25 + (int)(76f * Mathf.Pow(timeScale, 2f) + 80f * timeScale));
 		health = Maxhealth;
 
-		o_speed = Mathf.Min(15f, o_speed + (0.085f * o_speed * timeScale));
-		o_rate = Mathf.Max(0.45f, o_rate - (0.03f * o_rate * timeScale));
-		damage = System.Math.Min(280, damage + (int)(0.235f * damage * Mathf.Pow(timeScale, 2f)));
+		o_speed = Mathf.Min(15f, 4f + (0.55f * timeScale));
+		o_rate = Mathf.Max(0.45f, 1.2f - (0.043f * timeScale));
+		damage = System.Math.Min(280, 3 + (int)(0.695f * Mathf.Pow(timeScale, 2f)));
 	}
 
 	public override void attack()
@@ -69,9 +69,9 @@ public class MeleeBot : Baseenemy {
 			// If the Player is close enough, dash at them
 			if (!dashing && Mathf.Abs(dist_near) <= 6.5f) {
 				// while dashing speed is increaseing by 80%
-				speed = 1.8f * o_speed;
+				speed = 1.75f * o_speed;
 				// while dashing rate of attack cooldown is reducced by 20%
-				rate = 0.8f * o_rate;
+				rate = 0.75f * o_rate;
 
 				dashing = true;
 				dashDelay = 10f;
