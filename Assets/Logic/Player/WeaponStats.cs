@@ -59,7 +59,7 @@ public class WeaponStats {
 			rof_c = new Stat_Cost[] { new Stat_Cost(3, 0), new Stat_Cost(9, 0), new Stat_Cost(16, 0), new Stat_Cost(23, 54),	new Stat_Cost(36, 98) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(5, 9), new Stat_Cost(12, 23), new Stat_Cost(19, 54), new Stat_Cost(28, 96), new Stat_Cost(41, 126) };
 		} else if (type.CompareTo(WEAPON_TYPE.shotgun) == 0) {
-			dmg = new int[] { 12, 41, 82, 135, 200, 277, 366, 467, 580, 705, 842 };
+			dmg = new int[] { 16, 54, 106, 170, 248, 338, 442, 558, 688, 830, 986 };
 			rof = new float[] { 2, 3, 4, 5, 7, 9 };
 			amo = new float[] { 21f, 17f, 13f, 10f, 7f, 5f };
 
