@@ -335,7 +335,7 @@ public class GenerateRoom : MonoBehaviour
 				{0,0,0,0,0,0,0,0,0, },	//8
 			},
 				{ //prefab 1 for 9X9
-				{s,s,s,s,s,s,s,s,0, },	//0
+				{0,s,s,s,s,s,s,s,0, },	//0
 				{s,0,0,0,0,0,0,0,s, },
 				{s,0,0,0,0,0,0,0,s, },
 				{s,0,0,x,x,x,0,0,s, },
@@ -354,7 +354,7 @@ public class GenerateRoom : MonoBehaviour
 				{s,0,0,b,b,b,0,0,s, },
 				{s,0,0,0,m,0,0,0,s, },
 				{s,0,0,0,0,0,0,0,s, },
-				{0,0,0,0,0,0,0,0,0, },	//8
+				{0,s,s,s,s,s,s,s,0, },	//8
 			},
 			{ //prefab 3 for 9X9
 				{0,0,0,s,s,s,0,0,0, },	//0
@@ -467,7 +467,7 @@ public class GenerateRoom : MonoBehaviour
 				{0,s,s,s,s,s,0,0,0, },	//8
 			},          
 				{ //prefab 13 for 9X9
-				{0,0,0,s,s,s,s,s,0, },	//0		
+				{0,0,0,s,s,s,0,0,0, },	//0		
 				{s,0,0,0,0,0,b,b,0, },
 				{s,0,0,0,0,x,b,b,0, },
 				{s,0,0,0,0,b,x,0,s, }, 
@@ -475,7 +475,7 @@ public class GenerateRoom : MonoBehaviour
 				{s,0,x,b,0,0,0,0,s, },
 				{0,b,b,x,0,0,0,0,s, },
 				{0,b,b,0,0,0,0,0,s, },
-				{0,s,s,s,s,s,0,0,0, },	//8
+				{0,0,0,s,s,s,0,0,0, },	//8
 			},
 
 		};
