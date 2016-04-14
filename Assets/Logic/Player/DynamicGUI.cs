@@ -11,7 +11,7 @@ public class DynamicGUI : MonoBehaviour {
 	// Dimensions of each of the contents of window
 	private StatDisplay[] displays;
 
-	private static GUIStyle lbl_grn_text;
+	private static GUIStyle lbl_blu_text;
 
 	private Player p;
 
@@ -20,7 +20,7 @@ public class DynamicGUI : MonoBehaviour {
 		// Get a reference to the Player associated with this window
 		p = GetComponentInParent<Player>();
 		window_dimensions = new Rect(100, 100, 100, 100);
-		lbl_grn_text = null;
+		lbl_blu_text = null;
 	}
 
 	public void Update() {
@@ -39,15 +39,15 @@ public class DynamicGUI : MonoBehaviour {
 		
 	public void OnGUI() {
 		
-		if (lbl_grn_text == null) {
+		if (lbl_blu_text == null) {
 			// center text in labels
 			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 			// center window title
 			GUI.skin.window.alignment = TextAnchor.UpperCenter;
 			// set green-italic text style
-			lbl_grn_text = new GUIStyle(GUI.skin.label);
-			lbl_grn_text.normal.textColor = Color.green;
-			lbl_grn_text.fontStyle = FontStyle.Italic;
+			lbl_blu_text = new GUIStyle(GUI.skin.label);
+			lbl_blu_text.normal.textColor = Color.blue;
+			lbl_blu_text.fontStyle = FontStyle.Italic;
 		}
 
 		// Draws the window if show is true
@@ -61,6 +61,8 @@ public class DynamicGUI : MonoBehaviour {
 				updatePositions();
 			}
 
+			GUI.color = Color.black;
+			GUI.contentColor = Color.white;
 			GUI.Window(0, window_dimensions, drawContents, "Stats");
 		}
 	}
@@ -110,6 +112,15 @@ public class DynamicGUI : MonoBehaviour {
 		bool can_buy = for_next == null || ( for_next.scrap_cost <= p.stats.get_scrap() && for_next.ecore_cost <= p.stats.get_ecores() );
 
 		GUI.enabled = !is_last && can_buy;
+
+		if (GUI.enabled) {
+			// Text color green indicates that a stat can be upgraded currently
+			GUI.skin.button.normal.textColor = Color.green;
+			GUI.skin.button.fontStyle = FontStyle.Bold;
+		} else if (!is_last) {
+			GUI.skin.button.normal.textColor = Color.red;
+		}
+
 		// Create button to increment the pointer
 		if ( GUI.Button(display.buttons[0], "+") && GUI.enabled ) {
 			int origin = 0;
@@ -141,6 +152,9 @@ public class DynamicGUI : MonoBehaviour {
 			}
 		}
 
+		GUI.skin.button.normal.textColor = Color.white;
+		GUI.skin.button.fontStyle = FontStyle.Normal;
+
 		/* Do NOT uncomment!!
 		 
 		GUI.enabled = display.stat.pointer_value() > 0;
@@ -170,7 +184,7 @@ public class DynamicGUI : MonoBehaviour {
 		// display arrows
 		GUI.Label(display.labels[3], ">>");
 		// show next value (or '--' if no such element exists)
-		GUI.Label(display.labels[4], (is_last) ? "--" : "" + display.stat.next(), lbl_grn_text);
+		GUI.Label(display.labels[4], (is_last) ? "--" : "" + display.stat.next(), lbl_blu_text);
 	}
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */

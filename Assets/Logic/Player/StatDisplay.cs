@@ -34,9 +34,9 @@ public class StatDisplay {
 		// Stat name
 		labels[0] = relativeRect(origin, 2, 15, 10, 90, 22);
 		// Increment button
-		buttons[0] = relativeRect(labels[0], 0, 10, 2, 18, 18);
+		buttons[0] = relativeRect(labels[0], 0, 10, 2, 21, 21);
 		// Decrement button
-		//buttons[1] = relativeRect(buttons[0], 0, 5, 0, 18, 18);
+		//buttons[1] = relativeRect(buttons[0], 0, 5, 0, 21, 21);
 		// next stat cost
 		labels[1] = relativeRect(labels[0], 2, 0, 0, 200, 22);
 		// current stat value
