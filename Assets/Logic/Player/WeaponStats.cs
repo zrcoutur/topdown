@@ -68,7 +68,7 @@ public class WeaponStats {
 			rof_c = new Stat_Cost[] { new Stat_Cost(5, 0), new Stat_Cost(14, 0), new Stat_Cost(21, 0), new Stat_Cost(30, 78), new Stat_Cost(42, 125) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(6, 15), new Stat_Cost(15, 31), new Stat_Cost(23, 78), new Stat_Cost(37, 113), new Stat_Cost(54, 159) };
 		} else if (type.CompareTo(WEAPON_TYPE.grenade) == 0) {
-			dmg = new int[] { 50, 86, 148, 236, 350, 490, 656, 848, 1066, 1310, 1580 };
+			dmg = new int[] { 56, 163, 318, 521, 772, 1071, 1418, 1813, 2256, 3286 };
 			rof = new float[] { 1.2f, 1.3f, 1.5f, 1.85f, 2.1f, 2.5f };
 			amo = new float[] { 56f, 52f, 48f, 45f, 42f, 39f };
 

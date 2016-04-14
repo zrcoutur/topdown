@@ -932,7 +932,7 @@ public class Player : MonoBehaviour {
 					Vector3 gnd_scale = gnd.transform.localScale;
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
-					gnd.setDamage( (int)(0.75f * damage_for_weapon()) );
+					gnd.setDamage( (int)(0.7f * damage_for_weapon()) );
 					gnd.setDuration(0.8f);
 
 					// Calculate bullet's velocity
