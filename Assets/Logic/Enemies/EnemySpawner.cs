@@ -19,8 +19,8 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         activated = false;
-        float yScale = transform.lossyScale.y / 2;
-        float xScale = transform.lossyScale.x / 2;
+        float yScale = transform.lossyScale.y / 3;
+        float xScale = transform.lossyScale.x / 3;
         i = 0;
 		
         if (north)

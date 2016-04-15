@@ -847,7 +847,7 @@ public class Player : MonoBehaviour {
 				}
 
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+				atkCool = 1.8f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 				// Play Shoot Sound
 				// TODO replace with grenade shoot sound!

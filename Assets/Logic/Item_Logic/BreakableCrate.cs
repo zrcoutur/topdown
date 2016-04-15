@@ -27,6 +27,8 @@ public class BreakableCrate : MonoBehaviour {
 	private float timer;
 	// damage done by an explosive crate
 	private int damage;
+	// tolerance duration for enemies bumping into
+	private int enemyTolerance = 50;
 
 	// Use this for initialization
 	void Start () {
@@ -60,32 +62,39 @@ public class BreakableCrate : MonoBehaviour {
 		}
 	}
 		
-	public void OnTriggerEnter2D(Collider2D trigger) {
+	public void OnTriggerEnter2D (Collider2D trigger)
+	{
 		var collider = trigger.gameObject;
 		/* Reduce durability upon coming in contact with bullets and beam swords */
 		if (collider != null) {
 			/* bullets and swords deal differing damage */
-			if (collider.GetComponent<Bullet1>() != null || collider.GetComponent<EnemyBullet>() != null) {
+			if (collider.GetComponent<Bullet1> () != null || collider.GetComponent<EnemyBullet> () != null) {
 				durability -= 1;
 				//increment player stat
-				if (collider.GetComponent<Bullet1>() != null) {
-					collider.gameObject.transform.parent.GetComponent<Player>().score.boxes_hit++;
+				if (collider.GetComponent<Bullet1> () != null) {
+					collider.gameObject.transform.parent.GetComponent<Player> ().score.boxes_hit++;
 				}
-			} else if (collider.GetComponent<Bullet2>() != null) {
+			} else if (collider.GetComponent<Bullet2> () != null) {
 				durability -= 3;
-			} else if (collider.GetComponent<Bullet3>() != null) {
+			} else if (collider.GetComponent<Bullet3> () != null) {
 				durability -= 2;
-			} else if (collider.GetComponent<Slash>() != null || collider.gameObject.GetComponent<EnemySlash>() != null) {
+			} else if (collider.GetComponent<Slash> () != null || collider.gameObject.GetComponent<EnemySlash> () != null) {
 				durability -= 5;
-			} else if (collider.GetComponent<Explosion>() != null) {
+			} else if (collider.GetComponent<Explosion> () != null) {
 				durability -= 8;
 			}
 		}
 	}
 
-	public void OnCollisionStay2D(Collision2D col) {
+	public void OnCollisionStay2D (Collision2D col)
+	{
 		if (col.gameObject.tag == "Block") {
 			collision_tag = true;
+		} else if (col.gameObject.tag == "Enemy") {
+			enemyTolerance--;
+			if (enemyTolerance <= 0) {
+				durability -= 2;
+			}
 		}
 	}
 
