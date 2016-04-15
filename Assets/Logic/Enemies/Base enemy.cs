@@ -29,6 +29,9 @@ public abstract class Baseenemy : MonoBehaviour
     public float timer;
 	public int damage;
 
+	private bool isKiting;
+	private bool kiteCW;
+
 	private bool slowed;
 	private float slow_duration;
 
@@ -44,6 +47,9 @@ public abstract class Baseenemy : MonoBehaviour
     private float timeTillDestroy;
 
     void Start() {
+		isKiting = false;
+		kiteCW = false;
+
 		slowed = false;
 		slow_duration = 0f;
 
@@ -159,7 +165,7 @@ public abstract class Baseenemy : MonoBehaviour
 			// Move towards target
 
 			// Check if something obstructs your movement to the target
-            if (Vector2.Distance(transform.position, nearest.position) > 5.0f) {
+            if (Vector2.Distance(transform.position, nearest.position) > 8.0f) {
                 pf.Move();
 			}
 			// Otherwise, move straight to the target
@@ -172,9 +178,32 @@ public abstract class Baseenemy : MonoBehaviour
 				// Rotate to face target
 				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
 
-				if (gameObject.GetComponent<FlyerDrone>() != null && Vector3.Distance(transform.position, nearest.position) <= (4 * range / 5)) {
-					// Move away from target
-					body.AddForce(-dir * GetComponent<Baseenemy>().speed);
+				if (gameObject.GetComponent<FlyerDrone>() != null) {
+					// Logic invovling the movement of the Flyer drone
+					float dist = Vector3.Distance(transform.position, nearest.position);
+
+					if (dist < (range - 5.5f)) {
+						// Move away from target
+						isKiting = false;
+						body.AddForce(-dir * (3f + speed / 5));
+					} else if (dist >= (range - 5.5f) && dist <= (range - 0.5f)) {
+						// Kite the target
+
+						// Stop movement if the drone is not already kiting the player
+						if (!isKiting) {
+							body.velocity = Vector2.zero;
+							isKiting = true;
+							// Kite clockwise or counter-clockwise
+							kiteCW = UnityEngine.Random.value > 0.5f;
+						}
+
+						Vector2 force = Tools.AngleToVec2((body.rotation * transform.forward).z + ((kiteCW) ? -180f : 0f), 2f + speed / 10);
+						body.AddForce(force);
+					} else {
+						// Move at target
+						isKiting = false;
+						body.AddForce(dir * GetComponent<Baseenemy>().speed);
+					}
 				} else {
 					// Move at target
 					body.AddForce(dir * GetComponent<Baseenemy>().speed);

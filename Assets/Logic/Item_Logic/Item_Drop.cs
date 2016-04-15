@@ -49,7 +49,7 @@ public class Item_Drop : MonoBehaviour {
 			float dist_y = transform.localPosition.y - closest.transform.localPosition.y;
 
 			time_near += Time.deltaTime;
-			GetComponent<Rigidbody2D>().AddForce(25f * Mathf.Pow(time_near, 3.0f) * (new Vector2(-dist_x, -dist_y)));
+			GetComponent<Rigidbody2D>().AddForce(40f * Mathf.Pow(time_near + 1, 2.0f) * (new Vector2(-dist_x, -dist_y)));
 		} else {
 			//  Reset acceleration
 			time_near = 0f;

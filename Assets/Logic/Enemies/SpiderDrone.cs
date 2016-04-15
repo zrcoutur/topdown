@@ -68,9 +68,9 @@ public class SpiderDrone : Baseenemy
 				} else if (Mathf.Abs(dist_near) <= 7.5f) {
 					body.velocity = Vector2.zero;
 					// Leap at the closest Player
-					force = 750f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = 300f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
-					leapHalt = 0.15f;
+					leapHalt = 1f;
 				}
 
 				GetComponent<Rigidbody2D>().AddForce(force);

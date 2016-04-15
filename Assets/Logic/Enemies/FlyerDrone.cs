@@ -30,7 +30,7 @@ public class FlyerDrone : Baseenemy
 		Maxhealth = System.Math.Min(24000, 20 + (int)(56.7f * Mathf.Pow(timeScale, 2f) + 65f * timeScale));
 		health = Maxhealth;
 
-		speed = Mathf.Min(20f, 4f + (0.8f * timeScale));
+		speed = Mathf.Min(16f, 4f + (0.6f * timeScale));
 		rate = Mathf.Max(0.35f, 1.5f - (0.0575f * timeScale));
 		damage = System.Math.Min(450, 6 + (int)(1.11f * Mathf.Pow(timeScale, 2f)));
     }
