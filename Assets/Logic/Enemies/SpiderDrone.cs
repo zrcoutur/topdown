@@ -5,6 +5,7 @@ public class SpiderDrone : Baseenemy
 {
     public GameObject Slash;
 	private float leapDelay = 9f;
+	private float leapHalt = 0f;
     
 
     // Use this for initialization
@@ -59,21 +60,30 @@ public class SpiderDrone : Baseenemy
 				Vector2 force = Vector2.zero;
 				float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
 
-				if (Mathf.Abs(dist_near) <= 2f) {
+				if (Mathf.Abs(dist_near) <= 2.5f) {
 					body.velocity = Vector2.zero;
 					// Leap backwards
-					force = -600f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = -900f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 2f + UnityEngine.Random.Range(-1f, 1f);
-				} else if (Mathf.Abs(dist_near) <= 6f) {
+				} else if (Mathf.Abs(dist_near) <= 7.5f) {
 					body.velocity = Vector2.zero;
 					// Leap at the closest Player
-					force = 300f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
+					force = 750f * (nearest.gameObject.transform.localPosition - gameObject.transform.localPosition);
 					leapDelay = 7f + UnityEngine.Random.Range(-2f, 2f);
+					leapHalt = 0.15f;
 				}
 
 				GetComponent<Rigidbody2D>().AddForce(force);
 			}
 		} else if (leapDelay > 0f) {
+			// Stop the Spider drone mid-leap
+			if (leapHalt <= 0f) {
+				body.velocity = Vector2.zero;
+				leapHalt = float.MaxValue;
+			} else {
+				leapHalt -= Time.deltaTime;
+			}
+			
 			// Leap cooldown
 			leapDelay -= Time.deltaTime;
 		}

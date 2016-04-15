@@ -172,8 +172,13 @@ public abstract class Baseenemy : MonoBehaviour
 				// Rotate to face target
 				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
 
-				// Move at target
-                body.AddForce(dir * GetComponent<Baseenemy>().speed);
+				if (gameObject.GetComponent<FlyerDrone>() != null && Vector3.Distance(transform.position, nearest.position) <= (4 * range / 5)) {
+					// Move away from target
+					body.AddForce(-dir * GetComponent<Baseenemy>().speed);
+				} else {
+					// Move at target
+					body.AddForce(dir * GetComponent<Baseenemy>().speed);
+				}
 
 			}
             if (infected)

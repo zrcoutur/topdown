@@ -11,7 +11,7 @@ public class DynamicGUI : MonoBehaviour {
 	// Dimensions of each of the contents of window
 	private StatDisplay[] displays;
 
-	private static GUIStyle lbl_blu_text;
+	private static GUIStyle lbl_grn_text;
 
 	private Player p;
 
@@ -20,7 +20,7 @@ public class DynamicGUI : MonoBehaviour {
 		// Get a reference to the Player associated with this window
 		p = GetComponentInParent<Player>();
 		window_dimensions = new Rect(100, 100, 100, 100);
-		lbl_blu_text = null;
+		lbl_grn_text = null;
 	}
 
 	public void Update() {
@@ -39,15 +39,15 @@ public class DynamicGUI : MonoBehaviour {
 		
 	public void OnGUI() {
 		
-		if (lbl_blu_text == null) {
+		if (lbl_grn_text == null) {
 			// center text in labels
 			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 			// center window title
 			GUI.skin.window.alignment = TextAnchor.UpperCenter;
 			// set green-italic text style
-			lbl_blu_text = new GUIStyle(GUI.skin.label);
-			lbl_blu_text.normal.textColor = Color.blue;
-			lbl_blu_text.fontStyle = FontStyle.Italic;
+			lbl_grn_text = new GUIStyle(GUI.skin.label);
+			lbl_grn_text.normal.textColor = Color.green;
+			lbl_grn_text.fontStyle = FontStyle.Italic;
 		}
 
 		// Draws the window if show is true
@@ -184,7 +184,7 @@ public class DynamicGUI : MonoBehaviour {
 		// display arrows
 		GUI.Label(display.labels[3], ">>");
 		// show next value (or '--' if no such element exists)
-		GUI.Label(display.labels[4], (is_last) ? "--" : "" + display.stat.next(), lbl_blu_text);
+		GUI.Label(display.labels[4], (is_last) ? "--" : "" + display.stat.next(), lbl_grn_text);
 	}
 
 	/* Switches the display of the current weapon stats to the next weapon in the list. */

@@ -68,9 +68,9 @@ public class MeleeBot : Baseenemy {
 			float dist_near = Vector2.Distance(gameObject.transform.localPosition, nearest.gameObject.transform.localPosition);
 			// If the Player is close enough, dash at them
 			if (!dashing && Mathf.Abs(dist_near) <= 6.5f) {
-				// while dashing speed is increaseing by 80%
-				speed = 1.75f * o_speed;
-				// while dashing rate of attack cooldown is reducced by 20%
+				// while dashing speed is increased by 85%
+				speed = 1.85f * o_speed;
+				// while dashing rate of attack cooldown is reduced by 25%
 				rate = 0.75f * o_rate;
 
 				dashing = true;

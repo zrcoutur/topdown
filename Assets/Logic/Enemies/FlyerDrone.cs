@@ -65,15 +65,6 @@ public class FlyerDrone : Baseenemy
 		}
 	}
 
-	public override void Change() {
-		// Flyer drones slowdown near player's and speed up otherwise
-		if (nearest != null) {
-			if (Vector3.Distance(transform.position, nearest.position) <= (4 * range / 5)) {
-				body.drag = 2.5f;
-			} else {
-				body.drag = 0.5f;
-			}
-		}
-	}
+	public override void Change() {}
 
 }
