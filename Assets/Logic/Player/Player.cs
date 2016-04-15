@@ -1013,8 +1013,8 @@ public class Player : MonoBehaviour {
 			int ret = stats.MEDPACKS.increment();
 			// If you cannot hold anymore med_packs
 			if (ret == 0) {
-				stats.change_scrap(8);
-				stats.change_ecores(1);
+				stats.change_scrap(9);
+				stats.change_ecores(2);
 			}
 		}
 		// Energy Core
