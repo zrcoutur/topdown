@@ -11,7 +11,7 @@ public class DVBoss : Baseenemy
         double rand1 = ((double)Random.Range(0, 100)) / (100.0);
         if (rand1 <= Lightning)
         {
-            lightning();
+            //lightning();
         }
         else
         {
