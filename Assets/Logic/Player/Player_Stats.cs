@@ -61,9 +61,7 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		// 15599
 		scrap = 0;
-		// 3030
 		energyCores = 0;
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
@@ -118,6 +116,9 @@ public class Player_Stats {
 			default: 					return null;	
 		}
 	}
+
+	/* Switches player's currently weapon to the given weapon. */
+	public void switch_weapon_to(WEAPON_TYPE w) { held_weapon = w; }
 
 	/* Cycles to the next weapon base on the integer value associated with a weapon type. */
 	public void cycle_weapons() {

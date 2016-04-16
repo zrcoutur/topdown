@@ -44,6 +44,8 @@ public class Player : MonoBehaviour {
 
 	// Parameters
 	double atkCool;
+	// Used for calculating the power of the grenade launcher
+	float atkCharge;
 	Regen_Counter ammo_regen;
 	private static readonly float maxAmmo = 100f;
 	float shieldRegenTime;
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour {
 
 		// Set base params
 		stats = new Player_Stats();
+		atkCharge = 0.5f;
 		ammo = 100f;
 		ammo_regen = new Regen_Counter(0.3f, 0.2f);
 		shieldRegenTime = shieldMaxRegenTime;
@@ -209,6 +212,50 @@ public class Player : MonoBehaviour {
 			body.AddForce (new Vector2 (22, 0));
 		}
 
+		// Press 1 to switch to the sword
+		if (Input.GetKeyDown(KeyCode.Alpha1)) {
+			stats.switch_weapon_to(WEAPON_TYPE.sword);
+			// Play swap sound
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+			// Change weapon sprite
+			wep.updateWeapon();
+		}
+
+		// Press 2 to switch to the rifle
+		if (Input.GetKeyDown(KeyCode.Alpha2)) {
+			stats.switch_weapon_to(WEAPON_TYPE.rifle);
+			// Play swap sound
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+			// Change weapon sprite
+			wep.updateWeapon();
+		}
+
+		// Press 3 to switch to the shotgun
+		if (Input.GetKeyDown(KeyCode.Alpha3)) {
+			stats.switch_weapon_to(WEAPON_TYPE.shotgun);
+			// Play swap sound
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+			// Change weapon sprite
+			wep.updateWeapon();
+		}
+
+		// Press 4 to switch to the grenade launcher
+		if (Input.GetKeyDown(KeyCode.Alpha4)) {
+			stats.switch_weapon_to(WEAPON_TYPE.grenade);
+			// Play swap sound
+			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+
+			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+			// Change weapon sprite
+			wep.updateWeapon();
+		}
+
 		// Strafe Input
 		body.freezeRotation = (Input.GetKey( M_Strafe ));
 
@@ -270,12 +317,19 @@ public class Player : MonoBehaviour {
 			wep.GetComponent<Renderer> ().enabled = true;
 
 			// Attack Input
-			if (Input.GetKey ( M_Shoot )) {
+			if (stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKey(M_Shoot)) {
 
-				var pressed = Input.GetKeyDown( M_Shoot );
+				// Grenade launcher can be charged
+				if (atkCharge < 12f) { atkCharge += 0.5f; }
+			} else if ((stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKeyUp(M_Shoot)) ||
+					   (!(stats.current_weapon() == WEAPON_TYPE.grenade) && Input.GetKey(M_Shoot))) {
 
-				PerformAttack ((int)stats.current_weapon(), pressed );
+				// Release charge to fire the grenade launcher
+				var pressed = Input.GetKeyDown(M_Shoot);
+
+				PerformAttack((int)stats.current_weapon(), pressed);
 				ammo_regen.delay_regen();
+				atkCharge = 0.5f;
 			}
 
 		}
@@ -861,12 +915,12 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(1.1f);
+				gnd.setDuration(1f);
 
 				// Calculate bullet's velocity
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, Random.Range(7.5f, 9.5f));
+					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, atkCharge);
 
 				// Mildly shake camera
 				cam.AddShake(0.2f);
@@ -931,14 +985,14 @@ public class Player : MonoBehaviour {
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
 					gnd.setDamage( (int)(0.7f * damage_for_weapon()) );
-					gnd.setDuration(0.8f);
+					gnd.setDuration(0.75f);
 
 					// Calculate bullet's velocity
 					// Shot spread range.
 					gnd_spread = Random.Range(-35f, 35f);
 
 					// Set final velocity based on travel angle
-					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(6f, 9f));
+					gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, atkCharge);
 				}
 
 				// Mildly shake camera
@@ -969,14 +1023,14 @@ public class Player : MonoBehaviour {
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
-				gnd.setDuration(0.9f);
+				gnd.setDuration(1f);
 
 				// Calculate bullet's velocity
 				// Shot spread range.
 				gnd_spread = Random.Range(-10f, 10f);
 
 				// Set final velocity based on travel angle
-				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, Random.Range(9f, 13f));
+				gnd.GetComponent<Rigidbody2D>().velocity = Tools.AngleToVec2((body.rotation * transform.forward).z + gnd_spread + 90.0f, atkCharge);
 
 				// Mildly shake camera
 				cam.AddShake(0.15f);
