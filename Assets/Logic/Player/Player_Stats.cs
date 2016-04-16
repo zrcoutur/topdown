@@ -67,7 +67,7 @@ public class Player_Stats {
 		energyCores = 0;
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
-											 new Stat_Cost[] { new Stat_Cost(2, 8), new Stat_Cost(5, 28), new Stat_Cost(11, 76) } );
+											 new Stat_Cost[] { new Stat_Cost(3, 15), new Stat_Cost(5, 36), new Stat_Cost(11, 83) } );
 
 	}
 

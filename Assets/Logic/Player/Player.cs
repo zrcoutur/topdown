@@ -847,7 +847,7 @@ public class Player : MonoBehaviour {
 						}
 
 				// Cooldown
-				atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
+				atkCool = 1.8f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 				// Play Shoot Sound
 				// TODO replace with grenade shoot sound!
@@ -1011,8 +1011,8 @@ public class Player : MonoBehaviour {
 			int ret = stats.MEDPACKS.increment();
 			// If you cannot hold anymore med_packs
 			if (ret == 0) {
-				stats.change_scrap(9);
-				stats.change_ecores(2);
+				stats.change_scrap(8);
+				stats.change_ecores(1);
 			}
 		}
 		// Energy Core
