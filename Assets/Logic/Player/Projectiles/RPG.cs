@@ -36,6 +36,8 @@ public class RPG : Grenade {
 	/* Creates an explosion for the RPG and removes the RPG from the game */
 	private void explode() {
 		Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
+		exp._parent = transform.parent;
+
 		Vector3 scale = exp.transform.localScale;
 		// reduce scale of the explosion
 		exp.transform.localScale = new Vector3(1.5f * scale.x, 1.5f * scale.y, scale.z);

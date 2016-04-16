@@ -8,6 +8,10 @@ using System.Collections;
  * 31 March 2016
  */
 public abstract class Explosion : MonoBehaviour {
+	/* If an explosion was set by a player, then this
+	 * variable is set to that Player's transform. */
+	public Transform _parent = null;
+
 	// Explosion SFX
 	public AudioClip X_Explode;
 	protected float animDone = 0.45f;

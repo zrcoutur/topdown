@@ -840,11 +840,11 @@ public class Player : MonoBehaviour {
 			switch (stats.weapon_by_type(stats.current_weapon()).upgrade_state()) {
 
 			// Grenade Launcher
-			case 0:
+					case 0:
 				// Ammo Check
-				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
-					break;
-				}
+						if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
+							break;
+						}
 
 				// Cooldown
 				atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
@@ -858,7 +858,6 @@ public class Player : MonoBehaviour {
 
 				// Create grenade
 				gnd = (Grenade)Instantiate(grenade, gnd_pos, transform.rotation);
-
 				gnd.transform.parent = transform;
 
 				gnd.setDamage(damage_for_weapon());
@@ -894,7 +893,6 @@ public class Player : MonoBehaviour {
 
 				// Create grenade
 				var rpg = (RPG)Instantiate(this.rpg, gnd_pos, transform.rotation);
-
 				rpg.transform.parent = transform;
 
 				rpg.setDamage( (int)(2.5f * damage_for_weapon()) );

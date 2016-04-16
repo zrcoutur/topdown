@@ -246,8 +246,17 @@ public abstract class Baseenemy : MonoBehaviour
     }
 	// Enemies take damage from explosions
 	public void OnTriggerEnter2D(Collider2D trigger) {
-		if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			health -= trigger.gameObject.GetComponent<Explosion>().getDamage();
+		Explosion exl = trigger.gameObject.GetComponent<Explosion>();
+
+		if (exl != null) {
+			Debug.Log("Explosion: " + exl.getDamage());
+			if (exl._parent != null) {
+				// If the explosion was caused by a PLayer's grenade launcher
+				exl._parent.gameObject.GetComponent<Player>().score.enemies_hit++;
+				lastPlayerToAttack = exl._parent.gameObject;
+			}
+
+			health -= exl.getDamage();
 
 			// Flash
 			flash = 0.3f;

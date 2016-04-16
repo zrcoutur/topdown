@@ -15,6 +15,8 @@ public class Grenade : PlayerAttack {
 	public void Update() {
 		if (duration <= 0f) {
 			Explosion exp = ((GameObject)Instantiate(explosion, transform.position, Quaternion.identity)).GetComponent<Explosion>();
+			exp._parent = transform.parent;
+
 			Vector3 scale = exp.transform.localScale;
 			// reduce scale of the explosion
 			exp.transform.localScale = new Vector3(1.15f * scale.x, 1.15f * scale.y, scale.z);
