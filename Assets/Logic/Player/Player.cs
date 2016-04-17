@@ -524,7 +524,7 @@ public class Player : MonoBehaviour {
 				bbsl.transform.parent = transform;
 
 				score.sword_attacks++;
-				bbsl.setDamage((int)(1.5f * damage_for_weapon()));
+				bbsl.setDamage((int)(2f * damage_for_weapon()));
 				
 				// Push the blade attack forward
 				if (UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
@@ -545,7 +545,7 @@ public class Player : MonoBehaviour {
 				wep.GetComponent<Renderer>().enabled = false;
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.2f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.25f);
 
 				break;
 			
@@ -563,7 +563,7 @@ public class Player : MonoBehaviour {
 				bsl.setDamage((int)(0.75f * damage_for_weapon()));
 
 				// The maximum number of blades that can exist at one time is 5
-				if (Boomarang.totalBlades < 5 && UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current())) {
+				if (Boomarang.totalBlades < 5 && UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current() * 0.8f)) {
 					((Bslash)bsl).spawn_blades();
 				}
 
@@ -577,20 +577,21 @@ public class Player : MonoBehaviour {
 				wep.GetComponent<Renderer>().enabled = false;
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.85f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.5f);
 
 				break;
 			
 			// Omega Beam Sword
-			case 3:
+		case 3:
 
 				// Play Slash Sound
 				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
 
 				// Make Slash Effect
 				var sl2 = (Slash)Instantiate(dslash, body.position, transform.rotation);
-				sl2.can_deflect = true;
 				sl2.transform.parent = transform;
+				sl2.gameObject.transform.parent = transform;
+				
 				score.sword_attacks++;
 				sl2.setDamage(damage_for_weapon());
 
@@ -598,7 +599,7 @@ public class Player : MonoBehaviour {
 				cam.AddShake(0.12f);
 
 				// Momentum from swing
-				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 165.0f));
+				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 75.0f));
 
 				// Hide weapon
 				wep.GetComponent<Renderer>().enabled = false;

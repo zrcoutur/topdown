@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Slash : PlayerAttack {
 
-	public bool can_deflect = false;
-	public Bullet1 bullet_1;
 	protected double slashTimer = 0.25;
 
 	// Use this for initialization
@@ -22,8 +20,6 @@ public class Slash : PlayerAttack {
 			Destroy (gameObject);
 
 		}
-
-
 	}
 
 	void OnTriggerEnter2D( Collider2D col ) {
@@ -33,23 +29,7 @@ public class Slash : PlayerAttack {
 			//print (col.gameObject);
 			col.gameObject.SendMessage("OnHit", (PlayerAttack)this);
 
-		} else if (col.gameObject.GetComponent<EnemyBullet>() != null) {
-			// reflect enemy bullet
-			if (can_deflect) {
-				EnemyBullet eb = col.gameObject.GetComponent<EnemyBullet>();
-				// Delfects an incoming bullet back at an enemy
-				Bullet1 reverse = (Bullet1)Instantiate(bullet_1, eb.gameObject.transform.position, Quaternion.identity);
-				// Sets transfomr's parent for indicating, which player deflected the bullet
-				reverse.transform.parent = this.transform.parent;
-				reverse.setDuration(eb.get_duration() + 0.5f);
-				reverse.setDamage( col.gameObject.GetComponent<EnemyBullet>().damage );
-				// Sets bullet trajectory
-				reverse.GetComponent<Rigidbody2D>().velocity = -col.gameObject.GetComponent<Rigidbody2D>().velocity;
-			}
-
-			Destroy(col.gameObject);
 		}
-
 	}
 
 	public void set_slashTimer(double t) { slashTimer = t; }
