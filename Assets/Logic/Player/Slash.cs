@@ -25,10 +25,11 @@ public class Slash : PlayerAttack {
 	void OnTriggerEnter2D( Collider2D col ) {
 		
 		if (col.tag == "Enemy") {
-
-			//print (col.gameObject);
+			
 			col.gameObject.SendMessage("OnHit", (PlayerAttack)this);
-
+		} else if (col.gameObject.GetComponent<EnemyBullet>() != null) {
+			// Sword slash deflects bullets
+			Destroy(col.gameObject);
 		}
 	}
 

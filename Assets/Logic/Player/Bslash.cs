@@ -18,8 +18,9 @@ public class Bslash : Slash {
 		base.hitImpulse = Tools.AngleToVec2 (Tools.QuaternionToAngle (transform.rotation) + 90.0f, 100.0f);
 	}
 
-	/* This method will spawn a small blade that will orbit the player. */
-	public void spawn_blades() {
+	/* This method will spawn a small blade that will orbit the player.
+	 * The method returns the blade that was created. */
+	public GameObject spawn_blades() {
 		Rigidbody2D body = GetComponent<Rigidbody2D>();
 
 		// Spawn a boomarang blade
@@ -27,6 +28,8 @@ public class Bslash : Slash {
 		blade.transform.parent = transform.parent;
 
 		blade.GetComponent<Boomarang>().setDamage(damage / 2);
+
+		return blade;
 	}
 
 }

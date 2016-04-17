@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * This class defines the logic for the non-focus sword upgrade; the 
+ * attack rotates around the player deflecting bullets and dealing
+ * damage to nearby enemies.
+ */
 public class dSlash : Slash {
 	// The bullet instaniated when an enemy bullet is deflected
 	public Bullet1 bullet_1;
+	// Allows the slash to rotate around the player
+	private bool rotate = false;
 
 	// Use this for initialization
 	public void Start() {
-		slashTimer = 0.5f;
-		GetComponent<Animator>().speed = 0.5f;
+		slashTimer = 0.25f;
 	}
 	
 	// Update is called once per frame
@@ -20,12 +26,14 @@ public class dSlash : Slash {
 			slashTimer -= Time.deltaTime;
 		}
 
-		// Rotate the object
-		float angle = Tools.QuaternionToAngle(gameObject.transform.localRotation);
-		angle -= 24f;
-		gameObject.transform.localRotation = Tools.AngleToQuaternion(angle);
+		if (rotate) {
+			// Rotate the object
+			float angle = Tools.QuaternionToAngle(gameObject.transform.localRotation);
+			angle -= 24f;
+			gameObject.transform.localRotation = Tools.AngleToQuaternion(angle);
 
-		gameObject.transform.position = transform.parent.position;
+			gameObject.transform.position = transform.parent.position;
+		}
 	}
 
 	public void OnTriggerEnter2D( Collider2D col ) {
@@ -50,6 +58,13 @@ public class dSlash : Slash {
 			Destroy(col.gameObject);
 		}
 
+	}
+
+	/* Set the slash's timer and animaiton speed to allow for the rotation animation */
+	public void setRotation() {
+		slashTimer += 0.25f;
+		gameObject.GetComponent<Animator>().speed = 0.5f;
+		rotate = true;
 	}
 }
 

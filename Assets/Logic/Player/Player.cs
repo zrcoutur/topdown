@@ -527,7 +527,7 @@ public class Player : MonoBehaviour {
 				bbsl.setDamage((int)(2f * damage_for_weapon()));
 				
 				// Push the blade attack forward
-				if (UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
+				if (UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 1.15f)) {
 					Rigidbody2D sbody = bbsl.gameObject.GetComponent<Rigidbody2D>();
 					
 					sbody.AddForce( Tools.AngleToVec2((sbody.rotation * sbody.transform.forward).z + 90f, 0.04f) );
@@ -545,7 +545,7 @@ public class Player : MonoBehaviour {
 				wep.GetComponent<Renderer>().enabled = false;
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.25f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.8f);
 
 				break;
 			
@@ -563,7 +563,7 @@ public class Player : MonoBehaviour {
 				bsl.setDamage((int)(0.75f * damage_for_weapon()));
 
 				// The maximum number of blades that can exist at one time is 5
-				if (Boomarang.totalBlades < 5 && UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current() * 0.8f)) {
+				if (Boomarang.totalBlades < 5 && UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current() * 0.85f)) {
 					((Bslash)bsl).spawn_blades();
 				}
 
@@ -577,12 +577,12 @@ public class Player : MonoBehaviour {
 				wep.GetComponent<Renderer>().enabled = false;
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.5f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.35f);
 
 				break;
 			
 			// Omega Beam Sword
-		case 3:
+			case 3:
 
 				// Play Slash Sound
 				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
@@ -592,6 +592,10 @@ public class Player : MonoBehaviour {
 				sl2.transform.parent = transform;
 				sl2.gameObject.transform.parent = transform;
 				
+				// Allow the slash attack to rotate if the player has enough energy	
+				if (UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current() * 0.8f)) {
+					((dSlash)sl2).setRotation();
+				}
 				score.sword_attacks++;
 				sl2.setDamage(damage_for_weapon());
 
