@@ -39,13 +39,13 @@ public class WeaponStats {
 		// Initializes stats and stat costs based on the weapon type
 		if (type.CompareTo(WEAPON_TYPE.sword) == 0) {
 			dmg = new int[] { 43, 216, 489, 935, 1868, 3297, 5330, 8075, 11640, 16133, 21662 };
-			rof = new float[] { 4 };
-			amo = new float[] { 0 };
+			rof = new float[] { 3f, 3.25f, 3.75f, 4.5f, 5.5f, 7.75f };
+			amo = new float[] { 90f, 81f, 68f, 54f, 41f, 33f };
 
-			dmg_c = new Stat_Cost[10];
+			dmg_c = new Stat_Cost[0];/*10];
 			for (int idx = 0; idx < dmg_c.Length; ++idx) {
 				dmg_c [idx] = new Stat_Cost((int)(0.35f * idx * idx) + 5 * idx + 2, (int)(0.3f * idx * idx * idx * idx + 0.75f * idx * idx) + 13 * idx + 11);
-			}
+			}*/
 
 			rof_c = new Stat_Cost[0];
 			amo_c = new Stat_Cost[0];

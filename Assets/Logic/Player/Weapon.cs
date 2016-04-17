@@ -30,15 +30,19 @@ public class Weapon : MonoBehaviour {
 		case WEAPON_TYPE.sword:
 			if ( stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state() == 0 )
 				GetComponent<SpriteRenderer>().sprite = swordSprite;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 1 )
+				GetComponent<SpriteRenderer>().sprite = swordSprite;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 2 )
+				GetComponent<SpriteRenderer>().sprite = swordSprite;
 			else
 				GetComponent<SpriteRenderer>().sprite = omegaSwordSprite;
 			break;
 		case WEAPON_TYPE.rifle:
 			if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 0 )
 				GetComponent<SpriteRenderer>().sprite = rifleSprite;
-			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()  == 1 )
+			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 1 )
 				GetComponent<SpriteRenderer>().sprite = lancerRifleSprite;
-			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state()  == 2 )
+			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 2 )
 				GetComponent<SpriteRenderer>().sprite = plasmaGatlingSprite;
 			else
 				GetComponent<SpriteRenderer>().sprite = twinBlasterSprite;

@@ -5,14 +5,11 @@ public class Slash : PlayerAttack {
 
 	public bool can_deflect = false;
 	public Bullet1 bullet_1;
-	double slashTimer;
+	protected double slashTimer = 0.25;
 
 	// Use this for initialization
 	void Start () {
-	
-		slashTimer = 0.25;
 		base.hitImpulse = Tools.AngleToVec2 (Tools.QuaternionToAngle (transform.rotation) + 90.0f, 300.0f);
-
 	}
 	
 	// Update is called once per frame
@@ -30,7 +27,7 @@ public class Slash : PlayerAttack {
 	}
 
 	void OnTriggerEnter2D( Collider2D col ) {
-
+		
 		if (col.tag == "Enemy") {
 
 			//print (col.gameObject);
@@ -55,4 +52,6 @@ public class Slash : PlayerAttack {
 
 	}
 
+	public void set_slashTimer(double t) { slashTimer = t; }
+	public double get_slashTimer() { return slashTimer; }
 }

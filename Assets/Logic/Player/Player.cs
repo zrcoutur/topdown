@@ -14,7 +14,9 @@ public class Player : MonoBehaviour {
 	public Player_Stats stats;
 	public Weapon weapon;
 	public Slash slash;
-	public Slash slash2;
+	public Slash bladeBeam;
+	public Slash bslash;
+	public Slash dslash;
 	public Shine shine;
 	public Bullet1 bullet1;
 	public Bullet2 bullet2;
@@ -314,7 +316,7 @@ public class Player : MonoBehaviour {
 		if (atkCool <= 0) {
 
 			// Make weapon visible
-			wep.GetComponent<Renderer> ().enabled = true;
+			wep.GetComponent<Renderer>().enabled = true;
 
 			// Attack Input
 			if (stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKey(M_Shoot)) {
@@ -489,10 +491,11 @@ public class Player : MonoBehaviour {
 
 				// Play Slash Sound
 				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
-
+				
 				// Make Slash Effect
 				var sl = (Slash)Instantiate(slash, body.position, transform.rotation);
 				sl.transform.parent = transform;
+				
 				score.sword_attacks++;
 				sl.setDamage(damage_for_weapon());
 
@@ -509,15 +512,83 @@ public class Player : MonoBehaviour {
 				atkCool = 2.0f / stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current();
 
 				break;
-
-			// Omega Beam Sword
+			
+			// Blade Beam Sword
 			case 1:
+					
+				// Play Slash Sound
+				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
+
+				// Make Slash Effect
+				var bbsl = (Slash)Instantiate(bladeBeam, body.position, transform.rotation);
+				bbsl.transform.parent = transform;
+
+				score.sword_attacks++;
+				bbsl.setDamage((int)(1.5f * damage_for_weapon()));
+				
+				// Push the blade attack forward
+				if (UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current())) {
+					Rigidbody2D sbody = bbsl.gameObject.GetComponent<Rigidbody2D>();
+					
+					sbody.AddForce( Tools.AngleToVec2((sbody.rotation * sbody.transform.forward).z + 90f, 0.04f) );
+					bbsl.set_slashTimer(0.5f);
+					bbsl.gameObject.GetComponent<Animator>().speed = 0.45f;
+				}
+
+				// Shake camera
+				cam.AddShake(0.09f);
+
+				// Momentum from swing
+				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 185.0f));
+
+				// Hide weapon
+				wep.GetComponent<Renderer>().enabled = false;
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.2f);
+
+				break;
+			
+			// Boomarang Beam Sword
+			case 2:
 
 				// Play Slash Sound
 				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
 
 				// Make Slash Effect
-				var sl2 = (Slash)Instantiate(slash2, body.position, transform.rotation);
+				var bsl = (Slash)Instantiate(bslash, body.position, transform.rotation);
+				bsl.transform.parent = transform;
+
+				score.sword_attacks++;
+				bsl.setDamage((int)(0.75f * damage_for_weapon()));
+
+				// The maximum number of blades that can exist at one time is 5
+				if (Boomarang.totalBlades < 5 && UseAmmo(stats.weapon_by_type(WEAPON_TYPE.sword).weapon_stat(STAT_TYPE.ammo).current())) {
+					((Bslash)bsl).spawn_blades();
+				}
+
+				// Shake camera
+				cam.AddShake(0.065f);
+
+				// Momentum from swing
+				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 96.0f));
+
+				// Hide weapon
+				wep.GetComponent<Renderer>().enabled = false;
+
+				// Cooldown
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 0.85f);
+
+				break;
+			
+			// Omega Beam Sword
+			case 3:
+
+				// Play Slash Sound
+				CameraRunner.gAudio.PlayOneShot(X_Slash, 1.0f);
+
+				// Make Slash Effect
+				var sl2 = (Slash)Instantiate(dslash, body.position, transform.rotation);
 				sl2.can_deflect = true;
 				sl2.transform.parent = transform;
 				score.sword_attacks++;
@@ -527,7 +598,7 @@ public class Player : MonoBehaviour {
 				cam.AddShake(0.12f);
 
 				// Momentum from swing
-				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 200.0f));
+				body.AddForce(Tools.AngleToVec2((body.rotation * transform.forward).z + 90.0f, 165.0f));
 
 				// Hide weapon
 				wep.GetComponent<Renderer>().enabled = false;
@@ -538,7 +609,7 @@ public class Player : MonoBehaviour {
 				break;
 
 			}
-
+			
 			break;
 
 		case (int)WEAPON_TYPE.rifle:
@@ -1110,7 +1181,7 @@ public class Player : MonoBehaviour {
 	 * specific criteria:
 	 * 
 	 * The sum of a weapon's levels for damage, rate of fire, and ammo consumption must
-	 * be greater than or equal to 7 (or 6 in the case of the sword).
+	 * be greater than or equal to 7.
 	 * For the damage upgrade, the damage level must be greater than or equal to 4 and greater than the rate of fire level,
 	 * for the speed upgrade the rate of fire level must be greater than or equal to 3 and greater than or equal to the damage level,
 	 * for any other case, the non focus upgrade is reached after a total of 7 levels. */
@@ -1120,26 +1191,19 @@ public class Player : MonoBehaviour {
 			WeaponStats weapon = stats.weapon_by_type(idx);
 			// Verify that weapon has not already been upgraded
 			if (weapon.upgrade_state() == 0) {
-				if (idx == WEAPON_TYPE.sword) {
-					// Only the sword's damage can be upgraded
-					if (weapon.weapon_stat(STAT_TYPE.damage).pointer_value() >= 6) {
-						weapon.setUgrade(1);
-					}
-				} else {
-					// determine each of the weapon's stat's current level
-					int dmg_lvl = weapon.weapon_stat(STAT_TYPE.damage).pointer_value();
-					int rof_lvl = weapon.weapon_stat(STAT_TYPE.rate_of_fire).pointer_value();
-					int ac_lvl = weapon.weapon_stat(STAT_TYPE.ammo).pointer_value();
-					// the sum of all three levels must greater than 5
-					if ((dmg_lvl + rof_lvl + ac_lvl) >= 7) {
+				// determine each of the weapon's stat's current level
+				int dmg_lvl = weapon.weapon_stat(STAT_TYPE.damage).pointer_value();
+				int rof_lvl = weapon.weapon_stat(STAT_TYPE.rate_of_fire).pointer_value();
+				int ac_lvl = weapon.weapon_stat(STAT_TYPE.ammo).pointer_value();
+				// the sum of all three levels must greater than 7
+				if ((dmg_lvl + rof_lvl + ac_lvl) >= 7) {
 
-						if (dmg_lvl >= 4) { // damage focus upgrade
-							weapon.setUgrade(1);
-						} else if (rof_lvl >= 3 && rof_lvl >= dmg_lvl) { // speed focus upgrade
-							weapon.setUgrade(2);
-						} else { // no focus upgrade
-							weapon.setUgrade(3);
-						}
+					if (dmg_lvl >= 4) { // damage focus upgrade
+						weapon.setUgrade(1);
+					} else if (rof_lvl >= 3 && rof_lvl >= dmg_lvl) { // speed focus upgrade
+						weapon.setUgrade(2);
+					} else { // no focus upgrade
+						weapon.setUgrade(3);
 					}
 				}
 			}

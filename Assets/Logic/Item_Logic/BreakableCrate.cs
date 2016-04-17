@@ -74,7 +74,7 @@ public class BreakableCrate : MonoBehaviour {
 				if (collider.GetComponent<Bullet1> () != null) {
 					collider.gameObject.transform.parent.GetComponent<Player> ().score.boxes_hit++;
 				}
-			} else if (collider.GetComponent<Bullet2> () != null) {
+			} else if (collider.GetComponent<Bullet2> () != null || collider.GetComponent<Boomarang>() != null) {
 				durability -= 3;
 			} else if (collider.GetComponent<Bullet3> () != null) {
 				durability -= 2;
