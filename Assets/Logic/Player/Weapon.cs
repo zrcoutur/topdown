@@ -12,6 +12,8 @@ public class Weapon : MonoBehaviour {
 	public Sprite armageddonSprite;
 	public Sprite autoShotgunSprite;
 	public Sprite confluxShotSprite;
+	public Sprite bladeBeamSwordSprite;
+	public Sprite boomarangSwordSprite;
 	public Sprite omegaSwordSprite;
 	public Sprite grenadeLauncher;
 	public Sprite slowGrenadeLauncher;
@@ -30,10 +32,10 @@ public class Weapon : MonoBehaviour {
 		case WEAPON_TYPE.sword:
 			if ( stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state() == 0 )
 				GetComponent<SpriteRenderer>().sprite = swordSprite;
-			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 1 )
-				GetComponent<SpriteRenderer>().sprite = swordSprite;
-			else if ( stats.weapon_by_type(WEAPON_TYPE.rifle).upgrade_state() == 2 )
-				GetComponent<SpriteRenderer>().sprite = swordSprite;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state() == 1 )
+				GetComponent<SpriteRenderer>().sprite = bladeBeamSwordSprite;
+			else if ( stats.weapon_by_type(WEAPON_TYPE.sword).upgrade_state() == 2 )
+				GetComponent<SpriteRenderer>().sprite = boomarangSwordSprite;
 			else
 				GetComponent<SpriteRenderer>().sprite = omegaSwordSprite;
 			break;
