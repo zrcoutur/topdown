@@ -42,10 +42,10 @@ public class WeaponStats {
 			rof = new float[] { 2.85f, 3f, 3.2f, 3.55f, 3.95f, 4.5f };
 			amo = new float[] { 105f, 83f, 78f, 70f, 60f, 43f };
 
-			dmg_c = new Stat_Cost[0];/*10];
-			for (int idx = 0; idx < dmg_c.Length; ++idx) {
-				dmg_c [idx] = new Stat_Cost((int)(0.35f * idx * idx) + 5 * idx + 2, (int)(0.3f * idx * idx * idx * idx + 0.75f * idx * idx) + 13 * idx + 11);
-			}*/
+			dmg_c = new Stat_Cost[] { new Stat_Cost(0, 5), new Stat_Cost(0, 13), new Stat_Cost(0, 24), new Stat_Cost(0, 39), new Stat_Cost(0, 57),
+									  new Stat_Cost(0, 79), new Stat_Cost(0, 104), new Stat_Cost(15, 133), new Stat_Cost(23, 165), new Stat_Cost(34, 201) };
+			rof_c = new Stat_Cost[] { new Stat_Cost(2, 0), new Stat_Cost(7, 0), new Stat_Cost(11, 0), new Stat_Cost(16, 33),	new Stat_Cost(21, 56) };
+			amo_c = new Stat_Cost[] { new Stat_Cost(4, 11), new Stat_Cost(15, 33), new Stat_Cost(23, 78), new Stat_Cost(37, 144), new Stat_Cost(51, 256) };
 
 			rof_c = new Stat_Cost[0];
 			amo_c = new Stat_Cost[0];
