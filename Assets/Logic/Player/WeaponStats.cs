@@ -46,9 +46,6 @@ public class WeaponStats {
 									  new Stat_Cost(0, 79), new Stat_Cost(0, 104), new Stat_Cost(15, 133), new Stat_Cost(23, 165), new Stat_Cost(34, 201) };
 			rof_c = new Stat_Cost[] { new Stat_Cost(2, 0), new Stat_Cost(7, 0), new Stat_Cost(11, 0), new Stat_Cost(16, 33),	new Stat_Cost(21, 56) };
 			amo_c = new Stat_Cost[] { new Stat_Cost(4, 11), new Stat_Cost(15, 33), new Stat_Cost(23, 78), new Stat_Cost(37, 144), new Stat_Cost(51, 256) };
-
-			rof_c = new Stat_Cost[0];
-			amo_c = new Stat_Cost[0];
 		} else if (type.CompareTo(WEAPON_TYPE.rifle) == 0) {
 			dmg = new int[] { 18, 57, 144, 279, 462, 693, 972, 1288, 1674, 2097, 2568 };
 			rof = new float[] { 4, 6, 9, 13, 18, 23 };
