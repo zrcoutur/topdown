@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: c8726896f4f4c334f9d6e7aacdeb3c07
-timeCreated: 1456510192
+timeCreated: 1461070293
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - poof: {fileID: 115296, guid: 5b989e2334de02f47a3393314b50a7f0, type: 2}
+  - e_bullet: {fileID: 11454678, guid: 5c8e21a0df1e0434b9951e65ce5f9636, type: 2}
+  - lastPlayerToAttack: {instanceID: 0}
+  - slash: {fileID: 11476942, guid: 853ca88c64e69c6488de4b5ef8d46e24, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

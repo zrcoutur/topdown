@@ -7,37 +7,26 @@ public class EnemySlash : MonoBehaviour {
     public int damage;
 
     // Use this for initialization
-    void Start()
-    {
-
-        slashTimer = 0.25;
-
+    void Start() {
+		slashTimer = 0.25;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-        slashTimer -= Time.deltaTime;
-
-        if (slashTimer <= 0)
-        {
-
-            Destroy(gameObject);
-
-        }
-
-
+	void Update() {
+		
+		if (slashTimer <= 0) {
+			Destroy(gameObject);
+		} else {
+			slashTimer -= Time.deltaTime;
+		}
     }
 
     void OnTriggerEnter2D(Collider2D col) {
 
         if (col.tag == "Player") {
             col.gameObject.GetComponent<Player>().GetHurt(damage);
-            //col.gameObject.SendMessage("OnHit", Tools.AngleToVec2(Tools.QuaternionToAngle(transform.rotation) + 90.0f, 300.0f));
-        }
-		// Enemy slashes block normal and shotgun bullets
-		if (col.gameObject.GetComponent<Bullet1>() != null || col.GetComponent<Bullet3>() != null) {
+        } else if (col.gameObject.GetComponent<Bullet1>() != null || col.GetComponent<Bullet3>() != null) {
+			// Enemy slashes block non-piercing bullets
 			Destroy(col.gameObject);
 		}
 

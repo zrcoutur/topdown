@@ -15,6 +15,7 @@ public abstract class Baseenemy : MonoBehaviour
 
     protected int Maxhealth;
     public GameObject poof;
+	public EnemyBullet e_bullet;
 	 
 	public int[] numYielded;
 	public GameObject[] yields;
@@ -289,12 +290,31 @@ public abstract class Baseenemy : MonoBehaviour
 	}
 
 
-	void OnHit(PlayerAttack hit)
-    {
+	void OnHit(PlayerAttack hit) {
+
+		// The DV boss deflects normal and shotgun bullets
+		if ((hit is Bullet1 || hit is Bullet3) && GetComponent<DVBoss>() != null) {
+
+			// reflect enemy bullet
+			GameObject bullet = hit.gameObject;
+			// Delfects an incoming bullet back at an enemy
+			EnemyBullet reverse = (EnemyBullet)Instantiate(e_bullet, bullet.transform.position, Quaternion.identity);
+			// Sets transfomr's parent for indicating, which player deflected the bullet
+			reverse.transform.parent = transform.parent;
+			reverse.set_duration(float.MaxValue);
+			reverse.damage = damage / 3;
+			// Sets bullet trajectory
+			reverse.GetComponent<Rigidbody2D>().velocity = -hit.gameObject.GetComponent<Rigidbody2D>().velocity;
+
+			Destroy(hit.gameObject);
+
+			return;
+		}
+
 		//keep track of last player to attack and update their scores
 		lastPlayerToAttack = hit.transform.parent.gameObject;
 
-		if (hit is Bullet1 || hit is Slash) {
+		if (hit is Bullet1 || hit is Bullet2 || hit is Bullet3 || hit is Slash) {
 			hit.transform.parent.gameObject.GetComponent<Player>().score.enemies_hit++;
 		}
 
@@ -307,6 +327,10 @@ public abstract class Baseenemy : MonoBehaviour
         // Flash
         flash = 0.3f;
 
+		if (hit is Bullet2 && GetComponent<GrowBoss>() != null) {
+			// Grow Boss stops piercing bullets
+			Destroy(hit.gameObject);
+		}
     }
 
     public abstract void TimeIncrease(float time);

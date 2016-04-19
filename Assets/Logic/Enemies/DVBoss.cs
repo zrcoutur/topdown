@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DVBoss : Baseenemy
-{
+public class DVBoss : Baseenemy {
     private float Lightning;
     public EnemySlash slash;
-    public override void attack()
-    {
+
+    public override void attack() {
+		
         Random.seed = System.DateTime.Now.Millisecond;
         double rand1 = ((double)Random.Range(0, 100)) / (100.0);
-        if (rand1 <= Lightning)
-        {
+
+        if (rand1 <= Lightning) {
             //lightning();
-        }
-        else
-        {
+        } else {
+			
             var sl = (EnemySlash)Instantiate(slash, gameObject.GetComponent<Rigidbody2D>().position, Tools.AngleToQuaternion(Tools.QuaternionToAngle(transform.rotation)+180));
             sl.transform.parent = transform;
-            sl.damage = damage;
+			sl.GetComponent<SpriteRenderer>().color = Color.red;
+			sl.damage = (int)(2f * damage);
         }
 
     }
@@ -30,8 +30,8 @@ public class DVBoss : Baseenemy
 		Maxhealth = System.Math.Min(850000, 17500 + (int)(3200f * Mathf.Pow(timeScale, 3f) + 7500f * timeScale));
 		health = Maxhealth;
 
-		speed = Mathf.Min(5f, 1f + (0.27f * timeScale));
-		damage = System.Math.Min(700, 40 + (int)(3.16f * Mathf.Pow(timeScale, 2f)));
+		speed = Mathf.Min(15f, 5f + (0.7f * timeScale));
+		damage = System.Math.Min(365, 22 + (int)(1.55f * Mathf.Pow(timeScale, 2f)));
 	}
 
     // Use this for initialization
@@ -40,33 +40,32 @@ public class DVBoss : Baseenemy
         isBoss = true;
 		base.Maxhealth = 17500;
 		base.health = Maxhealth;
-        base.speed = 1f;
-        base.rate = 2.5f;
-        //base.rate = 4f;
+        base.speed = 5f;
+        base.rate = 2.75f;
         Lightning = 0.01f;
-        damage = 40;
+        damage = 22;
     }
 
     // Update is called once per frame
-    void lightning()
-    {
+    void lightning() {
+		
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
         foreach (Collider2D coll in hitColliders)
         {
-            if (coll.gameObject.tag == "Player")
-            {
+            if (coll.gameObject.tag == "Player") {
+				
                 int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
                 coll.gameObject.GetComponent<Player>().GetHurt(damage);
                 Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
                 break;
-            }
-            if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss)
-            {
-                coll.gameObject.GetComponent<Baseenemy>().infected = true;
+            } else if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss) {
+                
+				coll.gameObject.GetComponent<Baseenemy>().infected = true;
                 Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
             }
         }
     }
+
     public override void Change()
     { }
 }
