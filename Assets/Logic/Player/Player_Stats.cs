@@ -26,11 +26,11 @@ public class Player_Stats {
 		Stat_Cost[] cost_temp = new Stat_Cost[10];
 		// initialize health values
 		for (int idx = 0; idx < val_temp.Length; ++idx) {
-			val_temp[idx] = (3 * idx * idx) + 11 * idx + 5;
+			val_temp[idx] = (int)(1.5f * idx * idx) + 8 * idx + 5;
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost(0, (int)(2f * idx * idx) + 15 * idx + 5);
+			cost_temp[idx] = new Stat_Cost(0, (int)(0.14f * idx * idx) + 8 * idx + 6);
 
 		}
 
@@ -42,12 +42,12 @@ public class Player_Stats {
 		cost_temp = new Stat_Cost[10];
 		// initialize shield values
 		for (int idx = 0; idx < val_temp.Length; ++idx) {
-			val_temp[idx] = (int)(0.8f * idx * idx * idx) + (int)(1.6f * idx * idx) + 12 * idx + 8;
+			val_temp[idx] = (int)(0.55f * idx * idx) + 5 * idx + 3;
 		}
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.63f * idx * idx) + 9 * idx + 3, 0);
+			cost_temp[idx] = new Stat_Cost((int)(0.19f * idx * idx) + 4 * idx + 3, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
@@ -65,7 +65,7 @@ public class Player_Stats {
 		energyCores = 30;
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
-											 new Stat_Cost[] { new Stat_Cost(3, 15), new Stat_Cost(5, 36), new Stat_Cost(11, 83) } );
+											 new Stat_Cost[] { new Stat_Cost(1, 9), new Stat_Cost(3, 21), new Stat_Cost(8, 63) } );
 
 	}
 

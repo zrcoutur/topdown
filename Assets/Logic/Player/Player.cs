@@ -684,7 +684,7 @@ public class Player : MonoBehaviour {
 				b2.transform.parent = transform;
 				score.bullets_fired++;
 
-				b2.setDamage((int)(3.5f * damage_for_weapon()));
+				b2.setDamage((int)(3f * damage_for_weapon()));
 				b2.setDuration(UnityEngine.Random.Range(125, 265) / 100f);
 
 				// Mildly shake camera
@@ -719,7 +719,7 @@ public class Player : MonoBehaviour {
 				b1.transform.parent = transform;
 				score.bullets_fired++;
 
-				b1.setDamage((int)(0.66f * damage_for_weapon()));
+				b1.setDamage((int)(0.6f * damage_for_weapon()));
 				b1.setDuration(UnityEngine.Random.Range(65, 105) / 100f);
 
 				// Mildly shake camera
@@ -862,7 +862,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.setDamage((int)(1.6f * damage_for_weapon()));
+					b1.setDamage((int)(1.65f * damage_for_weapon()));
 					b1.setDuration(0.14f);
 	
 					// Calculate bullet's velocity
@@ -902,7 +902,7 @@ public class Player : MonoBehaviour {
 					var b1 = (Bullet1)Instantiate(bullet1, pos, transform.rotation);
 					b1.transform.parent = transform;
 					score.bullets_fired++;
-					b1.setDamage((int)(0.7f * damage_for_weapon()));
+					b1.setDamage((int)(0.75f * damage_for_weapon()));
 					b1.setDuration(0.2f);
 	
 					// Calculate bullet's velocity
@@ -1047,7 +1047,7 @@ public class Player : MonoBehaviour {
 
 				// Cooldown
 				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.15f);
-				// spawn multiple clusters
+				// spawn 5 clusters
 				for (int idx = 0; idx < 5; ++idx) {
 					// Calculate creation position of grenade (from gun)
 					gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 0.5f);
@@ -1061,7 +1061,7 @@ public class Player : MonoBehaviour {
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
 					gnd.setDamage( (int)(0.7f * damage_for_weapon()) );
-					gnd.setDuration(0.75f);
+					gnd.setDuration(0.65f);
 
 					// Calculate bullet's velocity
 					// Shot spread range.

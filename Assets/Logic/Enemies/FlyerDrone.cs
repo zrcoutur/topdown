@@ -12,14 +12,14 @@ public class FlyerDrone : Baseenemy
     void Awake()
     {
 
-		base.Maxhealth = 20;
+		base.Maxhealth = 8;
 		base.health = base.Maxhealth;
         base.speed = 4f;
         base.rate = 1.5f;
 		base.rateVariance = 0.1f;
         base.range = 8f;
-        base.damage = 6;
-		base.pointValue = 25;
+        base.damage = 2;
+		base.pointValue = 5;
     }
 
 
@@ -27,12 +27,12 @@ public class FlyerDrone : Baseenemy
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(24000, 20 + (int)(56.7f * Mathf.Pow(timeScale, 2f) + 65f * timeScale));
+		Maxhealth = System.Math.Min(1800, 8 + (int)(4f * timeScale * timeScale + 6f * timeScale) );
 		health = Maxhealth;
 
 		speed = Mathf.Min(16f, 4f + (0.6f * timeScale));
 		rate = Mathf.Max(0.35f, 1.5f - (0.0575f * timeScale));
-		damage = System.Math.Min(450, 6 + (int)(1.11f * Mathf.Pow(timeScale, 2f)));
+		damage = System.Math.Min(66, 2 + (int)(0.06f * timeScale * timeScale + 2f * timeScale) );
     }
 
     public override void attack()

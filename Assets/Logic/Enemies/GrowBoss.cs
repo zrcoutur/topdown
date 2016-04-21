@@ -13,9 +13,9 @@ public class GrowBoss : Baseenemy
 
     void Awake() {
         isBoss = true;
-        Maxhealth = 22000;
+        Maxhealth = 1200;
 		health = Maxhealth;
-		damage = 32;
+		damage = 31;
 		max_dmg = damage;
         size = transform.lossyScale;
         speed = 300f;
@@ -23,7 +23,7 @@ public class GrowBoss : Baseenemy
         healRate = 3f;
         healTime = healRate;
 		healAmount = 1;
-		base.pointValue = 100;
+		base.pointValue = 35;
     }
 
     // Update is called once per frame
@@ -49,11 +49,11 @@ public class GrowBoss : Baseenemy
         // How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
         var timeScale = time / 360f;
 
-		Maxhealth = System.Math.Min(2000000, 22000 + (int)(8075 * Mathf.Pow(timeScale, 2f) + 11000f * timeScale));
+		Maxhealth = System.Math.Min(152000, 1200 + (int)(600 * timeScale * timeScale + 1000f * timeScale) );
 		health = Maxhealth;
 
 		max_speed = Mathf.Min(400f, 300f + (6.65f * timeScale));
-		max_dmg = System.Math.Min(600, 32 + (int)(2.53f * Mathf.Pow(timeScale, 2f)));
+		max_dmg = System.Math.Min(155, 32 + (int)(0.15f * timeScale * timeScale + 6f * timeScale) );
 
 		//healRate *= (3 / 4 * Mathf.Pow(2,time));
        	//healAmount += (int)(time / timeScale);

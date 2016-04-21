@@ -12,7 +12,7 @@ public class MeleeBot : Baseenemy {
 
 	// Use this for initialization
 	void Awake() {
-		base.Maxhealth = 25;
+		base.Maxhealth = 10;
 		base.health = base.Maxhealth;
 		base.speed = 4f;
 		o_speed = speed;
@@ -20,8 +20,8 @@ public class MeleeBot : Baseenemy {
 		o_rate = rate;
 		base.rateVariance = 0f;
 		base.range = 4.5f;
-		base.damage = 3;
-		base.pointValue = 30;
+		base.damage = 1;
+		base.pointValue = 10;
 
 		dashing = false;
 		dashDelay = 0f;
@@ -32,12 +32,12 @@ public class MeleeBot : Baseenemy {
 		// How fast it takes for enemy params to go from 1x to 2x, 2x to 3x, etc.
 		var timeScale = time / 180f;
 
-		Maxhealth = System.Math.Min(32000, 25 + (int)(76f * Mathf.Pow(timeScale, 2f) + 80f * timeScale));
+		Maxhealth = System.Math.Min(2200, 10 + (int)(5f * timeScale * timeScale + 8f * timeScale) );
 		health = Maxhealth;
 
 		o_speed = Mathf.Min(15f, 4f + (0.55f * timeScale));
 		o_rate = Mathf.Max(0.45f, 1.2f - (0.043f * timeScale));
-		damage = System.Math.Min(280, 3 + (int)(0.695f * Mathf.Pow(timeScale, 2f)));
+		damage = System.Math.Min(55, 1 + (int)(0.13f * timeScale * timeScale + 2.5f * timeScale) );
 	}
 
 	public override void attack()
