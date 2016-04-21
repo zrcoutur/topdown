@@ -1177,8 +1177,8 @@ public class Player : MonoBehaviour {
 			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
 			Destroy(obj);
 		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
-			// The player suffers 10% damage from explosions
-			GetHurt( (int)(0.1f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );
+			// The player suffers 5% damage from explosions
+			GetHurt( (int)(0.05f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );
 		}
 	}
 

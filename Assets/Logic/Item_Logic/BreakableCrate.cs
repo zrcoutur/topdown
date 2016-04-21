@@ -35,8 +35,8 @@ public class BreakableCrate : MonoBehaviour {
 		initial_durability = UnityEngine.Random.Range(8, 12);
 		durability = initial_durability;
 		collision_tag = false;
-		timer = 180f;
-		damage = 115;
+		timer = 90f;
+		damage = 75;
 	}
 	
 	// Update is called once per frame
@@ -55,9 +55,9 @@ public class BreakableCrate : MonoBehaviour {
 			remove_crate();
 		} else if (timer <= 0f) {
 			// scale damage of crate overtime
-			timer = 210f;
-			damage += Random.Range(30, 89);
-		} else if (damage <= 12000) {
+			timer = 90f;
+			damage += Random.Range(10, 100);
+		} else if (damage <= 1900) {
 			timer -= Time.deltaTime;
 		}
 	}
