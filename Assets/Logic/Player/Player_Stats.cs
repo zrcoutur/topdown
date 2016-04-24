@@ -30,7 +30,7 @@ public class Player_Stats {
 		}
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost(0, (int)(0.14f * idx * idx) + 8 * idx + 6);
+			cost_temp[idx] = new Stat_Cost(0, (int)(0.35f * idx * idx) + 9 * idx + 6);
 
 		}
 
@@ -47,7 +47,7 @@ public class Player_Stats {
 
 		// initialize stat costs
 		for (int idx = 0; idx < cost_temp.Length; ++idx) {
-			cost_temp[idx] = new Stat_Cost((int)(0.19f * idx * idx) + 4 * idx + 3, 0);
+			cost_temp[idx] = new Stat_Cost((int)(0.19f * idx * idx) + 2 * idx + 3, 0);
 		}
 
 		MAX_SHIELD = new Stat(STAT_TYPE.shield, val_temp, cost_temp);
@@ -61,11 +61,11 @@ public class Player_Stats {
 		WEAPONS[3] = new WeaponStats(3);
 		held_weapon = WEAPON_TYPE.sword;
 
-		scrap = 300;
-		energyCores = 30;
+		scrap = 0; //2573
+		energyCores = 0; //1197
 
 		MEDPACKS = new Stat(STAT_TYPE.other, new int[] { 0, 1, 2, 3 },
-											 new Stat_Cost[] { new Stat_Cost(1, 9), new Stat_Cost(3, 21), new Stat_Cost(8, 63) } );
+											 new Stat_Cost[] { new Stat_Cost(1, 5), new Stat_Cost(3, 18), new Stat_Cost(5, 43) } );
 
 	}
 

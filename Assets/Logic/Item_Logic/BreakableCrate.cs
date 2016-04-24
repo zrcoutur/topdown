@@ -122,8 +122,8 @@ public class BreakableCrate : MonoBehaviour {
 				d.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-80f, 80f), Random.Range(-80f, 80f)));
 			}
 		} else {
-			// Drop between 3 and 8 scrap pieces
-			int drops = UnityEngine.Random.Range(3, 8);
+			// Drop between 3 and 5 scrap pieces
+			int drops = UnityEngine.Random.Range(3, 5);
 
 			for (int i = 0; i < drops; ++i) {
 				var d = (GameObject)Instantiate(item_drops[0], transform.localPosition, Quaternion.identity);
