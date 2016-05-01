@@ -53,7 +53,7 @@ public class GrowBoss : Baseenemy
 		health = Maxhealth;
 
 		max_speed = Mathf.Min(400f, 300f + (6.65f * timeScale));
-		max_dmg = System.Math.Min(155, 32 + (int)(0.15f * timeScale * timeScale + 6f * timeScale) );
+		max_dmg = System.Math.Min(155, 32 + (int)(0.125f * timeScale * timeScale + 5f * timeScale) );
 
 		//healRate *= (3 / 4 * Mathf.Pow(2,time));
        	//healAmount += (int)(time / timeScale);

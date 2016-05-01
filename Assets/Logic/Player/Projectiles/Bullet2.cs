@@ -33,14 +33,19 @@ public class Bullet2 : PlayerAttack {
 
 	// Update is called once per frame
 	void Update () {
-		// Remove the bullet after a certain period of time
-		if (duration >= 0.0f) {
-			duration -= Time.deltaTime;
-		} else {
-			Destroy( GameObject.Find("Bullet2(Clone)") );
-		}
 
-		if (body.drag > 0) body.drag/=2;
+		if (!Time_Count.game_pause) {
+			
+			// Remove the bullet after a certain period of time
+			if (duration >= 0.0f) {
+				duration -= Time.deltaTime;
+			} else {
+				Destroy(GameObject.Find("Bullet2(Clone)"));
+			}
+
+			if (body.drag > 0)
+				body.drag /= 2;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {

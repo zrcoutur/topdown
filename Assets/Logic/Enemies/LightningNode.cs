@@ -16,12 +16,15 @@ public class LightningNode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        time -=Time.deltaTime;
-        if (time < 0)
-        {
-            enemy.GetComponent<Baseenemy>().health = 0;
-            destroy = true;
 
-        }
+		if (!Time_Count.game_pause) {
+
+			time -= Time.deltaTime;
+			if (time < 0) {
+				enemy.GetComponent<Baseenemy>().health = 0;
+				destroy = true;
+
+			}
+		}
 	}
 }

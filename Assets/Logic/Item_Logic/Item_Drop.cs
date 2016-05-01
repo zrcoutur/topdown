@@ -30,37 +30,41 @@ public class Item_Drop : MonoBehaviour {
 	}
 
 	public void Update() {
-		Player closest = null;
 
-		/* Finds the closest player and moves the item nearer to that player. */
-		for (int idx = 0; idx < players.Length; ++idx) {
-			float dist_x = transform.localPosition.x - players[idx].transform.localPosition.x;
-			float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
-			// draw item closer to the player
-			if (System.Math.Abs(dist_x) <= 3f && System.Math.Abs(dist_y) <= 3f) {
-				closest = players[idx];
-				break;
+		if (!Time_Count.game_pause) {
+			
+			Player closest = null;
+
+			/* Finds the closest player and moves the item nearer to that player. */
+			for (int idx = 0; idx < players.Length; ++idx) {
+				float dist_x = transform.localPosition.x - players[idx].transform.localPosition.x;
+				float dist_y = transform.localPosition.y - players[idx].transform.localPosition.y;
+				// draw item closer to the player
+				if (System.Math.Abs(dist_x) <= 3f && System.Math.Abs(dist_y) <= 3f) {
+					closest = players[idx];
+					break;
+				}
 			}
-		}
 
-		// Accelerate item to nearby player
-		if (closest != null) {
-			float dist_x = transform.localPosition.x - closest.transform.localPosition.x;
-			float dist_y = transform.localPosition.y - closest.transform.localPosition.y;
+			// Accelerate item to nearby player
+			if (closest != null) {
+				float dist_x = transform.localPosition.x - closest.transform.localPosition.x;
+				float dist_y = transform.localPosition.y - closest.transform.localPosition.y;
 
-			time_near += Time.deltaTime;
-			GetComponent<Rigidbody2D>().AddForce(40f * Mathf.Pow(time_near + 1, 2.0f) * (new Vector2(-dist_x, -dist_y)));
-		} else {
-			//  Reset acceleration
-			time_near = 0f;
-		}
+				time_near += Time.deltaTime;
+				GetComponent<Rigidbody2D>().AddForce(40f * Mathf.Pow(time_near + 1, 2.0f) * (new Vector2(-dist_x, -dist_y)));
+			} else {
+				//  Reset acceleration
+				time_near = 0f;
+			}
 
-		if (duration >= 0) { // Decrement timer
-			duration -= Time.deltaTime;
-		} else { // Remove item from the game
-			// Shine effect
-			Instantiate(shine, transform.position, Quaternion.Euler(0, 0, 0));
-			Destroy(this.gameObject);
+			if (duration >= 0) { // Decrement timer
+				duration -= Time.deltaTime;
+			} else { // Remove item from the game
+				// Shine effect
+				Instantiate(shine, transform.position, Quaternion.Euler(0, 0, 0));
+				Destroy(this.gameObject);
+			}
 		}
 	}
 

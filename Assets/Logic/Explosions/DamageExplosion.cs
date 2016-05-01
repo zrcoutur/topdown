@@ -17,10 +17,14 @@ public class DamageExplosion : Explosion {
 	
 	// Update is called once per frame
 	void Update () {
-		if (animDone <= 0) {
-			Destroy(this.gameObject);
-		} else {
-			animDone -= Time.deltaTime;
+
+		if (!Time_Count.game_pause) {
+			
+			if (animDone <= 0) {
+				Destroy(this.gameObject);
+			} else {
+				animDone -= Time.deltaTime;
+			}
 		}
 	}
 }

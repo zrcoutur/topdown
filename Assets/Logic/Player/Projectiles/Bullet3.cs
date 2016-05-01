@@ -41,25 +41,28 @@ public class Bullet3 : PlayerAttack {
 	void Update ()
 	{
 
-		// Conflux stuff
-		if (startup < 1.0f) {
-			startup *= 120.0f * Time.deltaTime;
-			damageApprox *= 1.0f + (30.0f * Time.deltaTime);
-			damage = Mathf.Min((int)damageApprox, damageMax);
-		}
+		if (!Time_Count.game_pause) {
+			
+			// Conflux stuff
+			if (startup < 1.0f) {
+				startup *= 120.0f * Time.deltaTime;
+				damageApprox *= 1.0f + (30.0f * Time.deltaTime);
+				damage = Mathf.Min((int)damageApprox, damageMax);
+			}
 
-		body.AddForce (Tools.AngleToVec2 (Tools.Vector2ToAngle(body.velocity)+Mathf.Clamp(rot*5.0f,-80.0f,80.0f), startup*(40.0f+Mathf.Abs(rot-outset))));
-		if (rot > outset+3.0f) {
-			rot -= Time.deltaTime * 300.0f;
-		} else if (rot < outset-3.0f) {
-			rot += Time.deltaTime * 300.0f;
-		}
+			body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity) + Mathf.Clamp(rot * 5.0f, -80.0f, 80.0f), startup * (40.0f + Mathf.Abs(rot - outset))));
+			if (rot > outset + 3.0f) {
+				rot -= Time.deltaTime * 300.0f;
+			} else if (rot < outset - 3.0f) {
+				rot += Time.deltaTime * 300.0f;
+			}
 
-		// Remove the bullet after a certain period of time
-		if (duration >= 0.0f) {
-			duration -= Time.deltaTime;
-		} else {
-			Destroy( GameObject.Find("Bullet3(Clone)") );
+			// Remove the bullet after a certain period of time
+			if (duration >= 0.0f) {
+				duration -= Time.deltaTime;
+			} else {
+				Destroy(GameObject.Find("Bullet3(Clone)"));
+			}
 		}
 	}
 

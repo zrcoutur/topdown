@@ -24,6 +24,7 @@ public class DynamicGUI : MonoBehaviour {
 	}
 
 	public void Update() {
+
 		displays = new StatDisplay[6];
 		// Initialize stat displays
 		displays[0] = new StatDisplay("Health", p.stats.MAX_HEALTH);
@@ -32,8 +33,9 @@ public class DynamicGUI : MonoBehaviour {
 		switchWeaponStats();
 
 		// Toggle the display on and off
-		if (Input.GetKeyDown (KeyCode.Tab)) {
+		if (Input.GetKeyDown(KeyCode.Tab)) {
 			show = !show;
+			Time_Count.toggle_pause();
 		}
 	}
 		

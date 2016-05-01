@@ -30,72 +30,74 @@ public class EnemySpawnerHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
-	{
+    void Update () {
 
-		totaltime += Time.deltaTime;
-		timer -= Time.deltaTime;
+		if (!Time_Count.game_pause) {
+		
+			totaltime += Time.deltaTime;
+			timer -= Time.deltaTime;
 
-		int noSpawns = 10;
+			int noSpawns = 10;
 
-		while (timer <= 0 && noSpawns >= 0) {
+			while (timer <= 0 && noSpawns >= 0) {
 
-			noSpawns--;
+				noSpawns--;
 
-			object[] enemiesonscreen = FindObjectsOfType<Baseenemy> ();
+				object[] enemiesonscreen = FindObjectsOfType<Baseenemy>();
 
-			if (enemiesonscreen.Length > maxnumberofenemes) {
-				break;
-			}
-
-			Random.seed = System.DateTime.Now.Millisecond;
-			int rand1 = Random.Range (0, enemies.Length);
-
-			int rand2 = 0;
-
-			rand2 = Random.Range (0, spawnPoints.Length);
-
-			// Spawn an enemy
-			if (spawnPoints [rand2].activated) {
-
-				Baseenemy enemy = spawnPoints [rand2].spawn (enemies [rand1]);
-				enemy.TimeIncrease (totaltime);
-				timer += rate;
-				print (cnt++);
-
-			}
-
-		}
-
-		// Boss spawn.
-		if (totaltime > (float)bossSpawn) {
-
-			Random.seed = System.DateTime.Now.Millisecond;
-			int rand1 = Random.Range (0, bosses.Length);
-			int rand2 = Random.Range (0, spawnPoints.Length);
-
-			// Attempt to spawn a boss
-			if (spawnPoints [rand2].activated) {
-				bossSpawn+=300;
-				Baseenemy enemy = spawnPoints [rand2].spawn (bosses [rand1]);
-				enemy.TimeIncrease(totaltime);
-			}
-
-		}
-			
-		if (rate > 0.5f) {
-			// Increase difficulty
-			if (r_timer <= 0f) {
-				rate -= 0.1f;
-				r_timer = 60f;
-
-				if (numToSpawnatOnce < 12) {
-					numToSpawnatOnce += 1;
+				if (enemiesonscreen.Length > maxnumberofenemes) {
+					break;
 				}
-			} else {
-				r_timer -= Time.deltaTime;
-			}
-		}
 
-        }
-    }
+				Random.seed = System.DateTime.Now.Millisecond;
+				int rand1 = Random.Range(0, enemies.Length);
+
+				int rand2 = 0;
+
+				rand2 = Random.Range(0, spawnPoints.Length);
+
+				// Spawn an enemy
+				if (spawnPoints[rand2].activated) {
+
+					Baseenemy enemy = spawnPoints[rand2].spawn(enemies[rand1]);
+					enemy.TimeIncrease(totaltime);
+					timer += rate;
+					print(cnt++);
+
+				}
+
+			}
+
+			// Boss spawn.
+			if (totaltime > (float)bossSpawn) {
+
+				Random.seed = System.DateTime.Now.Millisecond;
+				int rand1 = Random.Range(0, bosses.Length);
+				int rand2 = Random.Range(0, spawnPoints.Length);
+
+				// Attempt to spawn a boss
+				if (spawnPoints[rand2].activated) {
+					bossSpawn += 300;
+					Baseenemy enemy = spawnPoints[rand2].spawn(bosses[rand1]);
+					enemy.TimeIncrease(totaltime);
+				}
+
+			}
+			
+			if (rate > 0.5f) {
+				// Increase difficulty
+				if (r_timer <= 0f) {
+					rate -= 0.1f;
+					r_timer = 60f;
+
+					if (numToSpawnatOnce < 12) {
+						numToSpawnatOnce += 1;
+					}
+				} else {
+					r_timer -= Time.deltaTime;
+				}
+			}
+
+		}
+	}
+}

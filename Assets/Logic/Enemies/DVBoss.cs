@@ -31,7 +31,7 @@ public class DVBoss : Baseenemy {
 		health = Maxhealth;
 
 		speed = Mathf.Min(15f, 5f + (0.7f * timeScale));
-		damage = System.Math.Min(130, 27 + (int)(0.125f * timeScale * timeScale + 5f * timeScale) );
+		damage = System.Math.Min(130, 13 + (int)(0.1f * timeScale * timeScale + 2f * timeScale) );
 	}
 
     // Use this for initialization

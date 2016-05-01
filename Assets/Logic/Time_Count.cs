@@ -12,6 +12,13 @@ using System.Collections;
 public class Time_Count : MonoBehaviour {
 	// Total time since the beginning of the round
 	public float time;
+	// Indicates that the game is paused
+	private static bool pause;
+	public static bool game_pause { get { return pause; } }
+
+	static Time_Count() {
+		pause = false;
+	}
 
 	// Use this for initialization
 	public void Start () {
@@ -22,8 +29,23 @@ public class Time_Count : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update () {
-		GetComponent<Text>().text = ((int)time).ToString();
-		time += Time.deltaTime;
+		
+		if (!pause) {
+			// Only count time outside of game being paused
+			GetComponent<Text>().text = ((int)time).ToString();
+			time += Time.deltaTime;
+		}
+	}
+
+	/**
+	 * Toggle the game pause mode. If the game is currently paused
+	 * then the game will resume otherwise the game will be paused.
+	 */
+	public static void toggle_pause() {
+		// Toggle pause mode with 'p'
+		pause = !pause;
+		// Slow down time if the game is paused
+		Time.timeScale = (pause) ? 0.00001f : 1f;
 	}
 
 	private string displayCurrentTime() {

@@ -15,11 +15,13 @@ public class Animatable : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		timer -= Time.deltaTime;
+		if (!Time_Count.game_pause) {
+			
+			timer -= Time.deltaTime;
 
-		if (timer <= 0) {
-			Destroy (gameObject);
+			if (timer <= 0) {
+				Destroy(gameObject);
+			}
 		}
-
 	}
 }

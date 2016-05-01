@@ -35,45 +35,51 @@ public class Boomarang : PlayerAttack {
 	
 	// Update is called once per frame
 	public void Update() {
-		// Remove the blade after its durability runs out
-		if (durability <= 0f) { Destroy(gameObject); }
 
-		// Rotate the object
-		float angle = Tools.QuaternionToAngle(gameObject.transform.rotation);
-		angle -= 26f;
-		gameObject.transform.rotation = Tools.AngleToQuaternion(angle);
-
-		// Oribit the Player at a set distance
-		float dist = Vector2.Distance(transform.parent.position, transform.position);
-		Vector2 dir = (transform.parent.position - transform.position).normalized;
-
-		if (dist <= 0.2f) {
-			// State 0 implies that the boomarang is near the player but outside its orbital radius
-			if (state != 0) {
-				GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-				state = 0;
+		if (!Time_Count.game_pause) {
+			
+			// Remove the blade after its durability runs out
+			if (durability <= 0f) {
+				Destroy(gameObject);
 			}
 
-			// Move back to rotation position
-			GetComponent<Rigidbody2D>().AddForce( Tools.AngleToVec2(Tools.Vector2ToAngle(dir), -0.015f) );
-		} else if (dist > 0.2f && dist <= 1.5f) {
-			// State 1 implies that the boomarang is within its orbital radius
-			if (state != 1) {
-				GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-				state = 1;
-			}
+			// Rotate the object
+			float angle = Tools.QuaternionToAngle(gameObject.transform.rotation);
+			angle -= 26f;
+			gameObject.transform.rotation = Tools.AngleToQuaternion(angle);
 
-			// Oscillate around the Player
-			GetComponent<Rigidbody2D>().AddForce( Tools.AngleToVec2(Tools.Vector2ToAngle(dir) + 90f, 0.02f) );
-		} else {
-			// State 2 implies that the boomarang is away from the player and outside its orbital radius
-			if (state != 2) {
-				GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-				state = 2;
-			}
+			// Oribit the Player at a set distance
+			float dist = Vector2.Distance(transform.parent.position, transform.position);
+			Vector2 dir = (transform.parent.position - transform.position).normalized;
 
-			// Move back to rotation position
-			GetComponent<Rigidbody2D>().AddForce( Tools.AngleToVec2(Tools.Vector2ToAngle(dir), 0.025f) );
+			if (dist <= 0.2f) {
+				// State 0 implies that the boomarang is near the player but outside its orbital radius
+				if (state != 0) {
+					GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					state = 0;
+				}
+
+				// Move back to rotation position
+				GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(dir), -0.015f));
+			} else if (dist > 0.2f && dist <= 1.5f) {
+				// State 1 implies that the boomarang is within its orbital radius
+				if (state != 1) {
+					GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					state = 1;
+				}
+
+				// Oscillate around the Player
+				GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(dir) + 90f, 0.02f));
+			} else {
+				// State 2 implies that the boomarang is away from the player and outside its orbital radius
+				if (state != 2) {
+					GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					state = 2;
+				}
+
+				// Move back to rotation position
+				GetComponent<Rigidbody2D>().AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(dir), 0.025f));
+			}
 		}
 	}
 

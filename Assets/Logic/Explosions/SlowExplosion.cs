@@ -21,13 +21,17 @@ public class SlowExplosion : Explosion {
 
 	// Update is called once per frame
 	void Update () {
-		if (animDone <= 0) {
-			// Create an area that slows enemies down and damages them overtime
-			SlowArea slepl = ((GameObject)Instantiate(slowArea, transform.position, Quaternion.identity)).GetComponent<SlowArea>();
-			slepl.setDuration(6f);
-			Destroy(this.gameObject);
-		} else {
-			animDone -= Time.deltaTime;
+
+		if (!Time_Count.game_pause) {
+			
+			if (animDone <= 0) {
+				// Create an area that slows enemies down and damages them overtime
+				SlowArea slepl = ((GameObject)Instantiate(slowArea, transform.position, Quaternion.identity)).GetComponent<SlowArea>();
+				slepl.setDuration(6f);
+				Destroy(this.gameObject);
+			} else {
+				animDone -= Time.deltaTime;
+			}
 		}
 	}
 }

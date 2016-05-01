@@ -41,55 +41,46 @@ public class roomDoorHandlerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (rePath != 10f )
-			rePath -= Time.deltaTime;
-
-		if (rePath <= 0f) {
-			rePath = 10f;
-			Pathfinder2D.Instance.gen = 0;
-		}
-
-		if (!paidScrap && playerCheck >= playerTime)
-		{
-			playerDetect();
-			playerCheck = 0; 
-		}
-		else
-		{
-			playerCheck += Time.deltaTime;
-		}
-		if (paidScrap == true && !open)
-		{
-			if (time < transitionTime)
-			{
-				// open inner doors
-				foreach (GameObject gameOBJ in innerDoors)
-				{
-					if (gameOBJ.GetComponent<Door>().state == 0)
-					{
-						gameOBJ.GetComponent<Door>().state = 1;
-					}
-				}
-			}
-			else
-			{	// open outer doors
-				foreach (GameObject gameOBJ in outerDoors)
-				{
-					if (gameOBJ.GetComponent<Door>().state == 0)
-					{
-						gameOBJ.GetComponent<Door>().state = 1;
-						open = true;
-
-						rePath = 1.0f;
-					}
-				}
-
-			}
+		if (!Time_Count.game_pause) {
 			
-			time += Time.deltaTime;
+			if (rePath != 10f)
+				rePath -= Time.deltaTime;
 
+			if (rePath <= 0f) {
+				rePath = 10f;
+				Pathfinder2D.Instance.gen = 0;
+			}
+
+			if (!paidScrap && playerCheck >= playerTime) {
+				playerDetect();
+				playerCheck = 0; 
+			} else {
+				playerCheck += Time.deltaTime;
+			}
+			if (paidScrap == true && !open) {
+				if (time < transitionTime) {
+					// open inner doors
+					foreach (GameObject gameOBJ in innerDoors) {
+						if (gameOBJ.GetComponent<Door>().state == 0) {
+							gameOBJ.GetComponent<Door>().state = 1;
+						}
+					}
+				} else {	// open outer doors
+					foreach (GameObject gameOBJ in outerDoors) {
+						if (gameOBJ.GetComponent<Door>().state == 0) {
+							gameOBJ.GetComponent<Door>().state = 1;
+							open = true;
+
+							rePath = 1.0f;
+						}
+					}
+
+				}
+			
+				time += Time.deltaTime;
+
+			}
 		}
-
 	}
 
 	private void playerDetect()

@@ -112,268 +112,264 @@ public class Player : MonoBehaviour {
 	 *******************************************************************************/
 	void Update () {
 
-		// Dead! Do nothing.
-		if (stats.get_health() <= 0) {
-			death_timer -= Time.deltaTime;
-
-			// Perform once
-			if (uponDeath) {
-
-				// Destroy your weapon if its not already destroyed
-				if (wep != null) {
-					Destroy(wep.gameObject);
-				}
-				
-
-				// Stop turning
-				body.freezeRotation = true;
-
-				// Set dead animation
-				anim.SetBool("Dead", true);
-
-				// Stop color
-				Srenderer.color = colors [0];
-
-				// Slow down movement
-				body.drag = 100.0f;
-
-				// Play death SFX
-				CameraRunner.gAudio.PlayOneShot(X_Die);
-
-				// Print out player scores
-				score.display_scores();
-
-				uponDeath = false;
-
-			} else if (death_timer <= 0f) {
-				PlayerPrefs.SetInt("FinalScore", (int)this.score.totalScore);
-				UnityEngine.SceneManagement.SceneManager.LoadScene("gameOver");
-			}
-
-			return;
-		}
-
-		// Flashing when hurt
-		flash -= Time.deltaTime;
-
-		if (flash >= 0)
-		{
-			toggle = 1 - toggle;
-			Srenderer.color = colors[toggle];
-		}
-		else
-			Srenderer.color = colors[0];
-
-		/************************
-		 * Shield Regen
-		 ************************/
-
-		shieldRegenTime -= Time.deltaTime;
-
-		// Start regenning shield
-		if (shieldRegenTime < 0) {
-
-			// Time between 'ticks' of shield recovery
-			shieldRecoverTime -= Time.deltaTime;
-
-			// Regen a tick of shield if delay is over
-			if ( shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current() ) {
-				
-				stats.change_shield( (int)(shieldSlider.maxValue / 50f + 1f) );
-				stats.Shield_raised = true;
-				shieldRecoverTime += shieldMaxRecoverTime;
+		if (!Time_Count.game_pause) {
 			
+			// Dead! Do nothing.
+			if (stats.get_health() <= 0) {
+				death_timer -= Time.deltaTime;
+
+				// Perform once
+				if (uponDeath) {
+
+					// Destroy your weapon if its not already destroyed
+					if (wep != null) {
+						Destroy(wep.gameObject);
+					}
+				
+
+					// Stop turning
+					body.freezeRotation = true;
+
+					// Set dead animation
+					anim.SetBool("Dead", true);
+
+					// Stop color
+					Srenderer.color = colors[0];
+
+					// Slow down movement
+					body.drag = 100.0f;
+
+					// Play death SFX
+					CameraRunner.gAudio.PlayOneShot(X_Die);
+
+					// Print out player scores
+					score.display_scores();
+
+					uponDeath = false;
+
+				} else if (death_timer <= 0f) {
+					PlayerPrefs.SetInt("FinalScore", (int)this.score.totalScore);
+					UnityEngine.SceneManagement.SceneManager.LoadScene("gameOver");
+				}
+
+				return;
 			}
 
-			// Update slider
-			shieldSlider.value = stats.get_shield();
+			// Flashing when hurt
+			flash -= Time.deltaTime;
 
-		}
+			if (flash >= 0) {
+				toggle = 1 - toggle;
+				Srenderer.color = colors[toggle];
+			} else
+				Srenderer.color = colors[0];
 
-		/************************
-		 * MOVEMENT
-		 ************************/
+			/************************
+			 * Shield Regen
+			 ************************/
 
-		// Move Up
-		if (Input.GetKey( M_MoveUp )) {
-			body.AddForce (new Vector2 (0, 22));
-		}
+			shieldRegenTime -= Time.deltaTime;
 
-		// Move Down
-		if (Input.GetKey( M_MoveDown )) {
-			body.AddForce (new Vector2 (0, -22));
-		}
+			// Start regenning shield
+			if (shieldRegenTime < 0) {
 
-		// Move Left
-		if (Input.GetKey( M_MoveLeft )) {
-			body.AddForce (new Vector2 (-22, 0));
-		}
+				// Time between 'ticks' of shield recovery
+				shieldRecoverTime -= Time.deltaTime;
 
-		// Move Right
-		if (Input.GetKey( M_MoveRight )) {
-			body.AddForce (new Vector2 (22, 0));
-		}
+				// Regen a tick of shield if delay is over
+				if (shieldRecoverTime <= 0 && stats.get_shield() < stats.MAX_SHIELD.current()) {
+				
+					stats.change_shield((int)(shieldSlider.maxValue / 50f + 1f));
+					stats.Shield_raised = true;
+					shieldRecoverTime += shieldMaxRecoverTime;
+			
+				}
 
-		// Press 1 to switch to the sword
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
-			stats.switch_weapon_to(WEAPON_TYPE.sword);
-			// Play swap sound
-			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+				// Update slider
+				shieldSlider.value = stats.get_shield();
 
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-			// Change weapon sprite
-			wep.updateWeapon();
-		}
+			}
 
-		// Press 2 to switch to the rifle
-		if (Input.GetKeyDown(KeyCode.Alpha2)) {
-			stats.switch_weapon_to(WEAPON_TYPE.rifle);
-			// Play swap sound
-			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			/************************
+			 * MOVEMENT
+			 ************************/
 
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-			// Change weapon sprite
-			wep.updateWeapon();
-		}
+			// Move Up
+			if (Input.GetKey(M_MoveUp)) {
+				body.AddForce(new Vector2(0, 22));
+			}
 
-		// Press 3 to switch to the shotgun
-		if (Input.GetKeyDown(KeyCode.Alpha3)) {
-			stats.switch_weapon_to(WEAPON_TYPE.shotgun);
-			// Play swap sound
-			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			// Move Down
+			if (Input.GetKey(M_MoveDown)) {
+				body.AddForce(new Vector2(0, -22));
+			}
 
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-			// Change weapon sprite
-			wep.updateWeapon();
-		}
+			// Move Left
+			if (Input.GetKey(M_MoveLeft)) {
+				body.AddForce(new Vector2(-22, 0));
+			}
 
-		// Press 4 to switch to the grenade launcher
-		if (Input.GetKeyDown(KeyCode.Alpha4)) {
-			stats.switch_weapon_to(WEAPON_TYPE.grenade);
-			// Play swap sound
-			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			// Move Right
+			if (Input.GetKey(M_MoveRight)) {
+				body.AddForce(new Vector2(22, 0));
+			}
 
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-			// Change weapon sprite
-			wep.updateWeapon();
-		}
+			// Press 1 to switch to the sword
+			if (Input.GetKeyDown(KeyCode.Alpha1)) {
+				stats.switch_weapon_to(WEAPON_TYPE.sword);
+				// Play swap sound
+				CameraRunner.gAudio.PlayOneShot(X_Weapon_Swap, 1.0f);
 
-		// Strafe Input
-		body.freezeRotation = (Input.GetKey( M_Strafe ));
+				GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+				// Change weapon sprite
+				wep.updateWeapon();
+			}
 
-		/***********************
-		 * ANIMATION
-		 ***********************/
+			// Press 2 to switch to the rifle
+			if (Input.GetKeyDown(KeyCode.Alpha2)) {
+				stats.switch_weapon_to(WEAPON_TYPE.rifle);
+				// Play swap sound
+				CameraRunner.gAudio.PlayOneShot(X_Weapon_Swap, 1.0f);
 
-		var tDir = body.velocity;
+				GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+				// Change weapon sprite
+				wep.updateWeapon();
+			}
 
-		if (tDir.magnitude > 0.5f) {
+			// Press 3 to switch to the shotgun
+			if (Input.GetKeyDown(KeyCode.Alpha3)) {
+				stats.switch_weapon_to(WEAPON_TYPE.shotgun);
+				// Play swap sound
+				CameraRunner.gAudio.PlayOneShot(X_Weapon_Swap, 1.0f);
 
-			// Set walking flag
-			anim.SetBool ("Walk", true);
+				GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+				// Change weapon sprite
+				wep.updateWeapon();
+			}
 
-		} else {
+			// Press 4 to switch to the grenade launcher
+			if (Input.GetKeyDown(KeyCode.Alpha4)) {
+				stats.switch_weapon_to(WEAPON_TYPE.grenade);
+				// Play swap sound
+				CameraRunner.gAudio.PlayOneShot(X_Weapon_Swap, 1.0f);
 
-			// Turn off walking flag
-			anim.SetBool ("Walk", false);
+				GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+				// Change weapon sprite
+				wep.updateWeapon();
+			}
 
-		}
+			// Strafe Input
+			body.freezeRotation = (Input.GetKey(M_Strafe));
 
-		// Rotation
+			/***********************
+		 	 * ANIMATION
+		 	 ***********************/
 
-		// Get your current facing
-		var currentAng = body.rotation;
+			var tDir = body.velocity;
 
-		// Get the direction to the mouse
-		var look = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position); // Vector representation
-		var targetAng = 270.0f + Tools.Vector2ToAngle( look ); // Angle of that vector
+			if (tDir.magnitude > 0.5f) {
 
-		// Lerp between current facing and target facing
-		body.MoveRotation (Mathf.MoveTowardsAngle (currentAng, targetAng, 20));
+				// Set walking flag
+				anim.SetBool("Walk", true);
 
-		/************************
+			} else {
+
+				// Turn off walking flag
+				anim.SetBool("Walk", false);
+
+			}
+
+			// Rotation
+
+			// Get your current facing
+			var currentAng = body.rotation;
+
+			// Get the direction to the mouse
+			var look = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position); // Vector representation
+			var targetAng = 270.0f + Tools.Vector2ToAngle(look); // Angle of that vector
+
+			// Lerp between current facing and target facing
+			body.MoveRotation(Mathf.MoveTowardsAngle(currentAng, targetAng, 20));
+
+			/************************
 		 * WEAPON SWAP
 		 ************************/
-		if (Input.GetKeyDown ( M_Swap )) {
-			stats.cycle_weapons();
-			// Play swap sound
-			CameraRunner.gAudio.PlayOneShot( X_Weapon_Swap, 1.0f );
+			if (Input.GetKeyDown(M_Swap)) {
+				stats.cycle_weapons();
+				// Play swap sound
+				CameraRunner.gAudio.PlayOneShot(X_Weapon_Swap, 1.0f);
 
-			GetComponentInChildren<DynamicGUI>().switchWeaponStats();
-			// Change weapon sprite
-			wep.updateWeapon();
+				GetComponentInChildren<DynamicGUI>().switchWeaponStats();
+				// Change weapon sprite
+				wep.updateWeapon();
 
-		}
+			}
 
 
-		/************************
+			/************************
 		 * ATTACKING
 		 ************************/
 
-		atkCool -= Time.deltaTime;
+			atkCool -= Time.deltaTime;
 
-		// Attack delay
-		if (atkCool <= 0) {
+			// Attack delay
+			if (atkCool <= 0) {
 
-			// Make weapon visible
-			wep.GetComponent<Renderer>().enabled = true;
+				// Make weapon visible
+				wep.GetComponent<Renderer>().enabled = true;
 
-			// Attack Input
-			if (stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKey(M_Shoot)) {
+				// Attack Input
+				if (stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKey(M_Shoot)) {
 
-				// Grenade launcher can be charged
-				if (atkCharge < 12f) { atkCharge += 0.5f; }
-			} else if ((stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKeyUp(M_Shoot)) ||
-					   (!(stats.current_weapon() == WEAPON_TYPE.grenade) && Input.GetKey(M_Shoot))) {
+					// Grenade launcher can be charged
+					if (atkCharge < 12f) {
+						atkCharge += 0.5f;
+					}
+				} else if ((stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKeyUp(M_Shoot)) ||
+				          (!(stats.current_weapon() == WEAPON_TYPE.grenade) && Input.GetKey(M_Shoot))) {
 
-				// Release charge to fire the grenade launcher
-				var pressed = Input.GetKeyDown(M_Shoot);
+					// Release charge to fire the grenade launcher
+					var pressed = Input.GetKeyDown(M_Shoot);
 
-				PerformAttack((int)stats.current_weapon(), pressed);
-				ammo_regen.delay_regen();
-				atkCharge = 0.5f;
-			}
-
-		}
-
-		// passively recover ammo overtime
-		int ammo = ammo_regen.increment();
-		GainAmmo(ammo);
-			
-		// Press 'h' to use a medpack to restore half of your HP
-		if ( Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0 ) {
-			GetHealed((int)stats.MAX_HEALTH.current() / 2);
-			stats.MEDPACKS.decrement();
-		}
-		// Hold 'space' to gain ammo
-		if ( Input.GetKey(KeyCode.Space) ) {
-			GainAmmo(1);
-		}
-
-		//Activates spawners within a certain radius of the player every so often
-		if (spawnerCheck >= spawnerTime)
-		{
-			
-			Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
-
-			//find nearby game objects that are spawners
-			foreach (Collider2D col in hitColliders)
-			{
-				if (col.gameObject.name.Equals("baseSpawner(Clone)"))
-				{
-					col.gameObject.GetComponent<EnemySpawner>().setActive();
+					PerformAttack((int)stats.current_weapon(), pressed);
+					ammo_regen.delay_regen();
+					atkCharge = 0.5f;
 				}
 
 			}
-			spawnerCheck = 0;
+
+			// passively recover ammo overtime
+			int ammo = ammo_regen.increment();
+			GainAmmo(ammo);
+			
+			// Press 'h' to use a medpack to restore half of your HP
+			if (Input.GetKeyDown(KeyCode.H) && stats.MEDPACKS.current() > 0) {
+				GetHealed((int)stats.MAX_HEALTH.current() / 2);
+				stats.MEDPACKS.decrement();
+			}
+			// Hold 'space' to gain ammo
+			if (Input.GetKey(KeyCode.Space)) {
+				GainAmmo(1);
+			}
+
+			//Activates spawners within a certain radius of the player every so often
+			if (spawnerCheck >= spawnerTime) {
+			
+				Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 35, 1);
+
+				//find nearby game objects that are spawners
+				foreach (Collider2D col in hitColliders) {
+					if (col.gameObject.name.Equals("baseSpawner(Clone)")) {
+						col.gameObject.GetComponent<EnemySpawner>().setActive();
+					}
+
+				}
+				spawnerCheck = 0;
+			} else {
+				spawnerCheck += Time.deltaTime;
+			}
+
 		}
-		else
-		{
-			spawnerCheck += Time.deltaTime;
-		}
-
-
-
 	}
 
 	/*******************************************************************************
@@ -1172,10 +1168,6 @@ public class Player : MonoBehaviour {
 			Destroy(obj);
 			score.scrap_collected++;
 			stats.change_scrap(1);
-		} else if (obj.tag == "weapon_pack") {
-
-			stats.weapon_by_type((WEAPON_TYPE)(obj.GetComponent<WeaponUpgrade>().weapon)).setUgrade(1);
-			Destroy(obj);
 		} else if (trigger.gameObject.GetComponent<Explosion>() != null) {
 			// The player suffers 5% damage from explosions
 			GetHurt( (int)(0.05f * trigger.gameObject.GetComponent<Explosion>().getDamage()) );

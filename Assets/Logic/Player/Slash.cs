@@ -12,13 +12,14 @@ public class Slash : PlayerAttack {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		slashTimer -= Time.deltaTime;
 
-		if (slashTimer <= 0) {
+		if (!Time_Count.game_pause) {
+			
+			slashTimer -= Time.deltaTime;
 
-			Destroy (gameObject);
-
+			if (slashTimer <= 0) {
+				Destroy(gameObject);
+			}
 		}
 	}
 

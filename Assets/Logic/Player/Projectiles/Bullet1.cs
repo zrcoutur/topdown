@@ -37,17 +37,20 @@ public class Bullet1 : PlayerAttack {
 	// Update is called once per frame
 	void Update () {
 
-		//Twin intertwining
-		if (twin == 1) {
-			otime += Time.deltaTime;
-			body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity)+90.0f,Mathf.Cos(otime*15.0f)*50.0f*osc));
-		}
+		if (!Time_Count.game_pause) {
+			
+			//Twin intertwining
+			if (twin == 1) {
+				otime += Time.deltaTime;
+				body.AddForce(Tools.AngleToVec2(Tools.Vector2ToAngle(body.velocity) + 90.0f, Mathf.Cos(otime * 15.0f) * 50.0f * osc));
+			}
 
-		// Remove the bullet after a certain period of time
-		if (duration >= 0.0f) {
-			duration -= Time.deltaTime;
-		} else {
-			Destroy( GameObject.Find("Bullet1(Clone)") );
+			// Remove the bullet after a certain period of time
+			if (duration >= 0.0f) {
+				duration -= Time.deltaTime;
+			} else {
+				Destroy(GameObject.Find("Bullet1(Clone)"));
+			}
 		}
 	}
 

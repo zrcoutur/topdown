@@ -22,52 +22,41 @@ public class Door : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
-	{
-		if (hinge != 0 && once)
-		{
-			once = false;
-			if ((hinge & 1) == 1)
-			{
-				initalPos = this.transform.position.y;
+	void Update() {
 
-			}
-			else if ((hinge & 2) == 2)
-			{
-				initalPos = this.transform.position.x;
+		if (!Time_Count.game_pause) {
+			
+			if (hinge != 0 && once) {
+				once = false;
+				if ((hinge & 1) == 1) {
+					initalPos = this.transform.position.y;
 
-			}
-			else if ((hinge & 4) == 4)
-			{
-				initalPos = this.transform.position.y;
+				} else if ((hinge & 2) == 2) {
+					initalPos = this.transform.position.x;
 
-			}
-			else if ((hinge & 8) == 8)
-			{
-				initalPos = this.transform.position.x;
-			}
-		}
+				} else if ((hinge & 4) == 4) {
+					initalPos = this.transform.position.y;
 
-			if (state == 0)
-			{
+				} else if ((hinge & 8) == 8) {
+					initalPos = this.transform.position.x;
+				}
+			}
+
+			if (state == 0) {
 				//door is closed do nothing
-			}else if (state == 1)
-			{
+			} else if (state == 1) {
 				time += Time.deltaTime;
 				openDoor();
 				
-			}else if (state == 2)
-			{
+			} else if (state == 2) {
 				//door is open do nothing
-			}else if (state == 3)
-			{
-			time += Time.deltaTime;
-			closeDoor();
+			} else if (state == 3) {
+				time += Time.deltaTime;
+				closeDoor();
 				
 			}
 			
-		
-
+		}
 	}
 	void openDoor()
 	{

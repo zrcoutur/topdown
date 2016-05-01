@@ -15,11 +15,16 @@ public class SlowArea : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update() {
-		// remove the slow area after a period of time
-		if (duration <= 0f) {
-			Destroy(this.gameObject);
-		} else {
-			duration -= Time.deltaTime;
+
+		if (!Time_Count.game_pause) {
+			
+			// remove the slow area after a period of time
+			if (duration <= 0f) {
+				Destroy(this.gameObject);
+			} else {
+				duration -= Time.deltaTime;
+			}
+		
 		}
 	}
 

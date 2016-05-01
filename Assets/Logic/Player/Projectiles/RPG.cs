@@ -15,14 +15,19 @@ public class RPG : Grenade {
 	
 	// Update is called once per frame
 	public new void Update () {
-		// Explode after a set period of time
-		if (duration <= 0f) {
-			explode();
-		} else {
-			Vector2 origin = GetComponent<Rigidbody2D>().velocity;
-			// gain velocity overtime
-			GetComponent<Rigidbody2D>().velocity += acceleration * Time.deltaTime * origin;
-			duration -= Time.deltaTime;
+
+		if (!Time_Count.game_pause) {
+			
+			// Explode after a set period of time
+			if (duration <= 0f) {
+				explode();
+			} else {
+				Vector2 origin = GetComponent<Rigidbody2D>().velocity;
+				// gain velocity overtime
+				GetComponent<Rigidbody2D>().velocity += acceleration * Time.deltaTime * origin;
+				duration -= Time.deltaTime;
+			}
+
 		}
 	}
 

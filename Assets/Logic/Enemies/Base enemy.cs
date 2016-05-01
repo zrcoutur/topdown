@@ -67,183 +67,174 @@ public abstract class Baseenemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Update()
-    {
-		// Slow debuff logic
-		if (slow_duration >= 0f) {
-			slow_duration -= Time.deltaTime;
-		} else if (slowed) {
-			speed *= 3;
-			slowed = false;
-		}
+    public void Update() {
 
-		//Debug.Log((ulong)pointValue);
-
-		recollideTimer -= Time.deltaTime;
-		flash -= Time.deltaTime;
-
-		if (dieState == 1) {
-			//update score adding one kill to the player giving killing attack, and add pointValue to score
-			if (lastPlayerToAttack != null) {
-				lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
-				lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+		if (!Time_Count.game_pause) {
+		
+			// Slow debuff logic
+			if (slow_duration >= 0f) {
+				slow_duration -= Time.deltaTime;
+			} else if (slowed) {
+				speed *= 3;
+				slowed = false;
 			}
 
-			Destroy(gameObject);
-			return;
-		}
+			//Debug.Log((ulong)pointValue);
 
-        if (health < 0)
-        {
-			dieState = 1;
+			recollideTimer -= Time.deltaTime;
+			flash -= Time.deltaTime;
 
-            Instantiate(poof, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
+			if (dieState == 1) {
+				//update score adding one kill to the player giving killing attack, and add pointValue to score
+				if (lastPlayerToAttack != null) {
+					lastPlayerToAttack.GetComponent<Player>().score.enemies_killed++;
+					lastPlayerToAttack.GetComponent<Player>().score.totalScore += (ulong)pointValue;
+				}
 
-			// Get powerups
+				Destroy(gameObject);
+				return;
+			}
 
-			// Iterate through yields list
-			for (int j = 0; j < numYielded.GetLength(0); j++) {
-				// Number of items to give
-                for (int i = 0; i < numYielded[j]; i++) {
-					// Percentage chance to give this item
-					if (Random.value <= chanceYield[j]) {
-						// Create item
-                        var s = (GameObject)Instantiate(yields[j], transform.position, Quaternion.Euler(0, 0, 0));
-						// Fly out randomly
-                        s.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250f, 250f), Random.Range(-250f, 250f)));
+			if (health < 0) {
+				dieState = 1;
+
+				Instantiate(poof, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
+
+				// Get powerups
+
+				// Iterate through yields list
+				for (int j = 0; j < numYielded.GetLength(0); j++) {
+					// Number of items to give
+					for (int i = 0; i < numYielded[j]; i++) {
+						// Percentage chance to give this item
+						if (Random.value <= chanceYield[j]) {
+							// Create item
+							var s = (GameObject)Instantiate(yields[j], transform.position, Quaternion.Euler(0, 0, 0));
+							// Fly out randomly
+							s.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-250f, 250f), Random.Range(-250f, 250f)));
+						}
 					}
 				}
+
+
+
+				return;
 			}
 
+			if (flash >= 0) {
+				toggle = 1 - toggle;
+				Srenderer.color = colors[toggle];
+			} else
+				Srenderer.color = colors[0];
 
+			SearchDelay -= Time.deltaTime;
 
-			return;
-        }
+			if (SearchDelay <= 0) {
 
-		if (flash >= 0)
-        {
-            toggle = 1 - toggle;
-            Srenderer.color = colors[toggle];
-        }
-        else
-            Srenderer.color = colors[0];
+				// Find nearest player
+				nearest = Tools.findNearest(transform.position, "Player");
 
-        SearchDelay -= Time.deltaTime;
+				// Pathfind to player
+				pf.FindPath(transform.position, nearest.transform.position);
 
-        if (SearchDelay <= 0)
-        {
+				// Long re-track timer
+				SearchDelay = 5.0f;
 
-			// Find nearest player
-			nearest = Tools.findNearest(transform.position, "Player");
+				// Much more accurate re-tracking at point-blank
+				if (Vector3.Distance(transform.position, nearest.transform.position) < 10f)
+					SearchDelay -= 4.0f;
 
-			// Pathfind to player
-            pf.FindPath(transform.position, nearest.transform.position);
+			}
 
-			// Long re-track timer
-			SearchDelay = 5.0f;
+			if (nearest != null) {
 
-			// Much more accurate re-tracking at point-blank
-            if (Vector3.Distance(transform.position, nearest.transform.position) < 10f)
-				SearchDelay -= 4.0f;
-
-        }
-
-        if (nearest != null)
-		{
-
-			// Attack check - within range and you attack
-            if (Vector3.Distance(transform.position, nearest.position) <= range
-                && rate != -1f)
-			{
-				if (timer <= 0)
-				{
-					attack();
-                    timer += rate + Random.Range(-rateVariance, rateVariance);
+				// Attack check - within range and you attack
+				if (Vector3.Distance(transform.position, nearest.position) <= range
+				            && rate != -1f) {
+					if (timer <= 0) {
+						attack();
+						timer += rate + Random.Range(-rateVariance, rateVariance);
+					}
+					timer -= Time.deltaTime;
 				}
-				timer -= Time.deltaTime;
-			}
 
-			// Move towards target
+				// Move towards target
 
-			// Check if something obstructs your movement to the target
-            if (Vector2.Distance(transform.position, nearest.position) > 8.0f) {
-                pf.Move();
-			}
+				// Check if something obstructs your movement to the target
+				if (Vector2.Distance(transform.position, nearest.position) > 8.0f) {
+					pf.Move();
+				}
 			// Otherwise, move straight to the target
 			else {
-				// Calculate angle to target
-				Vector2 dir = (nearest.position - transform.position).normalized;
-				float currentAngle = Tools.QuaternionToAngle(transform.rotation);
-				float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
+					// Calculate angle to target
+					Vector2 dir = (nearest.position - transform.position).normalized;
+					float currentAngle = Tools.QuaternionToAngle(transform.rotation);
+					float targetAngle = Tools.Vector2ToAngle(dir) + 90.0f;
 
-				// Rotate to face target
-				transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
+					// Rotate to face target
+					transform.rotation = Tools.AngleToQuaternion(Mathf.MoveTowardsAngle(currentAngle, targetAngle, 7.0f * speed));
 
-				if (gameObject.GetComponent<FlyerDrone>() != null) {
-					// Logic invovling the movement of the Flyer drone
-					float dist = Vector3.Distance(transform.position, nearest.position);
+					if (gameObject.GetComponent<FlyerDrone>() != null) {
+						// Logic invovling the movement of the Flyer drone
+						float dist = Vector3.Distance(transform.position, nearest.position);
 
-					if (dist < (range - 5.5f)) {
-						// Move away from target
-						isKiting = false;
-						body.AddForce(-dir * (3f + speed / 5));
-					} else if (dist >= (range - 5.5f) && dist <= (range - 0.5f)) {
-						// Kite the target
+						if (dist < (range - 5.5f)) {
+							// Move away from target
+							isKiting = false;
+							body.AddForce(-dir * (3f + speed / 5));
+						} else if (dist >= (range - 5.5f) && dist <= (range - 0.5f)) {
+							// Kite the target
 
-						// Stop movement if the drone is not already kiting the player
-						if (!isKiting) {
-							body.velocity = Vector2.zero;
-							isKiting = true;
-							// Kite clockwise or counter-clockwise
-							kiteCW = UnityEngine.Random.value > 0.5f;
+							// Stop movement if the drone is not already kiting the player
+							if (!isKiting) {
+								body.velocity = Vector2.zero;
+								isKiting = true;
+								// Kite clockwise or counter-clockwise
+								kiteCW = UnityEngine.Random.value > 0.5f;
+							}
+
+							Vector2 force = Tools.AngleToVec2((body.rotation * transform.forward).z + ((kiteCW) ? -180f : 0f), 2f + speed / 10);
+							body.AddForce(force);
+						} else {
+							// Move at target
+							isKiting = false;
+							body.AddForce(dir * GetComponent<Baseenemy>().speed);
 						}
-
-						Vector2 force = Tools.AngleToVec2((body.rotation * transform.forward).z + ((kiteCW) ? -180f : 0f), 2f + speed / 10);
-						body.AddForce(force);
 					} else {
 						// Move at target
-						isKiting = false;
 						body.AddForce(dir * GetComponent<Baseenemy>().speed);
 					}
-				} else {
-					// Move at target
-					body.AddForce(dir * GetComponent<Baseenemy>().speed);
+
 				}
+				if (infected) {
+					Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
+					int count = 0;
+					foreach (Collider2D coll in hitColliders) {
+						if (coll.gameObject.tag == "Player") {
+							int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
+							coll.gameObject.GetComponent<Player>().GetHurt(damage);
+							Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+							break;
+						}
+						if (count == 2) {
+							break;
+						}
+						if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss) {
+							coll.gameObject.GetComponent<Baseenemy>().infected = true;
+							Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
+							count++;
+						}
+					}
+					timeTillDestroy -= Time.deltaTime;
+				}
+				// Check if you have completed your path - search sooner if so
+				if (SearchDelay > 0.5f && pf.Path.Count == 0)
+					SearchDelay = 0.5f;
+
 
 			}
-            if (infected)
-            {
-                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(this.transform.position, 10);
-                int count = 0;
-                foreach (Collider2D coll in hitColliders)
-                {
-                    if (coll.gameObject.tag == "Player")
-                    {
-                        int damage = (int)(coll.gameObject.GetComponent<Player>().stats.get_shield() * 1.1) + 1;
-                        coll.gameObject.GetComponent<Player>().GetHurt(damage);
-                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                        break;
-                    }
-                    if (count == 2)
-                    {
-                        break;
-                    }
-                    if (coll.gameObject.tag == "Enemy" && !coll.gameObject.GetComponent<Baseenemy>().isBoss)
-                    {
-                        coll.gameObject.GetComponent<Baseenemy>().infected = true;
-                        Debug.DrawLine(gameObject.transform.position, coll.gameObject.transform.position, Color.yellow, 2f);
-                        count++;
-                    }
-                }
-                timeTillDestroy -= Time.deltaTime;
-            }
-            // Check if you have completed your path - search sooner if so
-            if (SearchDelay > 0.5f && pf.Path.Count == 0)
-				SearchDelay = 0.5f;
-
-
+			Change();
 		}
-        Change();
     }
 	// Enemies take damage from explosions
 	public void OnTriggerEnter2D(Collider2D trigger) {

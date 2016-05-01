@@ -41,24 +41,29 @@ public class BreakableCrate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/* the HP bar shrinks as the crate's durability decreases */
-		Transform hp_len = hp_bar.transform;
-		var x_scale = ( durability / initial_durability );
 
-		hp_len.localScale = new Vector3(x_scale, hp_len.localScale.y, hp_len.localScale.y);
+		if (!Time_Count.game_pause) {
+			
+			/* the HP bar shrinks as the crate's durability decreases */
+			Transform hp_len = hp_bar.transform;
+			var x_scale = (durability / initial_durability);
 
-		if (durability <= 0) {
-			/* remove the crate when its durability reaches zero */
-			// Play break sfx
-			CameraRunner.gAudio.PlayOneShot(X_break, 0.5f);
-			Instantiate(pf, transform.position, transform.rotation);
-			remove_crate();
-		} else if (timer <= 0f) {
-			// scale damage of crate overtime
-			timer = 90f;
-			damage += Random.Range(10, 100);
-		} else if (damage <= 1900) {
-			timer -= Time.deltaTime;
+			hp_len.localScale = new Vector3(x_scale, hp_len.localScale.y, hp_len.localScale.y);
+
+			if (durability <= 0) {
+				/* remove the crate when its durability reaches zero */
+				// Play break sfx
+				CameraRunner.gAudio.PlayOneShot(X_break, 0.5f);
+				Instantiate(pf, transform.position, transform.rotation);
+				remove_crate();
+			} else if (timer <= 0f) {
+				// scale damage of crate overtime
+				timer = 90f;
+				damage += Random.Range(10, 100);
+			} else if (damage <= 1900) {
+				timer -= Time.deltaTime;
+			}
+
 		}
 	}
 		

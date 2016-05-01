@@ -19,20 +19,24 @@ public class dSlash : Slash {
 	
 	// Update is called once per frame
 	public void Update() {
-		// Remove the slash after a certain period of time
-		if (slashTimer <= 0f) {
-			Destroy(gameObject);
-		} else {
-			slashTimer -= Time.deltaTime;
-		}
 
-		if (rotate) {
-			// Rotate the object
-			float angle = Tools.QuaternionToAngle(gameObject.transform.localRotation);
-			angle -= 24f;
-			gameObject.transform.localRotation = Tools.AngleToQuaternion(angle);
+		if (!Time_Count.game_pause) {
+			
+			// Remove the slash after a certain period of time
+			if (slashTimer <= 0f) {
+				Destroy(gameObject);
+			} else {
+				slashTimer -= Time.deltaTime;
+			}
 
-			gameObject.transform.position = transform.parent.position;
+			if (rotate) {
+				// Rotate the object
+				float angle = Tools.QuaternionToAngle(gameObject.transform.localRotation);
+				angle -= 24f;
+				gameObject.transform.localRotation = Tools.AngleToQuaternion(angle);
+
+				gameObject.transform.position = transform.parent.position;
+			}
 		}
 	}
 
