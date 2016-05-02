@@ -292,8 +292,8 @@ public class Player : MonoBehaviour {
 			body.MoveRotation(Mathf.MoveTowardsAngle(currentAng, targetAng, 20));
 
 			/************************
-		 * WEAPON SWAP
-		 ************************/
+			 * WEAPON SWAP
+			 ************************/
 			if (Input.GetKeyDown(M_Swap)) {
 				stats.cycle_weapons();
 				// Play swap sound
@@ -307,8 +307,8 @@ public class Player : MonoBehaviour {
 
 
 			/************************
-		 * ATTACKING
-		 ************************/
+			 * ATTACKING
+			 ************************/
 
 			atkCool -= Time.deltaTime;
 
@@ -318,15 +318,17 @@ public class Player : MonoBehaviour {
 				// Make weapon visible
 				wep.GetComponent<Renderer>().enabled = true;
 
+				// Determines if the current weapon is a genade launcher (RPG discluded)
+				bool launcher_type = stats.weapon_by_type(stats.current_weapon()).upgrade_state() != 1 && stats.current_weapon() == WEAPON_TYPE.grenade;
+
 				// Attack Input
-				if (stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKey(M_Shoot)) {
+				if (launcher_type && Input.GetKey(M_Shoot)) {
 
 					// Grenade launcher can be charged
 					if (atkCharge < 12f) {
 						atkCharge += 0.5f;
 					}
-				} else if ((stats.current_weapon() == WEAPON_TYPE.grenade && Input.GetKeyUp(M_Shoot)) ||
-				          (!(stats.current_weapon() == WEAPON_TYPE.grenade) && Input.GetKey(M_Shoot))) {
+				} else if ((launcher_type && Input.GetKeyUp(M_Shoot)) || Input.GetKey(M_Shoot)) {
 
 					// Release charge to fire the grenade launcher
 					var pressed = Input.GetKeyDown(M_Shoot);
@@ -1003,7 +1005,7 @@ public class Player : MonoBehaviour {
 			case 1:
 
 				// Ammo Check
-				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 1.2f)) {
+				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 1.1f)) {
 					break;
 				}
 
@@ -1037,14 +1039,14 @@ public class Player : MonoBehaviour {
 			// Cluster Cannon
 			case 2:
 				// Ammo Check
-				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 0.85f)) {
+				if (!UseAmmo(stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.ammo).current() * 0.9f)) {
 					break;
 				}
 
 				// Cooldown
-				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.15f);
+				atkCool = 2.0f / (stats.weapon_by_type(stats.current_weapon()).weapon_stat(STAT_TYPE.rate_of_fire).current() * 1.2f);
 				// spawn 5 clusters
-				for (int idx = 0; idx < 5; ++idx) {
+				for (int idx = 0; idx < 4; ++idx) {
 					// Calculate creation position of grenade (from gun)
 					gnd_pos = body.position + Tools.AngleToVec2((body.rotation * transform.forward).z + 70.0f, 0.5f);
 
@@ -1056,8 +1058,8 @@ public class Player : MonoBehaviour {
 					Vector3 gnd_scale = gnd.transform.localScale;
 					gnd.transform.localScale = new Vector3(0.8f * gnd_scale.x, 0.8f * gnd_scale.y, gnd_scale.z);
 
-					gnd.setDamage( (int)(0.7f * damage_for_weapon()) );
-					gnd.setDuration(0.65f);
+					gnd.setDamage( (int)(0.33f * damage_for_weapon()) );
+					gnd.setDuration(0.7f);
 
 					// Calculate bullet's velocity
 					// Shot spread range.

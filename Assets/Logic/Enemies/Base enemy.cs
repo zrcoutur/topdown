@@ -283,22 +283,24 @@ public abstract class Baseenemy : MonoBehaviour
 
 	void OnHit(PlayerAttack hit) {
 
-		// The DV boss deflects normal and shotgun bullets
+		// The DV boss has a chance to deflect normal and shotgun bullets
 		if ((hit is Bullet1 || hit is Bullet3) && GetComponent<DVBoss>() != null) {
+			float chance = UnityEngine.Random.value;
 
-			// reflect enemy bullet
-			GameObject bullet = hit.gameObject;
-			// Delfects an incoming bullet back at an enemy
-			EnemyBullet reverse = (EnemyBullet)Instantiate(e_bullet, bullet.transform.position, Quaternion.identity);
-			// Sets transfomr's parent for indicating, which player deflected the bullet
-			reverse.transform.parent = transform.parent;
-			reverse.set_duration(float.MaxValue);
-			reverse.damage = damage / 3;
-			// Sets bullet trajectory
-			reverse.GetComponent<Rigidbody2D>().velocity = -hit.gameObject.GetComponent<Rigidbody2D>().velocity;
+			if (chance <= 0.2f) {
+				// reflect enemy bullet
+				GameObject bullet = hit.gameObject;
+				// Delfects an incoming bullet back at an enemy
+				EnemyBullet reverse = (EnemyBullet)Instantiate(e_bullet, bullet.transform.position, Quaternion.identity);
+				// Sets transfomr's parent for indicating, which player deflected the bullet
+				reverse.transform.parent = transform.parent;
+				reverse.set_duration(float.MaxValue);
+				reverse.damage = damage / 3;
+				// Sets bullet trajectory
+				reverse.GetComponent<Rigidbody2D>().velocity = -hit.gameObject.GetComponent<Rigidbody2D>().velocity;
 
-			Destroy(hit.gameObject);
-
+				Destroy(hit.gameObject);
+			}
 			return;
 		}
 
