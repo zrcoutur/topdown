@@ -58,9 +58,10 @@ public class Player : MonoBehaviour {
 	private float death_timer = 5f;
 
 	// Timers, etc.
-	float flash = 0;
-	int toggle = 0;
-	bool uponDeath = true;
+	private float invulnerability;
+	private float flash;
+	private int toggle;
+	private bool uponDeath = true;
 	float spawnerCheck;
 	float spawnerTime;
 
@@ -100,6 +101,11 @@ public class Player : MonoBehaviour {
 		wep.transform.parent = transform;
 
 		score = new ScoreBoard();
+
+		invulnerability = 0f;
+		flash = 0f;
+		toggle = 0;
+		uponDeath = true;
 
 		spawnerCheck = 0;
 		spawnerTime = 10;
@@ -155,12 +161,16 @@ public class Player : MonoBehaviour {
 				return;
 			}
 
-			// Flashing when hurt
-			flash -= Time.deltaTime;
+			if (invulnerability > 0f) {
+				invulnerability -= Time.deltaTime;
+			}
 
 			if (flash >= 0) {
+				// Flashing when hurt
+				flash -= Time.deltaTime;
 				toggle = 1 - toggle;
 				Srenderer.color = colors[toggle];
+
 			} else
 				Srenderer.color = colors[0];
 
@@ -381,28 +391,31 @@ public class Player : MonoBehaviour {
 	 *******************************************************************************/
 	public void GetHurt( int damageTaken ) {
 
-		// Lose shield first
-		var underflow = stats.change_shield(-damageTaken);
+		if (invulnerability <= 0f) {
+			// Lose shield first
+			var underflow = stats.change_shield(-damageTaken);
 
-		// If you take damage in excess of shield,
-		// lose health then
-		if (underflow < 0) {
-			stats.change_health(underflow);
+			// If you take damage in excess of shield,
+			// lose health then
+			if (underflow < 0) {
+				stats.change_health(underflow);
+				hpSlider.value = stats.get_health();
+			}
+
+			// Flash when hurt
+			invulnerability = 1f;
+			flash = 0.4f;
+
+			// Play Hurt SFX
+			CameraRunner.gAudio.PlayOneShot(X_Hurt);
+
+			// Reset shield regen window
+			shieldRegenTime = shieldMaxRegenTime;
+
+			// Update sliders
 			hpSlider.value = stats.get_health();
+			shieldSlider.value = stats.get_shield();
 		}
-
-		// Flash when hurt
-		flash = 0.4f;
-
-		// Play Hurt SFX
-		CameraRunner.gAudio.PlayOneShot( X_Hurt );
-
-		// Reset shield regen window
-		shieldRegenTime = shieldMaxRegenTime;
-
-		// Update sliders
-		hpSlider.value = stats.get_health();
-		shieldSlider.value = stats.get_shield();
 	}
 
 	/*******************************************************************************
